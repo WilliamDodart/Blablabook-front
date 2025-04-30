@@ -6,7 +6,6 @@
     padding-bottom: 5px;
     padding-top: 5px;
 
-    position: absolute;
     bottom: 0;
     width: 100%;
 }
@@ -14,10 +13,26 @@
 .footer-top {
     display: flex;
     justify-content: center;
+    flex-wrap:wrap;
     gap: 1.5rem;
     padding-bottom: 10px;
   }
 
   .footer-bottom {
     margin-bottom: 10px;
+  }
+
+  .footer-top a{
+    text-decoration: none; 
+    color: white;
+    font-family: "Inter";
+  }
+
+  .footer-top a:hover {
+    text-decoration: underline;
+  }
+
+  .footer-bottom p{
+    color: white;
+    font-family: "Inter";
   }

@@ -1,0 +1,91 @@
+@use '../styles/variables' as v;
+@use '../styles/section';
+
+
+
+
+
+// --------------------- BOOK SECTION -----------------------
+
+
+#book-section {
+
+    font-family: "Inter";
+    position: relative;
+
+     
+    & #left-arrow {
+        position: absolute; 
+        left: 5vw;
+        top: 5vh;
+        background-color: v.$secondary-color;
+        border-radius: 50%;
+        width: calc(20px + 2vw);
+        max-width: 50px;
+        
+    }
+
+    & h2 {
+        max-width: 700px;
+        margin: 0 auto 4vh;
+        font-size: calc(1rem + 2vw);
+        font-family: "Inter";
+        font-weight: bold;
+        
+    }
+
+    & #presentation {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin: 0 auto;
+        max-width: 700px;
+        
+        & #presentation-image {
+            margin: 0 auto;
+        }
+        & img {
+            width: 250px; 
+            
+        }
+
+        & #presentation-texts {
+            margin: 0 auto;
+        }
+    }
+    
+
+    & #summary {
+        margin: 0 auto;
+        margin-top: 8vh;
+        max-width: 700px;
+        position: relative;
+
+        & hr {
+            position: absolute;  
+            left: 50%;
+            top: -5.5vh;
+            transform: translate(-50%, -50%);
+            width: calc(150px + 45vw);
+            max-width: 830px;
+            border-top: solid 1px v.$secondary-color;
+        }
+
+        & a {
+            display: block; 
+            text-align: center;
+        }
+        & #add-button {
+        
+        background-color: v.$secondary-color;
+        border-radius: 50%;
+        width: calc(20px + 2vw);
+        max-width: 50px;
+        }
+
+         
+    }
+
+
+}
