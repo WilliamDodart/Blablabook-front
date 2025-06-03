@@ -7,19 +7,19 @@ import type { IUser, IUserError } from '../../../@types/user';
 import api from '../../../utils/axiosApi';
 
 interface iRegisterFormProps {
-  closeLoginForm: () => void;
   setUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
   setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplayRegisterForm: React.Dispatch<React.SetStateAction<boolean>>;
   setMyLibraries: React.Dispatch<React.SetStateAction<ILibrary[]>>;
+  setDisplayLoginForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function LoginForm({
-  closeLoginForm,
   setUser,
   setIsLogged,
   setDisplayRegisterForm,
   setMyLibraries,
+  setDisplayLoginForm,
 }: iRegisterFormProps) {
   const [errors, setErrors] = useState<IUserError>({} as IUserError);
 
@@ -37,7 +37,7 @@ function LoginForm({
       setIsLogged(true);
       const response = await api.get('/libraries/books');
       setMyLibraries(response.data);
-      closeLoginForm();
+      setDisplayLoginForm(false);
     } catch (error) {
       console.log(error);
 
@@ -64,7 +64,7 @@ function LoginForm({
       >
         <button
           type="button"
-          onClick={closeLoginForm}
+          onClick={() => setDisplayLoginForm(false)}
           className="auth-modal-closeBtn"
         >
           <img src="../Pictures/gridicons--cross.svg" alt="Fermer la fenêtre" />
@@ -108,7 +108,7 @@ function LoginForm({
             to="#"
             className="auth-modal-form-redirection"
             onClick={() => {
-              closeLoginForm();
+              setDisplayLoginForm(false);
               setDisplayRegisterForm(true);
             }}
           >

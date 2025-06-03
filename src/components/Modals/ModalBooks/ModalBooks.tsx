@@ -4,16 +4,16 @@ import './ModalBooks.scss';
 import api from '../../../utils/axiosApi';
 
 type IModalBooksProps = {
-  closeModalBook: () => void;
   currentBook: IBooks | null | undefined;
   setMyLibraries: React.Dispatch<React.SetStateAction<ILibrary[]>>;
   myLibraries: ILibrary[];
   displayReviewModal: boolean;
   setDisplayReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplayModalBook: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function ModalBooks({
-  closeModalBook,
+  setDisplayModalBook,
   currentBook,
   myLibraries,
   setDisplayReviewModal,
@@ -50,7 +50,7 @@ function ModalBooks({
       });
 
       /* setMenuDeroulant(null); */
-      closeModalBook();
+      setDisplayModalBook(false);
     } catch (error) {
       console.error(
         "Erreur lors de l'ajout du livre à la bibliothèque :",
@@ -68,7 +68,7 @@ function ModalBooks({
       >
         <button
           type="button"
-          onClick={closeModalBook}
+          onClick={() => setDisplayModalBook(false)}
           className="library-closeBtn"
         >
           <img src="../Pictures/gridicons--cross.svg" alt="close-button" />
