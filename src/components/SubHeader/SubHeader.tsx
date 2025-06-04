@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router';
+import './SubHeader.scss';
 
 interface IAdminHeaderProps {
   adminChoice: string;

@@ -1,43 +1,34 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import api from '../../../utils/axiosApi';
 import './Delete.scss';
 import axios from 'axios';
 import type { IDeleteBookError } from '../../../@types/admin';
-import type { IBooks } from '../../../@types/books';
 
 interface IDeleteProps {
-  closeConfirmDeleteBookModal: () => void;
+  getAllBooks: () => Promise<void>;
+  setDisplayDeleteBookModal: React.Dispatch<React.SetStateAction<boolean>>;
   currentBookIDtoUpdate: number | undefined;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setAllBooks: React.Dispatch<React.SetStateAction<IBooks[]>>;
 }
 
 function DeleteBookModal({
-  closeConfirmDeleteBookModal,
+  getAllBooks,
+  setDisplayDeleteBookModal,
   currentBookIDtoUpdate,
-  setIsLoading,
-  setAllBooks,
 }: IDeleteProps) {
-  const [errors, setErrors] = useState<IDeleteBookError>(
-    {} as IDeleteBookError,
-  );
+  const [errors, setErrors] = useState<IDeleteBookError>({ password: '' });
 
-  async function deleteBook(event: React.FormEvent<HTMLFormElement>) {
+  //Form Handler
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
     try {
-      event.preventDefault();
-
-      const form = event.currentTarget;
-      const formData = new FormData(form);
-
       await api.delete(`/admin/book/${currentBookIDtoUpdate}`, {
         data: {
           password: formData.get('current-password'),
         },
       });
-
-      console.log(event);
-      getAllBooks();
-      closeConfirmDeleteBookModal();
+      await getAllBooks();
+      setDisplayDeleteBookModal(false);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;
@@ -52,23 +43,12 @@ function DeleteBookModal({
     }
   }
 
-  const getAllBooks = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const response = await api.get('/books');
-      setAllBooks(response.data);
-      setIsLoading(false);
-    } catch (_error) {
-      setIsLoading(false);
-    }
-  }, [setIsLoading, setAllBooks]);
-
   return (
     <div className="hidden-background">
       <div className="confirmation-modal">
         <button
           type="button"
-          onClick={closeConfirmDeleteBookModal}
+          onClick={() => setDisplayDeleteBookModal(false)}
           className="confirmation-modal-closeBtn"
         >
           <img
@@ -86,13 +66,7 @@ function DeleteBookModal({
           Êtes vous sûr de vouloir supprimer ce livre ? Veuillez saisir votre
           mot de passe administrateur pour confirmer la suppression.
         </p>
-        <form
-          className="confirmation-modal-form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            deleteBook(event);
-          }}
-        >
+        <form className="confirmation-modal-form" onSubmit={handleSubmit}>
           <label htmlFor="current-password">Mot de passe administrateur</label>
           <input
             type="password"

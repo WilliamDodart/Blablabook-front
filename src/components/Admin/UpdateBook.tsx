@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { IBooks, IGenre } from '../../@types/books';
 import api from '../../utils/axiosApi';
-import GenreField from './GenreField';
-import InputField from './InputField';
+import GenreField from '../Fields/GenreField';
+import InputField from '../Fields/InputField';
 
 interface IUpdateBookProps {
   allBooks: IBooks[];

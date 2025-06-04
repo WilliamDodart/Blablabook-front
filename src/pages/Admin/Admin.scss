@@ -2,164 +2,36 @@
 @use '../../styles/section';
 
 
-.admin-page-section {
+.admin-section {
     background-color: v.$base-color;
     padding: 0;
-
-    & .admin-header {
-        background-color: v.$base-color;
-        width: 100%;
-        margin: 0 auto;
-        padding: 2rem 0 0 0;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        &-title {
-            font-size: 2.8rem;
-            margin: 0;
-        }
-
-        &-list {
-            font-family: "Inter";
-
-            padding: 2rem 0 0 0;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-
-            &-link {
-                font-family: "Inter";
-                font-size: 1.3rem;
-                font-weight: 300;
-                color: v.$marron-color;
-                text-decoration: none;
-                padding: 1.2rem 0;
-            }
-
-            
-            & .selected-status {
-                text-decoration: underline;
-                color: #d1bda5
-            }
-
-            &-link:hover {
-                color: v.$secondary-color;
-                font-weight: 300;
-            }
-        }
-    }
-
-    & .admin-body {
-        background-color: v.$primary-color;
-        border-radius: 8px;
-        margin: 2rem auto;
-        width: 90%;
-        padding-top: 1%;
-
-        & .admin-subtitle {
-            font-family: 'Inter';
-            font-weight: bold;
-            font-size: calc(1.3rem + 0.5vw);
-            margin-top: 4.5vh;
-            margin-bottom: 4.5vh;
-            padding: 0;
-            text-align: center;
-            color: v.$marron-color;
-        }
+        
+        &-body {
+            background-color: v.$primary-color;
+            border-radius: 8px;
+            margin: 2rem auto;
+            width: 90%;
+            min-height: 300px;
+            height: 100%;
+            padding-top: 1%;
     
-    
-        & .book-modification-selection {
-            text-align: center; 
-            margin-bottom: 4%;
-            overflow-x: auto;
-        }
-    
-        & .book-modification-presentation {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin: 0 auto;
-            max-width: 700px;
-            gap: 5vh;
-    
-            & label {
-                font-family: "Inter";
-                font-weight: 200;
-                font-size: 0.9rem;
-                margin-top: 1vh;
-                margin-bottom: 2%;
+            &-subtitle {
+                font-family: 'Inter';
+                font-weight: bold;
+                font-size: calc(1.3rem + 0.5vw);
+                margin-top: 4.5vh;
+                margin-bottom: 4.5vh;
                 padding: 0;
+                text-align: center;
+                color: v.$marron-color;
             }
-    
-            & select {
-                margin-bottom: 2%;
+        
+            & .book-modification-selection {
+                text-align: center; 
+                margin-bottom: 4%;
+                overflow-x: auto;
             }
-    
-            & textarea {
-                margin-bottom: 2%;
-                font-family: "Inter";
-            }
-            
-            &-image {
-                margin: 0 auto;
-                & img {
-                    width: 250px;    
-                }
-            }
-    
-    
-            & .book-modification-presentation-texts{
-                margin: 0 auto;
-            
-                & .book-modification-details {
-                    
-                    width: 80vw;
-                    max-width: 350px;
-                    overflow-x: auto;
-    
-                    & button {
-                        all: unset;
-    
-                        font-family: 'Inter';
-                        background-color: v.$secondary-color; 
-                        color: v.$base-color;
-                        margin: 1vh 0 4vh 0;
-                        text-align: center;
-                        padding: 15px 40px; 
-                        cursor: pointer;
-                        max-width: 20%;
-    
-                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-                        border-radius: 8px;
-    
-                    }
-            
-                }
-            }
-    
-        }
-        & input, textarea, select {
-            padding: 8px;
-            border-radius: 4px;
-            border: solid 2px v.$secondary-color;
-            background-color: white;
-            font-size: 0.9rem;
-        }
-    
-    
-        .book-modification-details {
-            display: flex;
-            flex-direction: column;
-        }
-    
-    }
-    
+        }  
 }
 
 .delete {
@@ -183,19 +55,6 @@
     font-size: 0.9rem;
 }    
 
-select {
-    padding: 0.4rem 0.6rem;
-    border-radius: 6px;
-    border: 1px solid v.$base-color;
-    background-color: white;
-    font-size: 0.9rem;
-    min-width: 160px;
-}
-
-input {
-    margin-bottom: 2%;
-}
-
 .fade {
     transition: opacity 0.3s ease-in-out;
     opacity: 1;
@@ -216,12 +75,12 @@ input {
         margin-bottom: 2rem;
     }
 
-    .admin-page-section .admin-body .admin-subtitle  {
+    .admin-section .admin-section-body .admin-section-body-subtitle  {
         margin-top: 2rem;
         margin-bottom: 2rem;
     }
 
-    .admin-page-section .admin-header-title{
+    .admin-section .admin-header-title{
         margin-top: 3rem;
     }
 }

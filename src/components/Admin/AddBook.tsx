@@ -3,8 +3,9 @@ import { useState } from 'react';
 import type { IAddBookError } from '../../@types/admin';
 import type { IGenre } from '../../@types/books';
 import api from '../../utils/axiosApi';
-import GenreField from './GenreField';
-import InputField from './InputField';
+import GenreField from '../Fields/GenreField';
+import InputField from '../Fields/InputField';
+import './AdminCrud.scss';
 
 interface IAddBookProps {
   setConfirmModal: React.Dispatch<React.SetStateAction<string>>;
@@ -60,91 +61,89 @@ function AddBook({ setConfirmModal, allGenres }: IAddBookProps) {
 
   return (
     <form onSubmit={addBook}>
-      <div className="book-modification-presentation">
-        <div className="book-modification-presentation-image">
+      <div className="admin-add">
+        <div className="admin-add-image">
           <img src={imageUrl} alt="aperçu du livre" />
         </div>
-        <div className="book-modification-presentation-texts">
-          <div className="book-modification-details">
-            <InputField
-              label="Nom du livre:"
-              name="title"
-              placeholder="Don Quichotte"
-              error={errors.title}
-            />
+        <div className="admin-add-fields">
+          <InputField
+            label="Nom du livre:"
+            name="title"
+            placeholder="Don Quichotte"
+            error={errors.title}
+          />
 
-            <InputField
-              label="URL image:"
-              name="image"
-              placeholder="https://www.image-du-livre.jpg"
-              value={imageUrl}
-              onChange={(event) => setImageUrl(event.target.value)}
-              error={errors.image}
-            />
+          <InputField
+            label="URL image:"
+            name="image"
+            placeholder="https://www.image-du-livre.jpg"
+            value={imageUrl}
+            onChange={(event) => setImageUrl(event.target.value)}
+            error={errors.image}
+          />
 
-            <InputField
-              label="Auteur:"
-              name="author"
-              placeholder="Prénom Nom"
-              error={errors.author}
-            />
+          <InputField
+            label="Auteur:"
+            name="author"
+            placeholder="Prénom Nom"
+            error={errors.author}
+          />
 
-            <InputField
-              label="Année de parution:"
-              name="publication_year"
-              placeholder="1964"
-              error={errors.publication_year}
-            />
+          <InputField
+            label="Année de parution:"
+            name="publication_year"
+            placeholder="1964"
+            error={errors.publication_year}
+          />
 
-            <InputField
-              label="Éditeur:"
-              name="editor"
-              placeholder="Gallimard, Hachette..."
-              error={errors.editor}
-            />
+          <InputField
+            label="Éditeur:"
+            name="editor"
+            placeholder="Gallimard, Hachette..."
+            error={errors.editor}
+          />
 
-            <InputField
-              label="ISBN:"
-              name="isbn"
-              placeholder="10 à 13 chiffres"
-              error={errors.isbn}
-            />
+          <InputField
+            label="ISBN:"
+            name="isbn"
+            placeholder="10 à 13 chiffres"
+            error={errors.isbn}
+          />
 
-            <InputField
-              label="Pages:"
-              name="pages"
-              placeholder="361"
-              error={errors.pages}
-            />
+          <InputField
+            label="Pages:"
+            name="pages"
+            placeholder="361"
+            error={errors.pages}
+          />
 
-            <GenreField
-              name="genre1"
-              label="1er genre:"
-              option="Choisir le genre princial"
-              allGenres={allGenres}
-            />
+          <GenreField
+            name="genre1"
+            label="1er genre:"
+            option="Choisir le genre princial"
+            allGenres={allGenres}
+          />
 
-            <GenreField
-              name="genre2"
-              label="2ème genre:"
-              option="Choisir le genre secondaire"
-              allGenres={allGenres}
-              primary={false}
-            />
+          <GenreField
+            name="genre2"
+            label="2ème genre:"
+            option="Choisir le genre secondaire"
+            allGenres={allGenres}
+            primary={false}
+          />
 
-            <label htmlFor="summary">Résumé:</label>
-            <textarea
-              name="summary"
-              id="summary"
-              placeholder="Description du livre"
-              required
-            />
-            {errors?.summary && (
-              <p className="register-form-error">{errors.summary}</p>
-            )}
+          <label htmlFor="summary">Résumé:</label>
+          <textarea
+            name="summary"
+            id="summary"
+            placeholder="Description du livre"
+            required
+          />
+          {errors?.summary && (
+            <p className="register-form-error">{errors.summary}</p>
+          )}
 
-            <button type="submit">Valider</button>
-          </div>
+          <button type="submit">Valider</button>
         </div>
       </div>
     </form>
