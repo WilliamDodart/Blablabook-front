@@ -1,29 +1,21 @@
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
-import { NavLink } from 'react-router';
-import type { IAddBookError } from '../../@types/admin';
-import type { IBooks, IGenre } from '../../@types/books';
+import type { IBooks } from '../../@types/books';
 import api from '../../utils/axiosApi';
-
 import './Admin.scss';
+import AddBook from '../../components/Admin/AddBook';
+import DeleteBook from '../../components/Admin/DeleteBook';
+import Header from '../../components/Admin/Header';
+import UpdateBook from '../../components/Admin/UpdateBook';
 import Loader from '../../components/Loader/Loader';
-import ConfirmAddBookModal from '../../components/Modals/Confirm/ConfirmAddBookModal';
-import ConfirmUpdateBookModal from '../../components/Modals/Confirm/ConfirmUpdateBookModal';
-import ConfirmDeleteBookModal from '../../components/Modals/Delete/DeleteBookModal';
+import ConfirmModal from '../../components/Modals/Confirm/ConfirmModal';
+import DeleteBookModal from '../../components/Modals/Delete/DeleteBookModal';
 
 function Admin() {
-  const [errors, setErrors] = useState<IAddBookError>({} as IAddBookError);
-  // Menu pour choisir l'action à effectuer par l'admin
   const [adminChoice, setAdminChoice] = useState('Ajouter un livre');
-  // Permet de prévisualiser l'image lors de l'ajout d'un livre
-  const [imagePresentation, setImagePresentation] = useState(
-    'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/old-books-cover-design-template-528851dfc1b6ed275212cd110a105122_screen.jpg',
-  );
   const [allBooks, setAllBooks] = useState<IBooks[]>([]);
   const [allGenres, setAllGenres] = useState([]);
-  const [currentBookIDtoUpdate, setCurrentBookIDtoUpdate] = useState<
-    number | undefined
-  >();
+  const [currentBookIDtoUpdate, setCurrentBookIDtoUpdate] = useState<number>();
+
   const [updateBookState, setUpdateBookState] = useState({
     image: 'https://m.media-amazon.com/images/I/6155jsTHk1L._SL1499_.jpg',
     title: '',
@@ -36,13 +28,11 @@ function Admin() {
     // genre2: "",
     summary: '',
   });
-  //Display confirmation modals for updating/deleting book
-  const [displayConfirmDeleteBookModal, setDisplayConfirmDeleteBookModal] =
-    useState(false);
-  const [displayConfirmUpdateBookModal, setDisplayConfirmUpdateBookModal] =
-    useState(false);
-  const [displayConfirmAddBookModal, setDisplayConfirmAddBookModal] =
-    useState(false);
+
+  //Display confirmation modals
+  const [displayDeleteBookModal, setDisplayDeleteBookModal] = useState(false);
+  const [confirmModal, setConfirmModal] = useState('');
+
   //For fading title animation
   const [displayedChoice, setDisplayedChoice] = useState('');
   const [fadeClass, setFadeClass] = useState('');
@@ -85,12 +75,8 @@ function Admin() {
     }
   }, [adminChoice, displayedChoice]);
 
-  function closeConfirmUpdateBookModal() {
-    setDisplayConfirmUpdateBookModal(false);
-  }
-
   function closeConfirmDeleteBookModal() {
-    setDisplayConfirmDeleteBookModal(false);
+    setDisplayDeleteBookModal(false);
     setUpdateBookState({
       image: 'https://m.media-amazon.com/images/I/6155jsTHk1L._SL1499_.jpg',
       title: '',
@@ -103,173 +89,37 @@ function Admin() {
     });
   }
 
-  function closeConfirmAddBookModal() {
-    setDisplayConfirmAddBookModal(false);
-  }
-
-  // Fonctionnalité d'ajout d'un livre
-  async function addBook(event: React.FormEvent<HTMLFormElement>) {
-    try {
-      event.preventDefault();
-
-      setErrors({} as IAddBookError);
-
-      const form = event.currentTarget;
-      const formData = new FormData(form);
-
-      await api.post('/admin/book', {
-        title: formData.get('title'),
-        image: formData.get('image'),
-        author: formData.get('author'),
-        publication_year: Number(formData.get('parution')),
-        editor: formData.get('editor'),
-        isbn: formData.get('isbn'),
-        pages: Number(formData.get('pages')),
-        genre1: formData.get('genre1'),
-        genre2: formData.get('genre2'),
-        summary: formData.get('summary'),
-      });
-      console.log(formData);
-      console.log(`Ajout du livre suivant: ${formData.get('title')}`);
-      setDisplayConfirmAddBookModal(true);
-    } catch (error) {
-      console.log(error);
-
-      if (axios.isAxiosError(error) && error.response?.data.errors) {
-        const zodErrors = error.response.data.errors;
-        const formattedErrors: IAddBookError = {
-          title: '',
-          image: '',
-          author: '',
-          publication_year: '',
-          editor: '',
-          isbn: '',
-          pages: '',
-          summary: '',
-        };
-        for (const error of zodErrors) {
-          formattedErrors[error.field as keyof IAddBookError] = error.message;
-        }
-        console.log(zodErrors);
-        setErrors(formattedErrors);
-        console.log(formattedErrors);
-      }
-    }
-  }
-
-  async function updateBook(event: React.FormEvent<HTMLFormElement>) {
-    try {
-      event.preventDefault();
-
-      const form = event.currentTarget;
-      const formData = new FormData(form);
-
-      // console.log(event);
-      // console.log(formData);
-
-      console.log(currentBookIDtoUpdate);
-
-      await api.patch(`/admin/book/${currentBookIDtoUpdate}`, {
-        title: formData.get('title'),
-        image: formData.get('image'),
-        author: formData.get('author'),
-        publication_year: Number(formData.get('parution')),
-        editor: formData.get('editor'),
-        isbn: formData.get('isbn'),
-        pages: Number(formData.get('pages')),
-        genre1: formData.get('genre1'),
-        genre2: formData.get('genre2'),
-        summary: formData.get('summary'),
-      });
-
-      console.log(`Modification du livre: ${formData.get('title')}`);
-      setDisplayConfirmUpdateBookModal(true);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   if (isLoading) {
     return <Loader />;
   }
 
   return (
     <section className="admin-page-section section">
-      {displayConfirmDeleteBookModal && (
-        <ConfirmDeleteBookModal
+      {confirmModal === 'add' && (
+        <ConfirmModal
+          setConfirmModal={setConfirmModal}
+          message="Ce livre a bien été ajouté dans la base de données."
+        />
+      )}
+
+      {confirmModal === 'update' && (
+        <ConfirmModal
+          setConfirmModal={setConfirmModal}
+          message="Ce livre a bien été modifié dans la base de données."
+        />
+      )}
+
+      {displayDeleteBookModal && (
+        <DeleteBookModal
           closeConfirmDeleteBookModal={closeConfirmDeleteBookModal}
           currentBookIDtoUpdate={currentBookIDtoUpdate}
           setIsLoading={setIsLoading}
           setAllBooks={setAllBooks}
         />
       )}
-      {displayConfirmUpdateBookModal && (
-        <ConfirmUpdateBookModal
-          closeConfirmUpdateBookModal={closeConfirmUpdateBookModal}
-        />
-      )}
-      {displayConfirmAddBookModal && (
-        <ConfirmAddBookModal
-          closeConfirmAddBookModal={closeConfirmAddBookModal}
-        />
-      )}
 
       <div className="admin-container">
-        <div className="admin-header">
-          <h1 className="admin-header-title">Page administrateur</h1>
-
-          <ul className="admin-header-list">
-            <li>
-              <NavLink
-                className={
-                  adminChoice === 'Ajouter un livre'
-                    ? 'admin-header-list-link selected-status'
-                    : 'admin-header-list-link'
-                }
-                to=""
-                onClick={(event) => {
-                  event.preventDefault();
-
-                  setAdminChoice('Ajouter un livre');
-                }}
-              >
-                Ajouter un livre
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className={
-                  adminChoice === 'Modifier un livre'
-                    ? 'admin-header-list-link selected-status'
-                    : 'admin-header-list-link'
-                }
-                to=""
-                onClick={(event) => {
-                  event.preventDefault();
-                  setAdminChoice('Modifier un livre');
-                }}
-              >
-                Modifier un livre
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className={
-                  adminChoice === 'Supprimer un livre'
-                    ? 'admin-header-list-link selected-status'
-                    : 'admin-header-list-link'
-                }
-                to=""
-                onClick={(event) => {
-                  event.preventDefault();
-                  setAdminChoice('Supprimer un livre');
-                }}
-              >
-                Supprimer un livre
-              </NavLink>
-            </li>
-          </ul>
-        </div>
+        <Header adminChoice={adminChoice} setAdminChoice={setAdminChoice} />
 
         <div className="admin-body">
           <p className={`admin-subtitle fade ${fadeClass}`}>
@@ -277,565 +127,25 @@ function Admin() {
           </p>
 
           {adminChoice === 'Ajouter un livre' && (
-            <form onSubmit={addBook}>
-              <div className="book-modification-presentation">
-                <div className="book-modification-presentation-image">
-                  <img src={imagePresentation} alt="" />
-                </div>
-                <div className="book-modification-presentation-texts">
-                  <div className="book-modification-details">
-                    <label htmlFor="title">Nom du livre:</label>
-                    <input
-                      type="text"
-                      name="title"
-                      id="title"
-                      placeholder="Don Quichotte"
-                      required
-                    />
-                    {errors?.title && (
-                      <p className="register-form-error">{errors.title}</p>
-                    )}
-                    <label htmlFor="image">URL image:</label>
-                    <input
-                      type="text"
-                      name="image"
-                      id="image"
-                      placeholder="https://www. --- image-du-livre.jpg"
-                      value={imagePresentation}
-                      onChange={(e) => setImagePresentation(e.target.value)}
-                      required
-                    />
-                    {errors?.image && (
-                      <p className="register-form-error">{errors.image}</p>
-                    )}
-                    <label htmlFor="author">Auteur:</label>
-                    <input
-                      type="text"
-                      name="author"
-                      id="author"
-                      placeholder="Prénom Nom"
-                      required
-                    />
-                    {errors?.author && (
-                      <p className="register-form-error">{errors.author}</p>
-                    )}
-                    <label htmlFor="parution">Parution:</label>
-                    <input
-                      type="text"
-                      name="parution"
-                      id="parution"
-                      placeholder="Année (ex: 1964)"
-                      required
-                    />
-                    {errors?.publication_year && (
-                      <p className="register-form-error">
-                        {errors.publication_year}
-                      </p>
-                    )}
-                    <label htmlFor="editor">Edition:</label>
-                    <input
-                      type="text"
-                      name="editor"
-                      id="editor"
-                      placeholder="Hachette, Gallimard, Editis, ..."
-                      required
-                    />
-                    {errors?.editor && (
-                      <p className="register-form-error">{errors.editor}</p>
-                    )}
-                    <label htmlFor="isbn">ISBN:</label>
-                    <input
-                      type="text"
-                      name="isbn"
-                      id="isbn"
-                      placeholder="10 à 13 chiffres"
-                      required
-                    />
-                    {errors?.isbn && (
-                      <p className="register-form-error">{errors.isbn}</p>
-                    )}
-                    <label htmlFor="pages">Pages:</label>
-                    <input
-                      type="text"
-                      name="pages"
-                      id="pages"
-                      placeholder="Nombre de pages (ex: 361)"
-                      required
-                    />
-                    {errors?.pages && (
-                      <p className="register-form-error">{errors.pages}</p>
-                    )}
-                    <label htmlFor="genre1">1er genre:</label>
-
-                    {/* <input type="text" name="name" placeholder='Roman -- non fonctionnel' required /> */}
-                    <select name="genre1" id="genre1" required>
-                      <option value="">Choisir le genre principal</option>
-                      {allGenres.map((genre: IGenre) => (
-                        <option key={genre.id} value={genre.id}>
-                          {genre.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <label htmlFor="genre2">2ème genre:</label>
-                    <select name="genre2" id="genre2">
-                      <option value="">Choisir le genre secondaire</option>
-                      <option value="">Aucun</option>
-                      {allGenres.map((genre: IGenre) => (
-                        <option key={genre.id} value={genre.id}>
-                          {genre.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <label htmlFor="summary">Résumé:</label>
-                    <textarea
-                      name="summary"
-                      id="summary"
-                      placeholder="Description du livre"
-                      required
-                    />
-                    {errors?.summary && (
-                      <p className="register-form-error">{errors.summary}</p>
-                    )}
-                    <button type="submit">Valider</button>
-                  </div>
-                </div>
-              </div>
-            </form>
+            <AddBook setConfirmModal={setConfirmModal} allGenres={allGenres} />
           )}
 
           {adminChoice === 'Modifier un livre' && (
-            <form onSubmit={updateBook}>
-              <div className="book-modification-selection">
-                {/* <label htmlFor="book-to-update">Choisir le livre à modifier:</label>  */}
-                <select
-                  name="book-to-update"
-                  className="book-to-update"
-                  onChange={(e) => {
-                    const selectedId = e.target.value;
-                    const selectedBook = allBooks.find(
-                      (book) => String(book.id) === selectedId,
-                    );
-                    if (selectedBook) {
-                      // On adapte ici pour ne garder que les propriétés attendues par updateBookState
-                      setUpdateBookState({
-                        image: selectedBook.image || '',
-                        title: selectedBook.title || '',
-                        author: selectedBook.author || '',
-                        publication_year:
-                          selectedBook.publication_year || Number(''),
-                        editor: selectedBook.editor || '',
-                        isbn: selectedBook.isbn || Number(''),
-                        pages: selectedBook.pages || Number(''),
-                        summary: selectedBook.summary || '',
-                      });
-                      setCurrentBookIDtoUpdate(Number(selectedId));
-                    } else {
-                      // Si rien n'est sélectionné, on réinitialise
-                      setUpdateBookState({
-                        image:
-                          'https://m.media-amazon.com/images/I/6155jsTHk1L._SL1499_.jpg',
-                        title: '',
-                        author: '',
-                        publication_year: Number(''),
-                        editor: '',
-                        isbn: Number(''),
-                        pages: Number(''),
-                        summary: '',
-                      });
-                    }
-                  }}
-                >
-                  <option value="">Choisir le livre à modifier:</option>
-                  {[...allBooks]
-                    .sort((a, b) => a.title.localeCompare(b.title))
-                    .map((book) => {
-                      // console.log(book);
-                      return (
-                        <option key={book.id} value={book.id}>
-                          {book.title} - {book.author}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-
-              <div className="book-modification-presentation">
-                <div className="book-modification-presentation-image">
-                  <img src={updateBookState.image} alt="" />
-                </div>
-                <div className="book-modification-presentation-texts">
-                  <div className="book-modification-details">
-                    <label htmlFor="title">Nom du livre:</label>
-                    <input
-                      type="text"
-                      name="title"
-                      id="title"
-                      placeholder="Don Quichotte"
-                      value={updateBookState.title}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          title: e.target.value,
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="image">URL image:</label>
-                    <input
-                      type="text"
-                      name="image"
-                      id="image"
-                      placeholder="https://www. --- image-du-livre-à-modifier.jpg"
-                      value={updateBookState.image}
-                      onChange={(e) =>
-                        setUpdateBookState((prevBook) => ({
-                          ...prevBook,
-                          image: e.target.value,
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="author">Auteur:</label>
-                    <input
-                      type="text"
-                      name="author"
-                      id="author"
-                      placeholder="Prénom Nom"
-                      value={updateBookState.author}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          author: e.target.value,
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="parution">Parution:</label>
-                    <input
-                      type="text"
-                      name="parution"
-                      id="parution"
-                      placeholder="Année (ex: 1964)"
-                      value={updateBookState.publication_year}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          publication_year: Number(e.target.value),
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="editor">Edition:</label>
-                    <input
-                      type="text"
-                      name="editor"
-                      id="editor"
-                      placeholder="Hachette, Gallimard, Editis, ..."
-                      value={updateBookState.editor}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          editor: e.target.value,
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="isbn">ISBN:</label>
-                    <input
-                      type="text"
-                      name="isbn"
-                      id="isbn"
-                      placeholder="10 à 13 chiffres"
-                      value={updateBookState.isbn}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          isbn: Number(e.target.value),
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="pages">Pages:</label>
-                    <input
-                      type="text"
-                      name="pages"
-                      id="pages"
-                      placeholder="Nombre de pages (ex: 361)"
-                      value={updateBookState.pages}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          pages: Number(e.target.value),
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="genre1">1er genre:</label>
-                    {/* <input type="text" name="name" placeholder='Roman -- non fonctionnel' required /> */}
-                    <select name="genre1" id="genre1">
-                      <option value="">Choisir le genre principal</option>
-                      {allGenres.map((genre: IGenre) => (
-                        <option key={genre.id} value={genre.id}>
-                          {genre.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <label htmlFor="genre2">2ème genre:</label>
-                    <select name="genre2" id="genre2">
-                      <option value="">Choisir le genre secondaire</option>
-                      <option value="">Aucun</option>
-                      {allGenres.map((genre: IGenre) => (
-                        <option key={genre.id} value={genre.id}>
-                          {genre.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <label htmlFor="summary">Résumé:</label>
-                    <textarea
-                      name="summary"
-                      id="summary"
-                      placeholder="Description du livre"
-                      value={updateBookState.summary}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          summary: e.target.value,
-                        }))
-                      }
-                      required
-                    />
-
-                    <button type="submit">Valider</button>
-                  </div>
-                </div>
-              </div>
-            </form>
+            <UpdateBook
+              allBooks={allBooks}
+              allGenres={allGenres}
+              setConfirmModal={setConfirmModal}
+              currentBookIDtoUpdate={currentBookIDtoUpdate}
+              setCurrentBookIDtoUpdate={setCurrentBookIDtoUpdate}
+            />
           )}
 
           {adminChoice === 'Supprimer un livre' && (
-            <form>
-              <div className="book-modification-selection">
-                {/* <label htmlFor="book-to-update">Choisir le livre à modifier:</label>  */}
-                <select
-                  name="book-to-update"
-                  className="book-to-update"
-                  onChange={(e) => {
-                    const selectedId = e.target.value;
-                    const selectedBook = allBooks.find(
-                      (book) => String(book.id) === selectedId,
-                    );
-                    if (selectedBook) {
-                      // On adapte ici pour ne garder que les propriétés attendues par updateBookState
-                      setUpdateBookState({
-                        image: selectedBook.image || '',
-                        title: selectedBook.title || '',
-                        author: selectedBook.author || '',
-                        publication_year:
-                          selectedBook.publication_year || Number(''),
-                        editor: selectedBook.editor || '',
-                        isbn: selectedBook.isbn || Number(''),
-                        pages: selectedBook.pages || Number(''),
-                        summary: selectedBook.summary || '',
-                      });
-                      setCurrentBookIDtoUpdate(Number(selectedId));
-                    } else {
-                      // Si rien n'est sélectionné, on réinitialise
-                      setUpdateBookState({
-                        image:
-                          'https://m.media-amazon.com/images/I/6155jsTHk1L._SL1499_.jpg',
-                        title: '',
-                        author: '',
-                        publication_year: Number(''),
-                        editor: '',
-                        isbn: Number(''),
-                        pages: Number(''),
-                        summary: '',
-                      });
-                    }
-                  }}
-                >
-                  <option value="">Choisir le livre à supprimer:</option>
-                  {[...allBooks]
-                    .sort((a, b) => a.title.localeCompare(b.title))
-                    .map((book) => {
-                      // console.log(book);
-                      return (
-                        <option key={book.id} value={book.id}>
-                          {book.title} - {book.author}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-
-              <div className="book-modification-presentation">
-                <div className="book-modification-presentation-image">
-                  <img src={updateBookState.image} alt="" />
-                </div>
-                <div className="book-modification-presentation-texts">
-                  <div className="book-modification-details">
-                    <label htmlFor="title">Nom du livre:</label>
-                    <input
-                      type="text"
-                      name="title"
-                      id="title"
-                      placeholder="Don Quichotte"
-                      value={updateBookState.title}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          title: e.target.value,
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="image">URL image:</label>
-                    <input
-                      type="text"
-                      name="image"
-                      id="image"
-                      placeholder="https://www. --- image-du-livre-à-modifier.jpg"
-                      value={updateBookState.image}
-                      onChange={(e) =>
-                        setUpdateBookState((prevBook) => ({
-                          ...prevBook,
-                          image: e.target.value,
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="author">Auteur:</label>
-                    <input
-                      type="text"
-                      name="author"
-                      id="author"
-                      placeholder="Prénom Nom"
-                      value={updateBookState.author}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          author: e.target.value,
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="parution">Parution:</label>
-                    <input
-                      type="text"
-                      name="parution"
-                      id="parution"
-                      placeholder="Année (ex: 1964)"
-                      value={updateBookState.publication_year}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          publication_year: Number(e.target.value),
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="editor">Edition:</label>
-                    <input
-                      type="text"
-                      name="editor"
-                      id="editor"
-                      placeholder="Hachette, Gallimard, Editis, ..."
-                      value={updateBookState.editor}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          editor: e.target.value,
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="isbn">ISBN:</label>
-                    <input
-                      type="text"
-                      name="isbn"
-                      id="isbn"
-                      placeholder="10 à 13 chiffres"
-                      value={updateBookState.isbn}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          isbn: Number(e.target.value),
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="pages">Pages:</label>
-                    <input
-                      type="text"
-                      name="pages"
-                      id="pages"
-                      placeholder="Nombre de pages (ex: 361)"
-                      value={updateBookState.pages}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          pages: Number(e.target.value),
-                        }))
-                      }
-                      required
-                    />
-
-                    <label htmlFor="genre1">1er genre:</label>
-                    {/* <input type="text" name="name" placeholder='Roman -- non fonctionnel' required /> */}
-                    <select name="genre1" id="genre1">
-                      <option value="">Choisir le genre principal</option>
-                    </select>
-
-                    <label htmlFor="genre2">2ème genre:</label>
-                    <select name="genre1" id="genre2">
-                      <option value="">Choisir le genre secondaire</option>
-                    </select>
-
-                    <label htmlFor="summary">Résumé:</label>
-                    <textarea
-                      name="summary"
-                      id="summary"
-                      placeholder="Description du livre"
-                      value={updateBookState.summary}
-                      onChange={(e) =>
-                        setUpdateBookState((prev) => ({
-                          ...prev,
-                          summary: e.target.value,
-                        }))
-                      }
-                      required
-                    />
-                    <button
-                      className="delete"
-                      type="button"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        setDisplayConfirmDeleteBookModal(true);
-                      }}
-                    >
-                      Supprimer
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
+            <DeleteBook
+              allBooks={allBooks}
+              setCurrentBookIDtoUpdate={setCurrentBookIDtoUpdate}
+              setDisplayDeleteBookModal={setDisplayDeleteBookModal}
+            />
           )}
         </div>
       </div>

@@ -41,18 +41,18 @@ function App() {
       <ModalsManager
         displayRegisterForm={displayRegisterForm}
         displayLoginForm={displayLoginForm}
-        currentBook={currentBook}
-        myLibraries={myLibraries}
         displayModalLibrary={displayModalLibrary}
         displayModalBook={displayModalBook}
+        currentBook={currentBook}
+        myLibraries={myLibraries}
         setDisplayLoginForm={setDisplayLoginForm}
-        setUser={setUser}
-        setIsLogged={setIsLogged}
         setDisplayRegisterForm={setDisplayRegisterForm}
-        setMyLibraries={setMyLibraries}
-        setCurrentLibraries={setCurrentLibraries}
         setDisplayModalLibrary={setDisplayModalLibrary}
         setDisplayModalBook={setDisplayModalBook}
+        setUser={setUser}
+        setIsLogged={setIsLogged}
+        setMyLibraries={setMyLibraries}
+        setCurrentLibraries={setCurrentLibraries}
         setReviewed={setReviewed}
       />
 

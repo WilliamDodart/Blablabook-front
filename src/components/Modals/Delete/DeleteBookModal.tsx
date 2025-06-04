@@ -5,19 +5,19 @@ import axios from 'axios';
 import type { IDeleteBookError } from '../../../@types/admin';
 import type { IBooks } from '../../../@types/books';
 
-interface iConfirmDeleteProps {
+interface IDeleteProps {
   closeConfirmDeleteBookModal: () => void;
   currentBookIDtoUpdate: number | undefined;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setAllBooks: React.Dispatch<React.SetStateAction<IBooks[]>>;
 }
 
-function ConfirmDeleteBookModal({
+function DeleteBookModal({
   closeConfirmDeleteBookModal,
   currentBookIDtoUpdate,
   setIsLoading,
   setAllBooks,
-}: iConfirmDeleteProps) {
+}: IDeleteProps) {
   const [errors, setErrors] = useState<IDeleteBookError>(
     {} as IDeleteBookError,
   );
@@ -111,4 +111,4 @@ function ConfirmDeleteBookModal({
   );
 }
 
-export default ConfirmDeleteBookModal;
+export default DeleteBookModal;
