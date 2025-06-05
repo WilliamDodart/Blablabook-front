@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './Books.scss';
-import { Link } from 'react-router';
 import type { IBooks } from '../../@types/books';
+import BookCard from '../../components/BookCard/BookCard';
 import Loader from '../../components/Loader/Loader';
 import api from '../../utils/axiosApi';
 
@@ -74,7 +74,6 @@ function Books({ setDisplayModalBook, setCurrentBook }: BooksProps) {
       </div>
 
       <div className="books-list">
-        {/* Si aucun livre ne correspond à la recherche effectuée, on fait apparaître un message d'erreur */}
         {filteredBooks.length === 0 && (
           <p className="books-list-no-results">
             Aucun livre ne correspond à votre recherche !
@@ -82,40 +81,14 @@ function Books({ setDisplayModalBook, setCurrentBook }: BooksProps) {
         )}
 
         <ul className="books-list-ul">
-          {visibleBooks.map((books, index) => (
-            <li key={books.id} className="books-list-li">
-              <Link
-                to={`/book/${books.id}`}
-                className="animated-book"
-                style={{
-                  animationDelay: `${index * 70}ms`,
-                }}
-                onClick={() => {
-                  setCurrentBook(books);
-                }}
-              >
-                <figure>
-                  <div id="book-img">
-                    <img src={books.image} alt="book-image" />
-                    <button
-                      className="test-btn"
-                      type="button"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setCurrentBook(books);
-                        setDisplayModalBook(true);
-                      }}
-                    >
-                      ...
-                    </button>
-                  </div>
-                  <hgroup>
-                    <figcaption>{books.title}</figcaption>
-                    <h5>{books.author}</h5>
-                  </hgroup>
-                </figure>
-              </Link>
-            </li>
+          {visibleBooks.map((book, index) => (
+            <BookCard
+              key={book.id}
+              book={book}
+              index={index}
+              setDisplayModalBook={setDisplayModalBook}
+              setCurrentBook={setCurrentBook}
+            />
           ))}
         </ul>
 
