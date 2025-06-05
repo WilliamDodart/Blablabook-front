@@ -82,10 +82,10 @@ function UpdateBook({
 
   return (
     <form onSubmit={updateBook}>
-      <div className="book-modification-selection">
+      <div className="update-selection">
         <select
           name="book-to-update"
-          className="book-to-update"
+          className="update-selection-field"
           onChange={handleBookSelectChange}
         >
           <option value="">Choisir le livre à modifier:</option>
@@ -99,136 +99,134 @@ function UpdateBook({
         </select>
       </div>
 
-      <div className="book-modification-presentation">
-        <div className="book-modification-presentation-image">
+      <div className="admin-update">
+        <div className="admin-update-image">
           <img src={updateBookState.image} alt="aperçu de la couverture" />
         </div>
 
-        <div className="book-modification-presentation-texts">
-          <div className="book-modification-details">
-            <InputField
-              label="Nom du livre:"
-              name="title"
-              placeholder="Don Quichotte"
-              value={updateBookState.title}
-              onChange={(e) =>
-                setUpdateBookState((prev) => ({
-                  ...prev,
-                  title: e.target.value,
-                }))
-              }
-            />
+        <div className="admin-update-fields">
+          <InputField
+            label="Nom du livre:"
+            name="title"
+            placeholder="Don Quichotte"
+            value={updateBookState.title}
+            onChange={(e) =>
+              setUpdateBookState((prev) => ({
+                ...prev,
+                title: e.target.value,
+              }))
+            }
+          />
 
-            <InputField
-              label="URL image:"
-              name="image"
-              placeholder="https://..."
-              value={updateBookState.image}
-              onChange={(e) =>
-                setUpdateBookState((prev) => ({
-                  ...prev,
-                  image: e.target.value,
-                }))
-              }
-            />
+          <InputField
+            label="URL image:"
+            name="image"
+            placeholder="https://..."
+            value={updateBookState.image}
+            onChange={(e) =>
+              setUpdateBookState((prev) => ({
+                ...prev,
+                image: e.target.value,
+              }))
+            }
+          />
 
-            <InputField
-              label="Auteur:"
-              name="author"
-              placeholder="Prénom Nom"
-              value={updateBookState.author}
-              onChange={(e) =>
-                setUpdateBookState((prev) => ({
-                  ...prev,
-                  author: e.target.value,
-                }))
-              }
-            />
+          <InputField
+            label="Auteur:"
+            name="author"
+            placeholder="Prénom Nom"
+            value={updateBookState.author}
+            onChange={(e) =>
+              setUpdateBookState((prev) => ({
+                ...prev,
+                author: e.target.value,
+              }))
+            }
+          />
 
-            <InputField
-              label="Parution:"
-              name="publication_year"
-              placeholder="1964"
-              value={String(updateBookState.publication_year)}
-              onChange={(e) =>
-                setUpdateBookState((prev) => ({
-                  ...prev,
-                  publication_year: Number(e.target.value),
-                }))
-              }
-            />
+          <InputField
+            label="Parution:"
+            name="publication_year"
+            placeholder="1964"
+            value={String(updateBookState.publication_year)}
+            onChange={(e) =>
+              setUpdateBookState((prev) => ({
+                ...prev,
+                publication_year: Number(e.target.value),
+              }))
+            }
+          />
 
-            <InputField
-              label="Édition:"
-              name="editor"
-              placeholder="Gallimard..."
-              value={updateBookState.editor}
-              onChange={(e) =>
-                setUpdateBookState((prev) => ({
-                  ...prev,
-                  editor: e.target.value,
-                }))
-              }
-            />
+          <InputField
+            label="Édition:"
+            name="editor"
+            placeholder="Gallimard..."
+            value={updateBookState.editor}
+            onChange={(e) =>
+              setUpdateBookState((prev) => ({
+                ...prev,
+                editor: e.target.value,
+              }))
+            }
+          />
 
-            <InputField
-              label="ISBN:"
-              name="isbn"
-              placeholder="10 à 13 chiffres"
-              value={String(updateBookState.isbn)}
-              onChange={(e) =>
-                setUpdateBookState((prev) => ({
-                  ...prev,
-                  isbn: Number(e.target.value),
-                }))
-              }
-            />
+          <InputField
+            label="ISBN:"
+            name="isbn"
+            placeholder="10 à 13 chiffres"
+            value={String(updateBookState.isbn)}
+            onChange={(e) =>
+              setUpdateBookState((prev) => ({
+                ...prev,
+                isbn: Number(e.target.value),
+              }))
+            }
+          />
 
-            <InputField
-              label="Pages:"
-              name="pages"
-              placeholder="361"
-              value={String(updateBookState.pages)}
-              onChange={(e) =>
-                setUpdateBookState((prev) => ({
-                  ...prev,
-                  pages: Number(e.target.value),
-                }))
-              }
-            />
+          <InputField
+            label="Pages:"
+            name="pages"
+            placeholder="361"
+            value={String(updateBookState.pages)}
+            onChange={(e) =>
+              setUpdateBookState((prev) => ({
+                ...prev,
+                pages: Number(e.target.value),
+              }))
+            }
+          />
 
-            <GenreField
-              name="genre1"
-              label="1er genre:"
-              option="Choisir le genre princial"
-              allGenres={allGenres}
-            />
+          <GenreField
+            name="genre1"
+            label="1er genre:"
+            option="Choisir le genre princial"
+            allGenres={allGenres}
+          />
 
-            <GenreField
-              name="genre2"
-              label="2ème genre:"
-              option="Choisir le genre secondaire"
-              allGenres={allGenres}
-              primary={false}
-            />
+          <GenreField
+            name="genre2"
+            label="2ème genre:"
+            option="Choisir le genre secondaire"
+            allGenres={allGenres}
+            primary={false}
+          />
 
-            <label htmlFor="summary">Résumé:</label>
-            <textarea
-              name="summary"
-              id="summary"
-              placeholder="Description du livre"
-              value={updateBookState.summary}
-              onChange={(e) =>
-                setUpdateBookState((prev) => ({
-                  ...prev,
-                  summary: e.target.value,
-                }))
-              }
-              required
-            />
+          <label htmlFor="summary">Résumé:</label>
+          <textarea
+            name="summary"
+            id="summary"
+            placeholder="Description du livre"
+            value={updateBookState.summary}
+            onChange={(e) =>
+              setUpdateBookState((prev) => ({
+                ...prev,
+                summary: e.target.value,
+              }))
+            }
+            required
+          />
 
-            <button type="submit">Valider</button>
-          </div>
+          <button type="submit">Valider</button>
         </div>
       </div>
     </form>

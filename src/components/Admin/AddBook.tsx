@@ -65,6 +65,7 @@ function AddBook({ setConfirmModal, allGenres }: IAddBookProps) {
         <div className="admin-add-image">
           <img src={imageUrl} alt="aperçu du livre" />
         </div>
+
         <div className="admin-add-fields">
           <InputField
             label="Nom du livre:"

@@ -16,17 +16,22 @@ function DeleteBook({
 }: IDeleteBookProps) {
   const [selectedBook, setSelectedBook] = useState<IBooks | null>(null);
 
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //Form Handler
+  function handleSelectChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const selectedId = Number(event.target.value);
     const book = allBooks.find((book) => book.id === selectedId) || null;
     setSelectedBook(book);
     setCurrentBookIDtoUpdate(book?.id);
-  };
+  }
 
   return (
     <form>
-      <div className="book-modification-selection">
-        <select onChange={handleSelectChange} defaultValue="">
+      <div className="delete-selection">
+        <select
+          className="delete-selection-field"
+          onChange={handleSelectChange}
+          defaultValue=""
+        >
           <option value="">Choisir le livre à supprimer:</option>
           {allBooks
             .sort((a, b) => a.title.localeCompare(b.title))
@@ -39,24 +44,24 @@ function DeleteBook({
       </div>
 
       {selectedBook && (
-        <div className="book-modification-presentation">
-          <div className="book-modification-presentation-image">
+        <div className="admin-delete">
+          <div className="admin-delete-image">
             <img src={selectedBook.image} alt={selectedBook.title} />
           </div>
 
-          <div className="book-modification-presentation-texts">
-            <p>
+          <div className="admin-delete-fields">
+            <p className="admin-delete-fields-infos">
               <strong>Titre :</strong> {selectedBook.title}
             </p>
-            <p>
+            <p className="admin-delete-fields-infos">
               <strong>Auteur :</strong> {selectedBook.author}
             </p>
-            <p>
+            <p className="admin-delete-fields-infos">
               <strong>ISBN :</strong> {selectedBook.isbn}
             </p>
 
             <button
-              className="delete"
+              className="delete-button"
               type="button"
               onClick={() => setDisplayDeleteBookModal(true)}
             >
