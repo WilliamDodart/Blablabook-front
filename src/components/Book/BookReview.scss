@@ -1,0 +1,65 @@
+@use '../../styles/variables' as v;
+
+.book-reviews {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 900px;
+
+
+    &-title {
+        margin: 2.5rem 0 2rem 0;
+        text-align: center;
+    }
+
+    &-list {
+        padding: 0;
+        
+        & .review {
+            background-color: rgb(252, 252, 252);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+
+            &-note {
+                display: flex;
+                align-items: center;
+
+                &-text {
+                    margin-right: 0.5rem;
+                }
+    
+                &-star {
+                    font-size: 1.5rem;
+                    color: #f5c518;
+                    margin-left: 0.3rem;
+                }
+            }
+    
+            &-meta {
+                margin-top: 1rem;
+                font-size: 0.9rem;
+            }
+    
+            &-delete-button {
+                all: unset;
+                background-color: v.$red-color;
+                border-radius: 8px;
+                padding: 5px;
+                transition: transform 0.3s ease-in-out;
+    
+                &:hover {
+                    transform: scale(1.1);
+                    cursor: pointer;
+                }
+    
+                & img {
+                    height: 20px;
+                    width: 20px;
+                }
+            }
+        }   
+    }
+
+}

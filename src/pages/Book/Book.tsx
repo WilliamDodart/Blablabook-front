@@ -1,9 +1,12 @@
 import './Book.scss';
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import type { IBooks } from '../../@types/books';
 import type { IUser } from '../../@types/user';
+import BookDetail from '../../components/Book/BookDetail';
+import BookReview from '../../components/Book/BookReview';
+import BookSummary from '../../components/Book/BookSummary';
 import api from '../../utils/axiosApi';
 
 interface BookProps {
@@ -14,151 +17,43 @@ interface BookProps {
 }
 
 function Book({ setDisplayModalBook, setReviewed, reviewed, user }: BookProps) {
-  const params = useParams();
-  const bookId = params.id;
+  const { id } = useParams();
   const [book, setBook] = useState<IBooks | null>(null);
 
-  useEffect(() => {
-    const getBook = async () => {
-      try {
-        const response = await api.get(`/book/${bookId}`);
-        setBook(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    if (reviewed !== undefined) {
-      getBook();
-    }
-  }, [bookId, reviewed]);
-
-  const handleDeleteReview = async (reviewId: number) => {
+  //API Call
+  const fetchBook = useCallback(async () => {
     try {
-      await api.delete(`/review/${reviewId}`);
-      setReviewed((prev) => !prev);
+      const { data } = await api.get(`/book/${id}`);
+      setBook(data);
     } catch (error) {
-      console.error("Erreur lors de l'envoi de l'avis :", error);
+      console.error('Erreur lors de la récupération du livre :', error);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (reviewed !== undefined) fetchBook();
+  }, [fetchBook, reviewed]);
+
+  //In case of unexpected error
+  if (!book) return <p>Chargement...</p>;
 
   return (
-    <section id="book-section" className="section">
-      <div className="section-detail">
+    <section className="book-section">
+      <div className="book-section-detail">
         <Link to="/books">
           <img
-            id="left-arrow"
+            className="book-section-detail-arrow"
             src="../Pictures/humbleicons--arrow-left.png"
-            alt="left-arrow"
+            alt="flèche de retour en arrière"
           />
         </Link>
-        {book ? (
-          <>
-            <h2 className="section-detail-title">{book.title}</h2>
-            <div id="presentation">
-              <div id="presentation-image">
-                <img src={`${book.image}`} alt={`${book.title}`} />
-              </div>
-              <div id="presentation-texts">
-                <div id="details">
-                  {/* <h2>{book.title}</h2> */}
+        <h2 className="book-section-detail-title">{book.title}</h2>
 
-                  <p>
-                    <b>Auteur :</b> {book.author}
-                  </p>
-                  <p>
-                    <b>Parution :</b> {book.publication_year}
-                  </p>
-                  <p>
-                    <b>Édition :</b> {book.editor}
-                  </p>
-                  <p>
-                    <b>ISBN :</b> {book.isbn}
-                  </p>
-                  <p>
-                    <b>Pages :</b> {book.pages}
-                  </p>
-                  <div className="genre-list">
-                    <b>Genres :</b>
-                    <ul>
-                      {book.Genres.map((genre) => (
-                        <li key={genre.id}> {genre.name}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  {book.Reviews && book.Reviews.length > 0 && (
-                    <p className="note">
-                      <strong className="note-text">Note moyenne :</strong>
-                      {(
-                        book.Reviews.reduce(
-                          (sum, review) => sum + review.rating,
-                          0,
-                        ) / book.Reviews.length
-                      ).toFixed(1)}
-                      <span className="star">★</span>
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div id="summary">
-              <hr className="detail-separator" />
-              <h3 className="summary-title">Résumé:</h3>
-              <p className="summary-resume">{book.summary}</p>
+        <BookDetail book={book} />
 
-              <button
-                type="button"
-                className="button-add"
-                onClick={() => setDisplayModalBook(true)}
-              >
-                <Link to="">
-                  <img
-                    src="../Pictures/ic--outline-plus.png"
-                    id="add-button"
-                    alt="add-button"
-                  />
-                </Link>
-              </button>
-            </div>
-            {book.Reviews && book.Reviews.length > 0 && (
-              <div className="reviews-section">
-                <hr className="detail-separator" />
-                <h3 className="reviews-section-title">Avis des lecteurs :</h3>
-                <ul>
-                  {book.Reviews.map((review) => (
-                    <div key={review.id} className="reviews-section-container">
-                      <li>
-                        <p className="note">
-                          <strong className="note-text">Note :</strong>{' '}
-                          {review.rating} <span className="star">★</span>
-                        </p>
-                        <p>{review.content}</p>
-                        <p className="review-meta">
-                          Posté par <b>{review.User.firstname}</b>{' '}
-                          <b>{review.User.name}</b> le{' '}
-                          {new Date(review.createdAt).toLocaleDateString()}
-                        </p>
-                      </li>
-                      {review.User.id === user?.id && (
-                        <button
-                          type="button"
-                          className="reviews-section-container-delete-button"
-                          onClick={() => handleDeleteReview(review.id)}
-                        >
-                          <img
-                            src="../Pictures/tabler--trash.svg"
-                            alt="Review Trash Icon"
-                          />
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </>
-        ) : (
-          <p>Chargement.... </p>
-        )}
+        <BookSummary book={book} setDisplayModalBook={setDisplayModalBook} />
+
+        <BookReview book={book} user={user} setReviewed={setReviewed} />
       </div>
     </section>
   );

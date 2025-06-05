@@ -110,7 +110,7 @@ function Homepage({
             centralisé, organisé et accessible depuis votre espace personnel.
           </p>
 
-          <hr />
+          <hr className="personal-section-container-separator" />
         </div>
       </section>
 
