@@ -4,13 +4,13 @@
 
 
 
-//----------- SECTION HEADER (Titre + Input) ---------------
-.books-section {
+//----------- HEADER SECTION  ---------------
+.books {
     padding: 0;
     background-color: v.$base-color;
     overflow-x: auto;
 
-    .head-books {
+    .books-header {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -18,35 +18,30 @@
         margin: 2rem auto 1rem auto;
         position: relative;
     
-    }
-
-    &-title {
-        font-size: 2.8rem;
-        margin:0 0 1rem 0;
-        white-space: nowrap;
-    }
-
-    &-search {
-        font-size: 0.9rem;
-        border-radius: 5px;
-        padding: 1rem;
-        width: 15rem;
-        height: 2rem;
-        top: 0;
-        right: 0;
-        position: absolute;
-        border: solid 1px v.$primary-color;
-        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.04);
-    }
-
-    .books-list-ul {
-        padding-left: 0px;
-    }
+        &-title {
+            font-size: 2.8rem;
+            margin:0 0 1rem 0;
+            white-space: nowrap;
+        }
+    
+        &-search {
+            font-size: 0.9rem;
+            border-radius: 5px;
+            padding: 1rem;
+            width: 15rem;
+            height: 2rem;
+            top: 0;
+            right: 0;
+            position: absolute;
+            border: solid 1px v.$primary-color;
+            box-shadow: 0 5px 5px rgba(0, 0, 0, 0.04);
+        }
+    } 
 }
 
 
 
-//----------- SECTION LISTE DE LIVRES (Books list) ------------
+//----------- LIST SECTION ------------
 
 .books-list {
     background-color: v.$primary-color;
@@ -62,17 +57,50 @@
         font-size: 1.5rem;
     }
 
-    & h3 {
-        max-width: 1300px;
-        margin: 5vh auto 2vh;
-    }
-    & .books-list-ul {
+    &-ul {
+        padding-left: 0px;
         display: grid; // Organisation en grille
         grid-template-columns: repeat(6, 1fr); // 6 colonnes par ligne
         gap: 15px;
         max-width: 1400px;
         margin: 0 auto;
     }
+
+    &-buttons {
+        text-align: center;
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .button-more,
+    .button-less {
+        background-color: v.$secondary-color;
+        border: none;
+        padding: 0.8rem 1.2rem;
+        cursor: pointer;
+        border-radius: 6px;
+        color: white;
+
+        &:hover {
+            background-color: v.$marronlight-color;
+        }
+    }
+
+
+
+
+// ------------ WIP ICI −-----------------
+
+
+    
+    & h3 {
+        max-width: 1300px;
+        margin: 5vh auto 2vh;
+    }
+
 
     & .books-list-li {
         text-align: center;
@@ -152,65 +180,35 @@
 }
 
 
-// ------------- BOUTTON AFFICHAGE ----------
-
-.show-buttons-container {
-    text-align: center;
-    margin-top: 2rem;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  
-  .show-more-btn,
-  .show-less-btn {
-    background-color: v.$secondary-color;
-    border: none;
-    padding: 0.8rem 1.2rem;
-    cursor: pointer;
-    border-radius: 6px;
-    color: white;
-
-    &:hover {
-        background-color: v.$marronlight-color;
-      }
-  }
-
-
 
 // ------------ RESPONSIVE -----------
 
 @media (max-width: 1200px) {
-    .books-list .books-list-ul {
+    .books-list-ul {
         grid-template-columns: repeat(3, 1fr); // 3 colonnes sur écran moyen
     }
 }
 
 @media (max-width: 800px) {
-    .books-list .books-list-ul {
-        grid-template-columns: repeat(2, 1fr); // 2 colonnes sur tablette
-    }
-
-    .books-section {
-
-        .head-books {
+    .books {
+        &-header {
             flex-direction: column;
             align-items: center;
             margin-top: 4.4rem;
-        }
-    
-        &-search {
-            position: relative;
+            
+            &-search {
+                position: relative;
+            }
         }
 
-    }
-
-    
+        &-list-ul {
+            grid-template-columns: repeat(2, 1fr); // 2 colonnes sur tablette
+        }
+    }    
 }
 
 @media (max-width: 480px) {
-    .books-list .books-list-ul {
+    .books-list-ul {
         grid-template-columns: 1fr; // 1 colonne sur mobile
     }
 

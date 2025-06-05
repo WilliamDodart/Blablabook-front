@@ -53,7 +53,7 @@ function UpdateBook({
       });
       setConfirmModal('update');
     } catch (error) {
-      console.log(error);
+      console.error('Erreur lors de la modification du livres', error);
     }
   }
 
