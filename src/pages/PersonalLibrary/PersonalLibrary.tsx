@@ -133,13 +133,12 @@ function PersonalLibrary({
   }
 
   return (
-    <section className="section personal-library">
+    <section className="personal-library">
       <div className="personal-library-header">
-        <h1 className="personal-library-header-titre">Mes bibliothèques</h1>
-
+        <h1 className="personal-library-header-title">Mes bibliothèques</h1>
         <ul className="personal-library-header-list">
           <NavLink
-            className="header-navlink"
+            className="personal-library-header-list-navlink"
             to=""
             onClick={(event) => {
               event.preventDefault();
@@ -157,7 +156,7 @@ function PersonalLibrary({
             </li>
           </NavLink>
           <NavLink
-            className="header-navlink"
+            className="personal-library-header-list-navlink"
             to=""
             onClick={(event) => {
               event.preventDefault();
@@ -175,7 +174,7 @@ function PersonalLibrary({
             </li>
           </NavLink>
           <NavLink
-            className="header-navlink"
+            className="personal-library-header-list-navlink"
             to=""
             onClick={(event) => {
               event.preventDefault();
@@ -195,8 +194,8 @@ function PersonalLibrary({
           <button
             className={
               displayFilter
-                ? 'personal-library-header-list-btn selected-filter'
-                : 'personal-library-header-list-btn'
+                ? 'personal-library-header-list-button selected-filter'
+                : 'personal-library-header-list-button'
             }
             type="button"
             onClick={(event) => {
@@ -208,6 +207,7 @@ function PersonalLibrary({
           </button>
         </ul>
       </div>
+
       <div className="library-background">
         <div
           className={`personal-library-header-filter-wrapper ${displayFilter && 'active'}`}
