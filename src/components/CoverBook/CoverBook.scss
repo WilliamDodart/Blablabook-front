@@ -11,3 +11,12 @@
     border-radius: 5px;
     padding: 0.2rem;
 }
+
+#read-notRead {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    & img { 
+        box-shadow: none;
+    }
+}

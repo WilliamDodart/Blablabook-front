@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import type { IBooks } from '../../@types/books';
+import './BookCard.scss';
 
 interface IBookCardProps {
   book: IBooks;
@@ -17,10 +18,10 @@ function BookCard({
   setCurrentBook,
 }: IBookCardProps) {
   return (
-    <li className="books-list-li">
+    <li className="books-card">
       <Link
         to={`/book/${book.id}`}
-        className="animated-book"
+        className="books-card-link"
         style={{
           animationDelay: `${index * 70}ms`,
         }}
@@ -28,11 +29,15 @@ function BookCard({
           setCurrentBook(book);
         }}
       >
-        <figure>
-          <div id="book-img">
-            <img src={book.image} alt="book-image" />
+        <figure className="books-card-container">
+          <div className="books-card-container-cover">
+            <img
+              className="books-card-container-cover-image"
+              src={book.image}
+              alt="Couverture du livre"
+            />
             <button
-              className="test-btn"
+              className="books-card-container-cover-button"
               type="button"
               onClick={(event) => {
                 event.preventDefault();
@@ -43,9 +48,11 @@ function BookCard({
               ...
             </button>
           </div>
-          <hgroup>
-            <figcaption>{book.title}</figcaption>
-            <h5>{book.author}</h5>
+          <hgroup className="books-card-container-infos">
+            <figcaption className="books-card-container-infos-title">
+              {book.title}
+            </figcaption>
+            <h5 className="books-card-container-infos-author">{book.author}</h5>
           </hgroup>
         </figure>
       </Link>
