@@ -1,22 +1,82 @@
 @use '../../styles/variables' as v;
 
-.cover-book-img {
-    border-radius: 5px;
-}
+.library-book {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    transition: all 0.3s ease;
 
-.books-list .books-list-li #book-img .icon-read-toread {
-    background-color: v.$secondary-color;
-    width: 20%;
-    margin: 0.5rem;
-    border-radius: 5px;
-    padding: 0.2rem;
-}
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }    
+    
+    &-link {
+        text-decoration: none;
+    }
 
-#read-notRead {
-    position: absolute;
-    bottom: -5px;
-    right: -5px;
-    & img { 
-        box-shadow: none;
+    &-container {
+        position: relative;
+        width: 150px;
+        height: 220px;
+        margin: 0 auto;
+
+        &-button {
+            position: absolute;
+                background-color: v.$secondary-color;
+                border: none;
+                color: white;
+                border-radius: 50%;
+                font-size: 1rem;
+                font-weight: normal;
+                right: 3px;
+                top: 8px;
+                width: 25px;
+                height: 25px;
+                display: flex;
+                justify-content: center;
+                padding: 0;
+                line-height: 1;
+                cursor: cell;
+        }
+
+        &-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
+        
+        &-icon {
+            background-color: v.$secondary-color;
+            width: 20%;
+            margin: 0.5rem;
+            border-radius: 5px;
+            padding: 0.2rem;
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            
+            & img { 
+                box-shadow: none;
+            }
+        }
+    }
+
+    &-infos {
+        margin: 10px auto;
+        max-width: 180px;
+        text-align: center;
+        color: v.$police-color;
+        
+        &-title {
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+        
+        &-author {
+            font-weight: 200;
+            font-size: 0.85rem;
+        }
     }
 }
+

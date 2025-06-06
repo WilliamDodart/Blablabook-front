@@ -208,18 +208,13 @@ function PersonalLibrary({
         </ul>
       </div>
 
-      <div className="library-background">
-        <div
-          className={`personal-library-header-filter-wrapper ${displayFilter && 'active'}`}
-        >
-          <div className="personal-library-header-filter">
-            <p className="personal-library-header-filter-text">Filter par :</p>
-            <div className="personal-library-header-filter-libraries">
-              <p className="filter-label">Bibliothèque</p>
-              <select
-                /* onClick={(event) => event.stopPropagation} */
-                onChange={(event) => handleFilterLibraries(event)}
-              >
+      <div className="personal-library-background">
+        <div className={`filter ${displayFilter && 'active'}`}>
+          <div className="filter-section">
+            <p className="filter-section-text">Filter par :</p>
+            <div className="filter-section-library">
+              <p className="filter-section-library-label">Bibliothèque</p>
+              <select onChange={(event) => handleFilterLibraries(event)}>
                 <option value="all">Toutes</option>
                 {myLibraries.map((library) => (
                   <option key={library.id} value={library.id}>
@@ -229,12 +224,9 @@ function PersonalLibrary({
               </select>
             </div>
 
-            <div className="personal-library-header-filter-genres">
-              <p className="filter-label">Genre</p>
-              <select
-                /* onClick={(event) => event.stopPropagation} */
-                onChange={(event) => handleFilterGenres(event)}
-              >
+            <div className="filter-section-genres">
+              <p className="filter-section-genres-label">Genre</p>
+              <select onChange={(event) => handleFilterGenres(event)}>
                 <option value="all">Tous</option>
                 {currentGenres.map((genre) => (
                   <option key={genre} value={genre}>
@@ -244,16 +236,19 @@ function PersonalLibrary({
               </select>
             </div>
 
-            <form className="create-form" onSubmit={handleLibraryCreation}>
+            <form
+              className="filter-section-form"
+              onSubmit={handleLibraryCreation}
+            >
               <input
-                className="create-form-input"
+                className="filter-section-form-input"
                 type="text"
                 id="newLibraryName"
                 name="newLibraryName"
                 placeholder="Créer une bibliothèque"
                 required
               />
-              <button className="create-form-button" type="submit">
+              <button className="filter-section-form-button" type="submit">
                 Créer
               </button>
             </form>
@@ -262,21 +257,18 @@ function PersonalLibrary({
 
         {currentLibraries.map((library) => {
           return (
-            <div
-              className="books-list personal-library-libraries"
-              key={library.id}
-            >
-              <h3 className="library-title">{library.name}</h3>
+            <div className="libraries books-list" key={library.id}>
+              <h3 className="libraries-title">{library.name}</h3>
               {library.Books.length === 0 && (
-                <div className="library-empty">
-                  <h4 className="library-subtitle">
+                <div className="libraries-empty">
+                  <h4 className="libraries-empty-subtitle">
                     Votre bibliothèque est vide !
                   </h4>
-                  <p className="library-text">
+                  <p className="libraries-empty-text">
                     Commencer par ajouter des livres, c'est simple et rapide.
                   </p>
                   <Link to="/books">
-                    <button type="button" className="library-add-button">
+                    <button type="button" className="libraries-empty-button">
                       + Ajouter
                     </button>
                   </Link>
@@ -304,43 +296,60 @@ function PersonalLibrary({
                   })}
 
                 {librariesStatus === 'read' &&
-                  library.Books.map((book) => {
+                  library.Books.map((book, index) => {
                     if (book.LibraryBook.read) {
                       return (
-                        <CoverBook
+                        <div
                           key={book.id}
-                          book={book}
-                          setDisplayModalLibrary={setDisplayModalLibrary}
-                          setCurrentBook={setCurrentBook}
-                        />
+                          className="animated-book"
+                          style={{
+                            animationDelay: `${index * 100}ms`,
+                          }}
+                        >
+                          <CoverBook
+                            key={book.id}
+                            book={book}
+                            setDisplayModalLibrary={setDisplayModalLibrary}
+                            setCurrentBook={setCurrentBook}
+                          />
+                        </div>
                       );
                     }
                   })}
 
                 {librariesStatus === 'toRead' &&
-                  library.Books.map((book) => {
+                  library.Books.map((book, index) => {
                     if (!book.LibraryBook.read) {
                       return (
-                        <CoverBook
+                        <div
                           key={book.id}
-                          book={book}
-                          setDisplayModalLibrary={setDisplayModalLibrary}
-                          setCurrentBook={setCurrentBook}
-                        />
+                          className="animated-book"
+                          style={{
+                            animationDelay: `${index * 100}ms`,
+                          }}
+                        >
+                          <CoverBook
+                            key={book.id}
+                            book={book}
+                            setDisplayModalLibrary={setDisplayModalLibrary}
+                            setCurrentBook={setCurrentBook}
+                          />
+                        </div>
                       );
                     }
                   })}
+
                 {library.Books.length !== 0 && (
                   <li
-                    className="books-list-li library-menu-list animated-book"
+                    className="library-book animated-book"
                     style={{
                       animationDelay: `${library.Books.length * 100}ms`,
                     }}
                   >
                     <Link to="/books">
                       <figure>
-                        <div className="addbook-box">
-                          <p className="addbook-box-btn">
+                        <div className="books-list-ul-addbook">
+                          <p className="books-list-ul-addbook-button">
                             <em>+</em> Ajouter
                           </p>
                           <div />
