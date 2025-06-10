@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { IGenre, ILibrary } from '../../@types/books';
 import type { FilterState } from '../../@types/libraries';
 import api from '../../utils/axiosApi';
+import './FilterSection.scss';
 
 interface IFilterSectionProps {
   myLibraries: ILibrary[];
   currentGenres: string[];
+  displayFilter: boolean;
   setMyLibraries: React.Dispatch<React.SetStateAction<ILibrary[]>>;
   setCurrentLibraries: React.Dispatch<React.SetStateAction<ILibrary[]>>;
 }
@@ -13,13 +15,13 @@ interface IFilterSectionProps {
 function FilterSection({
   myLibraries,
   currentGenres,
+  displayFilter,
   setMyLibraries,
   setCurrentLibraries,
 }: IFilterSectionProps) {
   const [filter, setFilter] = useState<FilterState>({
     libraryId: 'all',
     genre: 'all',
-    //status: 'all',
   });
 
   // Library creation
@@ -52,7 +54,7 @@ function FilterSection({
   }
 
   // Filter function
-  function applyFilters() {
+  const applyFilters = useCallback(() => {
     let filteredLibraries = [...myLibraries];
 
     if (filter.libraryId !== 'all') {
@@ -74,8 +76,9 @@ function FilterSection({
     }
 
     setCurrentLibraries(filteredLibraries);
-  }
+  }, [myLibraries, filter, setCurrentLibraries]);
 
+  //Filter form handler
   function handleFilterChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const { name, value } = event.target;
     setFilter((prevFilter) => ({
@@ -86,56 +89,58 @@ function FilterSection({
 
   useEffect(() => {
     applyFilters();
-  }, [filter]);
+  }, [applyFilters]);
 
   return (
-    <div className="filter-section">
-      <p className="filter-section-text">Filter par :</p>
-      <div className="filter-section-library">
-        <p className="filter-section-library-label">Bibliothèque</p>
-        <select
-          name="libraryId"
-          onChange={handleFilterChange}
-          //value={filter.libraryId}
-        >
-          <option value="all">Toutes</option>
-          {myLibraries.map((library) => (
-            <option key={library.id} value={library.id}>
-              {library.name}
-            </option>
-          ))}
-        </select>
-      </div>
+    <div className={`filter ${displayFilter && 'active'}`}>
+      <div className="filter-section">
+        <p className="filter-section-text">Filter par :</p>
+        <div className="filter-section-library">
+          <p className="filter-section-library-label">Bibliothèque</p>
+          <select
+            name="libraryId"
+            onChange={handleFilterChange}
+            value={filter.libraryId}
+          >
+            <option value="all">Toutes</option>
+            {myLibraries.map((library) => (
+              <option key={library.id} value={library.id}>
+                {library.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="filter-section-genres">
-        <p className="filter-section-genres-label">Genre</p>
-        <select
-          name="genre"
-          onChange={handleFilterChange}
-          //value={filter.genre}
-        >
-          <option value="all">Tous</option>
-          {currentGenres.map((genre) => (
-            <option key={genre} value={genre}>
-              {genre}
-            </option>
-          ))}
-        </select>
-      </div>
+        <div className="filter-section-genres">
+          <p className="filter-section-genres-label">Genre</p>
+          <select
+            name="genre"
+            onChange={handleFilterChange}
+            value={filter.genre}
+          >
+            <option value="all">Tous</option>
+            {currentGenres.map((genre) => (
+              <option key={genre} value={genre}>
+                {genre}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <form className="filter-section-form" onSubmit={handleLibraryCreation}>
-        <input
-          className="filter-section-form-input"
-          type="text"
-          id="newLibraryName"
-          name="newLibraryName"
-          placeholder="Créer une bibliothèque"
-          required
-        />
-        <button className="filter-section-form-button" type="submit">
-          Créer
-        </button>
-      </form>
+        <form className="filter-section-form" onSubmit={handleLibraryCreation}>
+          <input
+            className="filter-section-form-input"
+            type="text"
+            id="newLibraryName"
+            name="newLibraryName"
+            placeholder="Créer une bibliothèque"
+            required
+          />
+          <button className="filter-section-form-button" type="submit">
+            Créer
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

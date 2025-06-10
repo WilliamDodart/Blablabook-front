@@ -6,9 +6,9 @@ function MentionLegale() {
   return (
     <>
       <ScrollTop />
-      <section id="legal-notice-section">
-        <h1 className="legal-container-title">Mentions légales</h1>
-        <div className="legal-container">
+      <section className="legal-section">
+        <h1 className="legal-section-title">Mentions légales</h1>
+        <div className="legal-section-container">
           <p>Date de mise à jour : 5 mai 2025</p>
 
           <h2>1. Éditeur du site</h2>

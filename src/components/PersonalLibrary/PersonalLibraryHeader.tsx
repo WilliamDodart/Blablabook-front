@@ -3,17 +3,34 @@ import './PersonalLibraryHeader.scss';
 
 type IPersonalLibraryHeaderProps = {
   librariesStatus: string;
-  setLibrariesStatus: React.Dispatch<React.SetStateAction<string>>;
   displayFilter: boolean;
+  setLibrariesStatus: React.Dispatch<React.SetStateAction<string>>;
   setDisplayFilter: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function PersonalLibraryHeader({
   librariesStatus,
-  setLibrariesStatus,
   displayFilter,
+  setLibrariesStatus,
   setDisplayFilter,
 }: IPersonalLibraryHeaderProps) {
+  //className handler
+  const getNavLinkClass = (status: string) =>
+    librariesStatus === status
+      ? 'personal-library-header-list-link selected-status'
+      : 'personal-library-header-list-link';
+
+  //Book status handler
+  const handleStatusClick = (status: string) => (event: React.MouseEvent) => {
+    event.preventDefault();
+    setLibrariesStatus(status);
+  };
+
+  //Filter button handler
+  const handleFilterClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setDisplayFilter(!displayFilter);
+  };
   return (
     <div className="personal-library-header">
       <h1 className="personal-library-header-title">Mes bibliothèques</h1>
@@ -21,56 +38,23 @@ function PersonalLibraryHeader({
         <NavLink
           className="personal-library-header-list-navlink"
           to=""
-          onClick={(event) => {
-            event.preventDefault();
-            setLibrariesStatus('all');
-          }}
+          onClick={handleStatusClick('all')}
         >
-          <li
-            className={
-              librariesStatus === 'all'
-                ? 'personal-library-header-list-link selected-status'
-                : 'personal-library-header-list-link'
-            }
-          >
-            Tous
-          </li>
+          <li className={getNavLinkClass('all')}>Tous</li>
         </NavLink>
         <NavLink
           className="personal-library-header-list-navlink"
           to=""
-          onClick={(event) => {
-            event.preventDefault();
-            setLibrariesStatus('read');
-          }}
+          onClick={handleStatusClick('read')}
         >
-          <li
-            className={
-              librariesStatus === 'read'
-                ? 'personal-library-header-list-link selected-status'
-                : 'personal-library-header-list-link'
-            }
-          >
-            Lus
-          </li>
+          <li className={getNavLinkClass('read')}>Lus</li>
         </NavLink>
         <NavLink
           className="personal-library-header-list-navlink"
           to=""
-          onClick={(event) => {
-            event.preventDefault();
-            setLibrariesStatus('toRead');
-          }}
+          onClick={handleStatusClick('toRead')}
         >
-          <li
-            className={
-              librariesStatus === 'toRead'
-                ? 'personal-library-header-list-link selected-status'
-                : 'personal-library-header-list-link'
-            }
-          >
-            À lire
-          </li>
+          <li className={getNavLinkClass('toRead')}>À lire</li>
         </NavLink>
         <button
           className={
@@ -79,10 +63,7 @@ function PersonalLibraryHeader({
               : 'personal-library-header-list-button'
           }
           type="button"
-          onClick={(event) => {
-            event.preventDefault();
-            setDisplayFilter(!displayFilter);
-          }}
+          onClick={handleFilterClick}
         >
           ...
         </button>

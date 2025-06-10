@@ -2,8 +2,8 @@ import './Contact.scss';
 
 function Contact() {
   return (
-    <section id="contact-page-section">
-      <div className="contact-container">
+    <section className="contact-section">
+      <div className="contact-section-container">
         <h1>Contactez-nous</h1>
         <p>
           Vous souhaitez nous poser une question, proposer une idée ou signaler
