@@ -7,67 +7,6 @@
     background-color: v.$base-color;
     min-height: 100%;
     font-family: "Inter";
-
-    &-header {
-        background-color: v.$base-color;
-        width: 100%;
-        margin: 0 auto;
-        padding: 2rem 0 0 0;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        overflow-x: auto;
-        white-space: nowrap;
-
-        &-title{
-            font-size: 2.8rem;
-            margin: 0;
-        }
-
-        &-list {
-            padding: 1rem 0 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-
-            &-navlink {
-                text-decoration: none;
-            }
-            
-            &-link {
-                font-size: 1.1rem;
-                font-weight: 200;
-                color: v.$marron-color;
-            }
-
-            &-button {
-                background-color: v.$primary-color;
-                border: none;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                color:v.$police-color;
-                border-radius: 50%;
-                width: 25px;
-                height: 25px;
-                cursor: pointer;
-                display: flex;
-                justify-content: center;
-            }
-
-            .selected-filter{
-                background-color: v.$secondary-color;
-                color: v.$primary-color;
-            }
-
-            .selected-status {
-                border-bottom: 1px solid v.$secondary-color;
-                color: v.$secondary-color;
-            }
-        }
-    }
     
     &-background {
         width: 90%;
@@ -99,11 +38,21 @@
         flex-wrap: wrap;
         column-gap: 2rem;
         row-gap: 0.7rem;
+
+        gap: 1rem;
+        flex-direction: column;
     
         &-text {
             font-weight: 300;
             margin:0;
             padding:0;
+        }
+
+        .filter-section-library,
+        .filter-section-genres {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         &-library-label,
@@ -128,7 +77,7 @@
             display: flex;
             gap: 0.5rem;
             align-items: center;
-            padding-left: 5rem;
+            margin-top: 1rem;
     
             &-input {
                 padding: 0.4rem 0.6rem;
@@ -211,36 +160,38 @@
     }
 }
 
+.books-list-ul-container {
+    text-decoration: none;
 
-.books-list-ul-addbook {
-    background-color:v.$base-color;
-    position: relative;
-    width: 150px;
-    height: 220px;
-    margin: 0 auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &-button {
-        font-size: 1rem;
-        color: v.$secondary-color;
-        background-color:v.$primary-color;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        font-weight: 300;
-        margin: 0;
-        padding: 0.5rem 1.5rem;
+    &-addbook {
+        background-color:v.$base-color;
+        position: relative;
+        width: 150px;
+        height: 220px;
+        margin: 0 auto;
         border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        &-button {
+            font-size: 1rem;
+            color: v.$secondary-color;
+            background-color:v.$primary-color;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            font-weight: 300;
+            margin: 0;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+        }
+        
+        em {
+            font-style: normal;
+            font-size: 1.2rem;
+        }  
     }
-
-    em {
-        font-style: normal;
-        font-size: 1.2rem;
-    }  
-}
+}   
 
 
 //ANIMATION ------------------------------------
@@ -261,47 +212,24 @@
 
 //HOVER ---------------------------------------- A VERIFIER ------------------
 .filter-section-form-button:hover,
-.libraries-empty-button:hover,
-.personal-library-header-list-button:hover {
+.libraries-empty-button:hover {
     background-color:v.$marronlight-color;
 }
 
-.personal-library-header-list-link:hover {
-    color: v.$secondary-color;
-    font-weight: 300;
-}
-
-.personal-library-header-list-button:hover {
-    color: v.$base-color;
-}
-
-.books-list-ul-addbook-button:hover {
+.books-list-ul-container-addbook-button:hover {
     background-color:v.$secondary-color;
     color: v.$base-color;
 }
 
 
-@media  screen and (max-width: 800px) {
-    .personal-library-header-title {
-        margin-top: 3rem;;
-    }
-}
-
-@media  screen and (max-width: 630px) {
+@media  screen and (min-width: 630px) {
     .filter-section{
         gap: 1rem;
-        flex-direction: column;
+        flex-direction: row;
 
         &-form {
-            margin-top: 1rem;
-            padding-left: 0rem;
+            margin-top: 0rem;
+            padding-left: 5rem;
         }
-    }
-
-    .filter-section-library,
-    .filter-section-genres {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
     }
 }

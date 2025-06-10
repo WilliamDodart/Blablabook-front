@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link } from 'react-router';
 import '../Books/Books.scss';
 import './PersonalLibrary.scss';
 import type { IBooks, IGenre, ILibrary } from '../../@types/books';
 import CoverBook from '../../components/CoverBook/CoverBook';
 import Loader from '../../components/Loader/Loader';
+import FilterSection from '../../components/PersonalLibrary/FilterSection';
+import PersonalLibraryHeader from '../../components/PersonalLibrary/PersonalLibraryHeader';
 import api from '../../utils/axiosApi';
 
 interface PersonalLibraryProps {
@@ -42,78 +44,17 @@ function PersonalLibrary({
         setCurrentLibraries(response.data);
         genresFilter(response.data);
         setIsLoading(false);
+        console.log('Response.data personalLibrary');
+        console.log(response.data[0].Books[0].Genres[0]);
       } catch (error) {
-        error;
+        console.error(
+          'Erreur lors de la récupération des bibliothèques',
+          error,
+        );
       }
     };
     getmyLibraries();
   }, [setMyLibraries, setCurrentLibraries]);
-
-  // -------------- FONCTION DE CREATION DE BIBLITOTHEQUE -----------------------------
-
-  async function handleLibraryCreation(
-    event: React.FormEvent<HTMLFormElement>,
-  ) {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    const newLibraryName = formData.get('newLibraryName') as string;
-
-    try {
-      const response = await api.post('/library', {
-        name: newLibraryName,
-      });
-      const newLibrary = response.data;
-
-      setMyLibraries((previousLibraries) => [
-        ...previousLibraries,
-        { ...newLibrary, Books: [] },
-      ]);
-      setCurrentLibraries((previousLibraries) => [
-        ...previousLibraries,
-        { ...newLibrary, Books: [] },
-      ]);
-
-      form.reset();
-    } catch (_error) {}
-  }
-
-  // -------------- FONCTIONS DE FILTRE -----------------------------
-  function handleFilterLibraries(event: React.ChangeEvent<HTMLSelectElement>) {
-    const libraryId = event.target.value;
-    if (libraryId === 'all') {
-      setCurrentLibraries(myLibraries);
-      return;
-    }
-    const filteredLibrary = [
-      myLibraries.find((library) => library.id === Number(libraryId)),
-    ].filter((lib): lib is ILibrary => lib !== undefined);
-
-    setCurrentLibraries(filteredLibrary);
-  }
-
-  function handleFilterGenres(event: React.ChangeEvent<HTMLSelectElement>) {
-    const selectedGenre = event.target.value;
-
-    if (selectedGenre === 'all') {
-      setCurrentLibraries(myLibraries);
-      return;
-    }
-
-    const filteredLibrary = myLibraries.map((library) => {
-      const filteredBooks = library.Books.filter((book) =>
-        book.Genres.some((genre: IGenre) => genre.name === selectedGenre),
-      );
-
-      return {
-        ...library,
-        Books: filteredBooks,
-      };
-    });
-
-    setCurrentLibraries(filteredLibrary);
-  }
 
   function genresFilter(libraries: ILibrary[]) {
     const allGenres = libraries.flatMap((library) =>
@@ -134,125 +75,21 @@ function PersonalLibrary({
 
   return (
     <section className="personal-library">
-      <div className="personal-library-header">
-        <h1 className="personal-library-header-title">Mes bibliothèques</h1>
-        <ul className="personal-library-header-list">
-          <NavLink
-            className="personal-library-header-list-navlink"
-            to=""
-            onClick={(event) => {
-              event.preventDefault();
-              setLibrariesStatus('all');
-            }}
-          >
-            <li
-              className={
-                librariesStatus === 'all'
-                  ? 'personal-library-header-list-link selected-status'
-                  : 'personal-library-header-list-link'
-              }
-            >
-              Tous
-            </li>
-          </NavLink>
-          <NavLink
-            className="personal-library-header-list-navlink"
-            to=""
-            onClick={(event) => {
-              event.preventDefault();
-              setLibrariesStatus('read');
-            }}
-          >
-            <li
-              className={
-                librariesStatus === 'read'
-                  ? 'personal-library-header-list-link selected-status'
-                  : 'personal-library-header-list-link'
-              }
-            >
-              Lus
-            </li>
-          </NavLink>
-          <NavLink
-            className="personal-library-header-list-navlink"
-            to=""
-            onClick={(event) => {
-              event.preventDefault();
-              setLibrariesStatus('toRead');
-            }}
-          >
-            <li
-              className={
-                librariesStatus === 'toRead'
-                  ? 'personal-library-header-list-link selected-status'
-                  : 'personal-library-header-list-link'
-              }
-            >
-              À lire
-            </li>
-          </NavLink>
-          <button
-            className={
-              displayFilter
-                ? 'personal-library-header-list-button selected-filter'
-                : 'personal-library-header-list-button'
-            }
-            type="button"
-            onClick={(event) => {
-              event.preventDefault();
-              setDisplayFilter(!displayFilter);
-            }}
-          >
-            ...
-          </button>
-        </ul>
-      </div>
+      <PersonalLibraryHeader
+        librariesStatus={librariesStatus}
+        setLibrariesStatus={setLibrariesStatus}
+        displayFilter={displayFilter}
+        setDisplayFilter={setDisplayFilter}
+      />
 
       <div className="personal-library-background">
         <div className={`filter ${displayFilter && 'active'}`}>
-          <div className="filter-section">
-            <p className="filter-section-text">Filter par :</p>
-            <div className="filter-section-library">
-              <p className="filter-section-library-label">Bibliothèque</p>
-              <select onChange={(event) => handleFilterLibraries(event)}>
-                <option value="all">Toutes</option>
-                {myLibraries.map((library) => (
-                  <option key={library.id} value={library.id}>
-                    {library.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="filter-section-genres">
-              <p className="filter-section-genres-label">Genre</p>
-              <select onChange={(event) => handleFilterGenres(event)}>
-                <option value="all">Tous</option>
-                {currentGenres.map((genre) => (
-                  <option key={genre} value={genre}>
-                    {genre}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <form
-              className="filter-section-form"
-              onSubmit={handleLibraryCreation}
-            >
-              <input
-                className="filter-section-form-input"
-                type="text"
-                id="newLibraryName"
-                name="newLibraryName"
-                placeholder="Créer une bibliothèque"
-                required
-              />
-              <button className="filter-section-form-button" type="submit">
-                Créer
-              </button>
-            </form>
-          </div>
+          <FilterSection
+            myLibraries={myLibraries}
+            currentGenres={currentGenres}
+            setMyLibraries={setMyLibraries}
+            setCurrentLibraries={setCurrentLibraries}
+          />
         </div>
 
         {currentLibraries.map((library) => {
@@ -346,10 +183,10 @@ function PersonalLibrary({
                       animationDelay: `${library.Books.length * 100}ms`,
                     }}
                   >
-                    <Link to="/books">
+                    <Link to="/books" className="books-list-ul-container">
                       <figure>
-                        <div className="books-list-ul-addbook">
-                          <p className="books-list-ul-addbook-button">
+                        <div className="books-list-ul-container-addbook">
+                          <p className="books-list-ul-container-addbook-button">
                             <em>+</em> Ajouter
                           </p>
                           <div />
