@@ -90,7 +90,16 @@ function Admin() {
         />
       )}
 
-      <SubHeader adminChoice={adminChoice} setAdminChoice={setAdminChoice} />
+      <SubHeader
+        title={'Page administrateur'}
+        sections={[
+          'Ajouter un livre',
+          'Modifier un livre',
+          'Supprimer un livre',
+        ]}
+        sectionChoice={adminChoice}
+        setSectionChoice={setAdminChoice}
+      />
 
       <div className="admin-section-body">
         <p className={`admin-section-body-subtitle fade ${fadeClass}`}>

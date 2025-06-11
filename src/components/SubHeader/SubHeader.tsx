@@ -2,68 +2,44 @@ import { NavLink } from 'react-router';
 import './SubHeader.scss';
 
 interface IAdminHeaderProps {
-  adminChoice: string;
-  setAdminChoice: React.Dispatch<React.SetStateAction<string>>;
+  title: string;
+  sections: string[];
+  sectionChoice: string;
+  setSectionChoice: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function AdminHeader({ adminChoice, setAdminChoice }: IAdminHeaderProps) {
+function SubHeader({
+  title,
+  sections,
+  sectionChoice,
+  setSectionChoice,
+}: IAdminHeaderProps) {
+  //Changing section handler
+  function handleClick(event: React.MouseEvent, choice: string) {
+    event.preventDefault();
+    setSectionChoice(choice);
+  }
+
   return (
-    <div className="admin-header">
-      <h1 className="admin-header-title">Page administrateur</h1>
-      <ul className="admin-header-list">
-        <li>
-          <NavLink
-            className={
-              adminChoice === 'Ajouter un livre'
-                ? 'admin-header-list-link selected-status'
-                : 'admin-header-list-link'
-            }
-            to=""
-            onClick={(event) => {
-              event.preventDefault();
-              setAdminChoice('Ajouter un livre');
-            }}
-          >
-            Ajouter un livre
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            className={
-              adminChoice === 'Modifier un livre'
-                ? 'admin-header-list-link selected-status'
-                : 'admin-header-list-link'
-            }
-            to=""
-            onClick={(event) => {
-              event.preventDefault();
-              setAdminChoice('Modifier un livre');
-            }}
-          >
-            Modifier un livre
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            className={
-              adminChoice === 'Supprimer un livre'
-                ? 'admin-header-list-link selected-status'
-                : 'admin-header-list-link'
-            }
-            to=""
-            onClick={(event) => {
-              event.preventDefault();
-              setAdminChoice('Supprimer un livre');
-            }}
-          >
-            Supprimer un livre
-          </NavLink>
-        </li>
+    <div className="sub-header">
+      <h1 className="sub-header-title">{title}</h1>
+      <ul className="sub-header-list">
+        {sections.map((section) => (
+          <li key={section}>
+            <NavLink
+              to=""
+              onClick={(event) => handleClick(event, section)}
+              className={`sub-header-list-link${
+                sectionChoice === section ? ' selected-status' : ''
+              }`}
+            >
+              {section}
+            </NavLink>
+          </li>
+        ))}
       </ul>
     </div>
   );
 }
 
-export default AdminHeader;
+export default SubHeader;
