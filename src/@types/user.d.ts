@@ -26,7 +26,11 @@ export type IRegisterError = {
   password: string;
 };
 
-export type IUserUpdateError = {
+export type IUserPasswordUpdateError = {
   password: string;
   confirmPassword: string;
+};
+
+export type IUserDatasUpdateError = {
+  password: string;
 };

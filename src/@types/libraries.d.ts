@@ -13,3 +13,7 @@ export type FilterState = {
   genre: string;
   //status: string;
 };
+
+export type IDeleteLibraryError = {
+  password: string;
+};

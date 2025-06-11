@@ -49,7 +49,6 @@ function ModalBooks({
         read: type === 'read',
       });
 
-      /* setMenuDeroulant(null); */
       setDisplayModalBook(false);
     } catch (error) {
       console.error(

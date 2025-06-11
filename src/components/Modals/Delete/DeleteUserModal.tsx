@@ -1,30 +1,30 @@
 import axios from 'axios';
 import api from '../../../utils/axiosApi';
 import './Delete.scss';
-import type { IUserUpdateError } from '../../../@types/user';
+import { useState } from 'react';
+import type { IUserPasswordUpdateError } from '../../../@types/user';
+import InputField from '../../Fields/InputField';
 
 interface iDeleteUserProps {
-  closeDeleteUserModal: () => void;
   setDisplayDeleteUserModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setDisplayConfirmDeleteUserModal: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
-  errors: Record<string, string>;
-  setErrors: React.Dispatch<React.SetStateAction<IUserUpdateError>>;
+  setConfirmModal: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function DeleteUserModal({
-  closeDeleteUserModal,
   setDisplayDeleteUserModal,
-  setDisplayConfirmDeleteUserModal,
-  errors,
-  setErrors,
+  setConfirmModal,
 }: iDeleteUserProps) {
+  const [deleteUserErrors, setDeleteUserErrors] =
+    useState<IUserPasswordUpdateError>({
+      password: '',
+      confirmPassword: '',
+    });
+
+  //API Call
   async function handleDeleteUserDatas(
     event: React.FormEvent<HTMLFormElement>,
   ) {
     event.preventDefault();
-
     const form = event.currentTarget;
     const formData = new FormData(form);
 
@@ -37,32 +37,29 @@ function DeleteUserModal({
       });
 
       setDisplayDeleteUserModal(false);
-      setDisplayConfirmDeleteUserModal(true);
+      setConfirmModal('delete');
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;
-        const formattedErrors: IUserUpdateError = {
+        const formattedErrors: IUserPasswordUpdateError = {
           confirmPassword: '',
           password: '',
         };
         for (const error of zodErrors) {
-          formattedErrors[error.field as keyof IUserUpdateError] = error.error;
+          formattedErrors[error.field as keyof IUserPasswordUpdateError] =
+            error.error;
         }
-        setErrors(formattedErrors);
+        setDeleteUserErrors(formattedErrors);
       }
     }
   }
 
   return (
-    <div className="hidden-background" /* onClick={closeDeleteUserModal} */>
-      <div
-        className="confirmation-modal"
-        onClick={(event) => event.stopPropagation()}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
+    <div className="hidden-background">
+      <div className="confirmation-modal">
         <button
           type="button"
-          onClick={closeDeleteUserModal}
+          onClick={() => setDisplayDeleteUserModal(false)}
           className="confirmation-modal-closeBtn"
         >
           <img
@@ -81,34 +78,27 @@ function DeleteUserModal({
           bien sûr de vouloir continuer ? Veuillez saisir votre mot de passe
           pour confirmer la suppression.
         </p>
+
         <form
           className="confirmation-modal-form"
           onSubmit={handleDeleteUserDatas}
         >
-          <label htmlFor="current-password">
-            Mot de passe <em>*</em>
-          </label>
-          <input
-            type="password"
+          <InputField
+            label="Mot de passe *"
             name="current-password"
-            id="current-password"
-          />
-          {errors.password && (
-            <p className="confirmation-modal-form-error">{errors.password}</p>
-          )}
-          <label htmlFor="confirm-password">
-            Confirmer le mot de passe <em>*</em>
-          </label>
-          <input
             type="password"
-            name="confirm-password"
-            id="confirm-password"
+            error={deleteUserErrors.password}
+            required
           />
-          {errors.confirmPassword && (
-            <p className="confirmation-modal-form-error">
-              {errors.confirmPassword}
-            </p>
-          )}
+
+          <InputField
+            label="Confirmer le mot de passe *"
+            name="confirm-password"
+            type="password"
+            error={deleteUserErrors.confirmPassword}
+            required
+          />
+
           <button className="confirmation-modal-form-button" type="submit">
             Supprimer mon compte
           </button>

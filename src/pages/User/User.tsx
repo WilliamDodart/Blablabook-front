@@ -1,13 +1,11 @@
-import axios from 'axios';
 import type React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import type { IUser, IUserUpdateError } from '../../@types/user';
+import type { IUser } from '../../@types/user';
 import api from '../../utils/axiosApi';
 import './User.scss';
 import Loader from '../../components/Loader/Loader';
-import ConfirmDeleteUserModal from '../../components/Modals/Confirm/ConfirmDeleteUserModal';
-import UpdateUserModal from '../../components/Modals/Confirm/ConfirmUpdateUserModal';
+import ConfirmModal from '../../components/Modals/Confirm/ConfirmModal';
 import DeleteLibraryModal from '../../components/Modals/Delete/DeleteLibraryModal';
 import DeleteUserModal from '../../components/Modals/Delete/DeleteUserModal';
 import SubHeader from '../../components/SubHeader/SubHeader';
@@ -33,32 +31,26 @@ function User({
   setReviewed,
 }: IUserProps) {
   const navigate = useNavigate();
-  const [errors, setErrors] = useState<IUserUpdateError>(
-    {} as IUserUpdateError,
-  );
-  const [displayUpdateUserModal, setDisplayUpdateUserModal] = useState(false);
-  const [displayDeleteUserModal, setDisplayDeleteUserModal] = useState(false);
-  const [displayConfirmDeleteUserModal, setDisplayConfirmDeleteUserModal] =
-    useState(false);
-  const [displayDeleteLibraryModal, setDisplayDeleteLibraryModal] =
-    useState(false);
+  const [confirmModal, setConfirmModal] = useState('');
   const [libraryId, setLibraryId] = useState<number>();
   const [userSection, setUserSection] = useState<string>('Mes informations');
-
-  //For fading title animation
   const [displayedSection, setDisplayedSection] = useState('');
   const [fadeClass, setFadeClass] = useState('');
-
-  //For loading page animation
+  const [displayDeleteUserModal, setDisplayDeleteUserModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [displayDeleteLibraryModal, setDisplayDeleteLibraryModal] =
+    useState(false);
 
+  //API Call
   const getUser = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await api.get('/user');
       setUser(response.data);
       setIsLoading(false);
-    } catch (_error) {}
+    } catch (error) {
+      console.error("Erreur lors de la récupération de l'utilisateur", error);
+    }
   }, [setUser]);
 
   useEffect(() => {
@@ -71,71 +63,21 @@ function User({
   useEffect(() => {
     if (userSection !== displayedSection) {
       setFadeClass('fade-out');
-
       const timeout = setTimeout(() => {
         setDisplayedSection(userSection);
         setFadeClass('');
       }, 200);
-
       return () => clearTimeout(timeout);
     }
   }, [userSection, displayedSection]);
 
-  function closeUpdateUserModal() {
-    setDisplayUpdateUserModal(false);
-  }
-
-  function closeDeleteUserModal() {
-    setDisplayDeleteUserModal(false);
-  }
-
-  function closeDeleteLibraryModal() {
-    setDisplayDeleteLibraryModal(false);
-  }
-
-  //Close the confirmation of user data deletion, disconnect the user and redirect him to the homepage
-  function closeConfirmDeleteUserModal() {
+  //Disconnect the user and redirect him to the homepage
+  function UserDeleteHandler() {
     localStorage.removeItem('token');
     setIsLogged(false);
     setUser(undefined);
-    setDisplayConfirmDeleteUserModal(false);
+    setConfirmModal('');
     navigate('/');
-  }
-
-  async function handleUserDatasUpdate(
-    event: React.FormEvent<HTMLFormElement>,
-  ) {
-    event.preventDefault();
-    setErrors({} as IUserUpdateError);
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    try {
-      await api.patch('/user', {
-        name: formData.get('name'),
-        firstname: formData.get('firstname'),
-        email: formData.get('email'),
-        currentPassword: formData.get('current-password'),
-        newPassword: formData.get('new-password'),
-        confirmPassword: formData.get('confirm-password'),
-      });
-
-      form.reset();
-      getUser();
-      setDisplayUpdateUserModal(true);
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.data.errors) {
-        const zodErrors = error.response.data.errors;
-        const formattedErrors: IUserUpdateError = {
-          confirmPassword: '',
-          password: '',
-        };
-        for (const error of zodErrors) {
-          formattedErrors[error.field as keyof IUserUpdateError] = error.error;
-        }
-        setErrors(formattedErrors);
-      }
-    }
   }
 
   if (isLoading) {
@@ -144,33 +86,33 @@ function User({
 
   return (
     <section className="user-profile">
-      {displayUpdateUserModal && (
-        <UpdateUserModal
-          closeUpdateUserModal={closeUpdateUserModal}
-          setDisplayUpdateUserModal={setDisplayUpdateUserModal}
+      {confirmModal === 'update' && (
+        <ConfirmModal
+          setConfirmModal={setConfirmModal}
+          message="Vos informations ont bien été mises à jour."
         />
       )}
+
+      {confirmModal === 'delete' && (
+        <ConfirmModal
+          setConfirmModal={setConfirmModal}
+          UserDeleteHandler={UserDeleteHandler}
+          message="Votre compte a bien été supprimé. Merci d'avoir utilisé BlaBla Book !"
+        />
+      )}
+
       {displayDeleteUserModal && (
         <DeleteUserModal
-          closeDeleteUserModal={closeDeleteUserModal}
           setDisplayDeleteUserModal={setDisplayDeleteUserModal}
-          setDisplayConfirmDeleteUserModal={setDisplayConfirmDeleteUserModal}
-          errors={errors}
-          setErrors={setErrors}
+          setConfirmModal={setConfirmModal}
         />
       )}
-      {displayConfirmDeleteUserModal && (
-        <ConfirmDeleteUserModal
-          closeConfirmDeleteUserModal={closeConfirmDeleteUserModal}
-        />
-      )}
+
       {libraryId !== undefined && displayDeleteLibraryModal && (
         <DeleteLibraryModal
-          closeDeleteLibraryModal={closeDeleteLibraryModal}
-          errors={errors}
-          setErrors={setErrors}
+          getUser={getUser}
           libraryId={libraryId}
-          setUser={setUser}
+          setDisplayDeleteLibraryModal={setDisplayDeleteLibraryModal}
         />
       )}
 
@@ -194,23 +136,20 @@ function User({
           {userSection === 'Mes informations' && (
             <UpdateInfos
               user={user}
-              errors={errors}
-              handleUserDatasUpdate={handleUserDatasUpdate}
+              getUser={getUser}
+              setConfirmModal={setConfirmModal}
             />
           )}
 
           {userSection === 'Modifier mon mot de passe' && (
             <UpdatePassword
-              handleUserDatasUpdate={handleUserDatasUpdate}
-              errors={errors}
+              getUser={getUser}
+              setConfirmModal={setConfirmModal}
             />
           )}
 
           {userSection === 'Supprimer mon compte' && (
-            <DeleteUser
-              setErrors={setErrors}
-              setDisplayDeleteUserModal={setDisplayDeleteUserModal}
-            />
+            <DeleteUser setDisplayDeleteUserModal={setDisplayDeleteUserModal} />
           )}
         </div>
 

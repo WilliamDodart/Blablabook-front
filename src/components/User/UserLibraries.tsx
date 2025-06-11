@@ -16,30 +16,30 @@ function UserLibraries({
   getUser,
   setDisplayDeleteLibraryModal,
 }: IUserLibrariesProps) {
-  // On stocke l’id de la bibliothèque que l'on veut modifier pour afficher le formulaire
   const [editingLibraryId, setEditingLibraryId] = useState<number | null>(null);
-  // On stocke la valeur de l’input du formulaire
   const [newLibraryName, setNewLibraryName] = useState('');
 
   async function renameLibrary(
     event: React.FormEvent<HTMLFormElement>,
     id: number,
   ) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     try {
-      event.preventDefault();
-      const form = event.currentTarget;
-      const formData = new FormData(form);
-
       await api.patch(`/library/${id}`, {
         name: formData.get('library-rename-input'),
       });
       getUser();
     } catch (error) {
-      console.log(error);
+      console.log('Erreur lors du changement de nom de la bibliothèque', error);
+    } finally {
+      setEditingLibraryId(null);
     }
   }
 
-  function openDeleteLibraryModal() {
+  function openDeleteLibraryModal(LibraryId: number) {
+    setLibraryId(LibraryId);
     setDisplayDeleteLibraryModal(true);
   }
 
@@ -48,10 +48,10 @@ function UserLibraries({
       <p id="user-libraries-section-title">Mes bibliothèques</p>
 
       <ul id="libraries-list">
-        {user?.Libraries?.map((Library, index) => {
+        {user?.Libraries?.map((library, index) => {
           return (
             <li
-              key={Library.id}
+              key={library.id}
               className="animated-library"
               style={{
                 animationDelay: `${index * 70}ms`,
@@ -60,8 +60,8 @@ function UserLibraries({
               <Link to={'/myLibrary'}>
                 <figure>
                   <div className="book-img">
-                    {Library.Books[0]?.image ? (
-                      <img src={Library.Books[0].image} alt="book-image" />
+                    {library.Books[0]?.image ? (
+                      <img src={library.Books[0].image} alt="book-image" />
                     ) : (
                       <div className="no-book-img">
                         <p>
@@ -75,23 +75,21 @@ function UserLibraries({
                     )}
                   </div>
                   <figcaption className="library-name">
-                    {Library.name}
+                    {library.name}
                   </figcaption>
                 </figure>
               </Link>
 
-              {editingLibraryId === Library.id ? (
+              {editingLibraryId === library.id ? (
                 <form
                   onSubmit={(event) => {
-                    event.preventDefault();
-                    renameLibrary(event, Library.id);
-                    setEditingLibraryId(null);
+                    renameLibrary(event, library.id);
                   }}
                 >
                   <input
                     type="text"
                     name="library-rename-input"
-                    placeholder={Library.name}
+                    placeholder={library.name}
                     value={newLibraryName}
                     className="library-rename-input"
                     onChange={(e) => setNewLibraryName(e.target.value)}
@@ -106,8 +104,8 @@ function UserLibraries({
                   className="library-update"
                   type="button"
                   onClick={() => {
-                    setEditingLibraryId(Library.id);
-                    setNewLibraryName(Library.name);
+                    setEditingLibraryId(library.id);
+                    setNewLibraryName(library.name);
                   }}
                 >
                   Renommer
@@ -117,10 +115,8 @@ function UserLibraries({
               <button
                 type="button"
                 className="library-delete"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setLibraryId(Library.id);
-                  openDeleteLibraryModal();
+                onClick={() => {
+                  openDeleteLibraryModal(library.id);
                 }}
               >
                 Supprimer

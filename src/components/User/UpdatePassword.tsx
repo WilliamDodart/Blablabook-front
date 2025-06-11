@@ -1,46 +1,78 @@
-import type { IUserUpdateError } from '../../@types/user';
+import axios from 'axios';
+import { useState } from 'react';
+import type { IUserPasswordUpdateError } from '../../@types/user';
+import api from '../../utils/axiosApi';
+import InputField from '../Fields/InputField';
 
 interface IUpdatePassword {
-  errors: IUserUpdateError;
-  handleUserDatasUpdate(event: React.FormEvent<HTMLFormElement>): Promise<void>;
+  getUser: () => Promise<void>;
+  setConfirmModal: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function UpdatePassword({ errors, handleUserDatasUpdate }: IUpdatePassword) {
+function UpdatePassword({ getUser, setConfirmModal }: IUpdatePassword) {
+  const [errors, setErrors] = useState<IUserPasswordUpdateError>(
+    {} as IUserPasswordUpdateError,
+  );
+
+  //API Call
+  async function handleUserPasswordUpdate(
+    event: React.FormEvent<HTMLFormElement>,
+  ) {
+    event.preventDefault();
+    setErrors({} as IUserPasswordUpdateError);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    try {
+      await api.patch('/user', {
+        currentPassword: formData.get('current-password'),
+        newPassword: formData.get('new-password'),
+        confirmPassword: formData.get('confirm-password'),
+      });
+      form.reset();
+      getUser();
+      setConfirmModal('update');
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data.errors) {
+        const zodErrors = error.response.data.errors;
+        const formattedErrors: IUserPasswordUpdateError = {
+          confirmPassword: '',
+          password: '',
+        };
+        for (const error of zodErrors) {
+          formattedErrors[error.field as keyof IUserPasswordUpdateError] =
+            error.error;
+        }
+        setErrors(formattedErrors);
+      }
+    }
+  }
+
   return (
-    <form onSubmit={handleUserDatasUpdate}>
-      <label className="user-update-form-label" htmlFor="current-password">
-        Mot de passe actuel <em>*</em>
-      </label>
-      <input
-        className="user-update-form-input"
+    <form onSubmit={handleUserPasswordUpdate}>
+      <InputField
+        label="Mot de passe actuel"
         type="password"
-        id="current-password"
         name="current-password"
+        error={errors.password}
+        required
       />
-      {errors.password && (
-        <p className="register-form-error">{errors.password}</p>
-      )}
-      <label className="user-update-form-label" htmlFor="new-password">
-        Nouveau mot de passe <em>*</em>
-      </label>
-      <input
-        className="user-update-form-input"
+
+      <InputField
+        label="Nouveau mot de passe"
         type="password"
-        id="new-password"
         name="new-password"
+        //error={errors.password}
+        required
       />
-      <label className="user-update-form-label" htmlFor="renew-password">
-        Confirmer le mot de passe <em>*</em>
-      </label>
-      <input
-        className="user-update-form-input"
+
+      <InputField
+        label="Confirmer le mot de passe"
         type="password"
-        id="renew-password"
         name="confirm-password"
+        error={errors.confirmPassword}
+        required
       />
-      {errors.confirmPassword && (
-        <p className="register-form-error">{errors.confirmPassword}</p>
-      )}
+
       <button className="user-update-form-button" type="submit">
         Modifier
       </button>

@@ -7,6 +7,7 @@ interface IInputFieldProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   required?: boolean;
+  defaultValue?: string;
 }
 
 function InputField({
@@ -18,6 +19,7 @@ function InputField({
   onChange,
   error,
   required = true,
+  defaultValue,
 }: IInputFieldProps) {
   return (
     <>
@@ -29,6 +31,7 @@ function InputField({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        defaultValue={defaultValue}
         required={required}
       />
       {error && <p className="register-form-error">{error}</p>}

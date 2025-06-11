@@ -8,6 +8,7 @@ interface IReviewsProps {
 }
 
 function Reviews({ user, setReviewed }: IReviewsProps) {
+  //API Call
   const handleDeleteReview = async (reviewId: number) => {
     try {
       await api.delete(`/review/${reviewId}`);
@@ -35,6 +36,7 @@ function Reviews({ user, setReviewed }: IReviewsProps) {
                     <img src={review.Book.image} alt="book-image" />
                   </div>
                 </Link>
+
                 <li className="user-reviews-section-reviews-container-review-container-text-container">
                   <p>
                     <strong>{review.Book.title}</strong>
