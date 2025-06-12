@@ -17,12 +17,12 @@ function CoverBook({
 }: CoverBookProps) {
   return (
     <>
-      <li key={book.id} className="books-list-li library-menu-list">
-        <Link to={`/book/${book.id}`}>
+      <li key={book.id} className="library-book">
+        <Link to={`/book/${book.id}`} className="library-book-link">
           <figure>
-            <div id="book-img">
+            <div className="library-book-container">
               <button
-                className="test-btn"
+                className="library-book-container-button"
                 type="button"
                 onClick={(event) => {
                   setDisplayModalLibrary(true);
@@ -33,32 +33,34 @@ function CoverBook({
                 ...
               </button>
               <img
-                className="cover-book-img"
+                className="library-book-container-image"
                 src={book.image}
                 alt="book-image"
               />
               {!book.LibraryBook.read && (
-                <span id="read-notRead" className="icon-read-toread">
+                <span className="library-book-container-icon">
                   <img
                     src="../Pictures/tdesign--time.svg"
-                    alt="livre à lire"
+                    alt="Icon livre à lire"
                     title="à lire"
                   />
                 </span>
               )}
               {book.LibraryBook.read && (
-                <span id="read-notRead" className="icon-read-toread">
+                <span className="library-book-container-icon">
                   <img
                     src="../Pictures/ph--book-open.svg"
-                    alt="livre lu"
+                    alt="Icon livre lu"
                     title="livre lu"
                   />
                 </span>
               )}
             </div>
-            <hgroup>
-              <figcaption>{book.title}</figcaption>
-              <h5>{book.author}</h5>
+            <hgroup className="library-book-infos">
+              <figcaption className="library-book-infos-title">
+                {book.title}
+              </figcaption>
+              <h5 className="library-book-infos-author">{book.author}</h5>
             </hgroup>
           </figure>
         </Link>

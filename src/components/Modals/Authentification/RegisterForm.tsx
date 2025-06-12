@@ -6,13 +6,13 @@ import type { IRegisterError } from '../../../@types/user';
 import api from '../../../utils/axiosApi';
 
 interface IRegisterFormProps {
-  closeRegisterForm: () => void;
   setDisplayLoginForm: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplayRegisterForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function RegisterForm({
-  closeRegisterForm,
   setDisplayLoginForm,
+  setDisplayRegisterForm,
 }: IRegisterFormProps) {
   const [errors, setErrors] = useState<IRegisterError>({} as IRegisterError);
 
@@ -26,7 +26,7 @@ function RegisterForm({
         },
       });
 
-      closeRegisterForm();
+      setDisplayRegisterForm(false);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;
@@ -53,7 +53,7 @@ function RegisterForm({
       >
         <button
           type="button"
-          onClick={closeRegisterForm}
+          onClick={() => setDisplayRegisterForm(false)}
           className="auth-modal-closeBtn"
         >
           <img src="../Pictures/gridicons--cross.svg" alt="Fermer la fenêtre" />
@@ -135,7 +135,7 @@ function RegisterForm({
             to="#"
             className="auth-modal-form-redirection"
             onClick={() => {
-              closeRegisterForm();
+              setDisplayRegisterForm(false);
               setDisplayLoginForm(true);
             }}
           >

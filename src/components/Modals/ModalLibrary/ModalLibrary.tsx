@@ -4,15 +4,15 @@ import api from '../../../utils/axiosApi';
 import './ModalLibrary.scss';
 
 type IModalLibraryProps = {
-  closeModalLibrary: () => void;
   currentBook: IBooks | null | undefined;
   setMyLibraries: React.Dispatch<React.SetStateAction<ILibrary[]>>;
   myLibraries: ILibrary[];
   setCurrentLibraries: React.Dispatch<React.SetStateAction<ILibrary[]>>;
+  setDisplayModalLibrary: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function ModalLibrary({
-  closeModalLibrary,
+  setDisplayModalLibrary,
   currentBook,
   setMyLibraries,
   myLibraries,
@@ -26,7 +26,7 @@ function ModalLibrary({
     );
     setMyLibraries(response.data);
     setCurrentLibraries(response.data);
-    closeModalLibrary();
+    setDisplayModalLibrary(false);
   }
 
   // ------------ FONCTION DE SUPPRESSION D'UN LIVRE D'UNE BIBLIOTHEQUE -----------------
@@ -38,7 +38,7 @@ function ModalLibrary({
       );
       setMyLibraries(response.data);
       setCurrentLibraries(response.data);
-      closeModalLibrary();
+      setDisplayModalLibrary(false);
     } catch (error) {
       console.error('Erreur lors de la suppression du livre', error);
     }
@@ -53,7 +53,7 @@ function ModalLibrary({
       );
       setMyLibraries(response.data);
       setCurrentLibraries(response.data);
-      closeModalLibrary();
+      setDisplayModalLibrary(false);
     } catch (error) {
       console.error('Erreur lors du changement de bibliothèque', error);
     }
@@ -64,7 +64,7 @@ function ModalLibrary({
       <div className="library">
         <button
           type="button"
-          onClick={closeModalLibrary}
+          onClick={() => setDisplayModalLibrary(false)}
           className="library-closeBtn"
         >
           <img src="../Pictures/gridicons--cross.svg" alt="Fermer la fenêtre" />

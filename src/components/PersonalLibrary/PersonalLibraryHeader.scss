@@ -1,0 +1,76 @@
+@use '../../styles/variables' as v;
+
+.personal-library-header {
+    background-color: v.$base-color;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
+
+    &-title{
+        font-size: 2.8rem;
+        margin: 3rem 0 0 0;
+    }
+
+    &-list {
+        padding: 1rem 0 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+
+        &-navlink {
+            text-decoration: none;
+        }
+        
+        &-link {
+            font-size: 1.1rem;
+            font-weight: 200;
+            color: v.$marron-color;
+
+             &:hover {
+                color: v.$secondary-color;
+                font-weight: 300;
+            }
+        }
+
+        &-button {
+            background-color: v.$primary-color;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            color:v.$police-color;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+
+            &:hover {
+                color: v.$base-color;
+                background-color:v.$marronlight-color;
+            }
+        }
+
+        .selected-filter{
+            background-color: v.$secondary-color;
+            color: v.$primary-color;
+        }
+
+        .selected-status {
+            border-bottom: 1px solid v.$secondary-color;
+            color: v.$secondary-color;
+        }
+    }
+}
+
+@media  screen and (min-width: 800px) {
+    .personal-library-header-title {
+        margin-top: 0rem;
+    }
+}

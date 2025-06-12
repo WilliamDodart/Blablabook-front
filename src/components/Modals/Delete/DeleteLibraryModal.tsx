@@ -1,75 +1,64 @@
 import axios from 'axios';
 import api from '../../../utils/axiosApi';
 import './Delete.scss';
-import type { IUser, IUserUpdateError } from '../../../@types/user';
+import { useState } from 'react';
+import type { IDeleteLibraryError } from '../../../@types/libraries';
+import InputField from '../../Fields/InputField';
 
 interface iDeleteLibraryModalProps {
-  closeDeleteLibraryModal: () => void;
-  errors: Record<string, string>;
-  setErrors: React.Dispatch<React.SetStateAction<IUserUpdateError>>;
   libraryId: number;
-  setUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
+  getUser: () => Promise<void>;
+  setDisplayDeleteLibraryModal: (value: React.SetStateAction<boolean>) => void;
 }
 
 function DeleteLibraryModal({
-  closeDeleteLibraryModal,
-  errors,
-  setErrors,
   libraryId,
-  setUser,
+  getUser,
+  setDisplayDeleteLibraryModal,
 }: iDeleteLibraryModalProps) {
-  async function getUser() {
-    try {
-      const response = await api.get('/user');
-      setUser(response.data);
-    } catch (_error) {}
-  }
+  const [deleteLibraryErrors, setDeleteLibraryErrors] =
+    useState<IDeleteLibraryError>({
+      password: '',
+    });
 
+  //API Call
   async function handleDeleteLibrary(
     event: React.FormEvent<HTMLFormElement>,
     id: number,
   ) {
     event.preventDefault();
-
-    setErrors({} as IUserUpdateError);
-
+    setDeleteLibraryErrors({} as IDeleteLibraryError);
     const form = event?.currentTarget;
     const formData = new FormData(form);
-
     try {
       await api.delete(`/library/${id}`, {
         data: {
           currentPassword: formData.get('current-password'),
         },
       });
-
-      closeDeleteLibraryModal();
+      setDisplayDeleteLibraryModal(false);
       getUser();
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;
-        const formattedErrors: IUserUpdateError = {
-          confirmPassword: '',
+        const formattedErrors: IDeleteLibraryError = {
           password: '',
         };
         for (const error of zodErrors) {
-          formattedErrors[error.field as keyof IUserUpdateError] = error.error;
+          formattedErrors[error.field as keyof IDeleteLibraryError] =
+            error.error;
         }
-        setErrors(formattedErrors);
+        setDeleteLibraryErrors(formattedErrors);
       }
     }
   }
 
   return (
-    <div className="hidden-background" /* onClick={closeDeleteLibraryModal} */>
-      <div
-        className="confirmation-modal"
-        onClick={(event) => event.stopPropagation()}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
+    <div className="hidden-background">
+      <div className="confirmation-modal">
         <button
           type="button"
-          onClick={closeDeleteLibraryModal}
+          onClick={() => setDisplayDeleteLibraryModal(false)}
           className="confirmation-modal-closeBtn"
         >
           <img
@@ -90,19 +79,17 @@ function DeleteLibraryModal({
         <form
           className="confirmation-modal-form"
           onSubmit={(event) => {
-            event.preventDefault();
             handleDeleteLibrary(event, libraryId);
           }}
         >
-          <label htmlFor="current-password">Mot de passe actuel</label>
-          <input
-            type="password"
+          <InputField
+            label="Mot de passe actuel"
             name="current-password"
-            id="current-password"
+            type="password"
+            error={deleteLibraryErrors.password}
+            required
           />
-          {errors.password && (
-            <p className="confirmation-modal-form-error">{errors.password}</p>
-          )}
+
           <button className="confirmation-modal-form-button" type="submit">
             Supprimer la librairie
           </button>

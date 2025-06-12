@@ -1,18 +1,29 @@
 import './Confirm.scss';
 
-interface iConfirmUpdateProps {
-  closeConfirmUpdateBookModal: () => void;
+interface IConfirmModalProps {
+  setConfirmModal: React.Dispatch<React.SetStateAction<string>>;
+  message: string;
+  UserDeleteHandler?(): void;
 }
 
-function ConfirmUpdateBookModal({
-  closeConfirmUpdateBookModal,
-}: iConfirmUpdateProps) {
+function ConfirmModal({
+  setConfirmModal,
+  message,
+  UserDeleteHandler,
+}: IConfirmModalProps) {
+  function closeModal() {
+    if (UserDeleteHandler) {
+      UserDeleteHandler();
+    } else {
+      setConfirmModal('');
+    }
+  }
   return (
     <div className="hidden-background">
       <div className="confirm-modal">
         <button
           type="button"
-          onClick={closeConfirmUpdateBookModal}
+          onClick={closeModal}
           className="confirm-modal-closeBtn"
         >
           <img
@@ -26,12 +37,10 @@ function ConfirmUpdateBookModal({
           src="./Pictures/check.png"
           alt="Icone de validation"
         />
-        <p className="confirm-modal-message">
-          Ce livre a bien été modifié dans la base de données.
-        </p>
+        <p className="confirm-modal-message">{message}</p>
       </div>
     </div>
   );
 }
 
-export default ConfirmUpdateBookModal;
+export default ConfirmModal;

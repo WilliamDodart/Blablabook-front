@@ -14,7 +14,6 @@
     gap: 8vw;
     flex-wrap: wrap;
 
-    //Partie texte
     &-presentation {
         max-width: 470px;
 
@@ -28,7 +27,6 @@
         
     }
 
-    //Partie image
     &-img {
         max-width: 450px;
 
@@ -53,16 +51,16 @@
     &-container {
         max-width: 780px;
         margin: 0 auto;
+         
+        &-separator {
+            max-width: 220px;
+            border-top: solid 2px v.$secondary-color;
+        }
     
         &-title {
             overflow-x: auto;
         }
     }
-}
-
-hr {
-    max-width: 220px;
-    border-top: solid 2px v.$secondary-color;
 }
 
 

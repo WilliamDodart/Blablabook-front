@@ -1,5 +1,4 @@
-import type { IReviews } from "./review";
-
+import type { IReviews } from './review';
 
 export type IBooks = {
   id: number;
@@ -19,7 +18,7 @@ export type IBooks = {
 export type ILibrary = {
   id: number;
   name: string;
-  Books: Book[];
+  Books: IBooks[];
 };
 
 export type IGenre = {

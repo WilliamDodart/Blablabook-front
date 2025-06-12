@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import './Books.scss';
-import { Link } from 'react-router';
 import type { IBooks } from '../../@types/books';
+import BookCard from '../../components/BookCard/BookCard';
 import Loader from '../../components/Loader/Loader';
 import api from '../../utils/axiosApi';
+import { filterBooks } from '../../utils/bookHelper';
 
 interface BooksProps {
   setDisplayModalBook: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,127 +14,88 @@ interface BooksProps {
 }
 
 function Books({ setDisplayModalBook, setCurrentBook }: BooksProps) {
-  // État pour afficher tous les livres
   const [allBooks, setAllBooks] = useState<IBooks[]>([]);
-  // État pour gérer la recherche (titre + auteur)
-
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchInput, setSearchInput] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState<number>(18);
+  const [visibleBookCount, setVisibleBookCount] = useState<number>(18);
 
+  const filteredBooks = filterBooks(allBooks, searchInput);
+  const visibleBooks = filteredBooks.slice(0, visibleBookCount);
+
+  //API Call
   useEffect(() => {
-    const getAllBooks = async () => {
+    async function getAllBooks() {
       try {
         setIsLoading(true);
         const response = await api.get('/books');
         setAllBooks(response.data);
         setIsLoading(false);
-      } catch (_error) {}
-    };
+      } catch (error) {
+        console.error('Erreur lors de la récupération des livres', error);
+      }
+    }
     getAllBooks();
   }, []);
 
-  // Fonction pour gérer le changement dans la barre de recherche, elle met à jour l'état searchTerm à chaque changement dans le champ de recherche.
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-    setVisibleCount(18); // Réinitialise la pagination lors d'une recherche
-  };
-
-  // Filtrer les livres en fonction du titre ou de l'auteur taper dans la barre de recherche
-  const filteredBooks = allBooks.filter(
-    (book) =>
-      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  // Input handler
+  function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setSearchInput(event.target.value);
+    setVisibleBookCount(18);
+  }
 
   if (isLoading) {
     return <Loader />;
   }
 
-  const visibleBooks = filteredBooks.slice(0, visibleCount);
-
-  const handleShowMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 18, filteredBooks.length));
-  };
-
-  const handleShowLess = () => {
-    setVisibleCount((prev) => Math.max(18, prev - 18));
-  };
-
   return (
-    <section className="section books-section">
-      <div className="head-books">
-        <h1 className="books-section-title">Tous nos livres</h1>
+    <section className="books">
+      <div className="books-header">
+        <h1 className="books-header-title">Tous nos livres</h1>
         <input
           type="text"
           placeholder="Rechercher parmis nos livres"
-          value={searchTerm}
+          value={searchInput}
           onChange={handleSearchChange}
-          className="books-section-search"
+          className="books-header-search"
         />
       </div>
 
       <div className="books-list">
-        {/* Si aucun livre ne correspond à la recherche effectuée, on fait apparaître un message d'erreur */}
-        {filteredBooks.length === 0 && (
+        {filteredBooks.length === 0 ? (
           <p className="books-list-no-results">
             Aucun livre ne correspond à votre recherche !
           </p>
+        ) : (
+          <ul className="books-list-ul">
+            {visibleBooks.map((book: IBooks, index: number) => (
+              <BookCard
+                key={book.id}
+                book={book}
+                index={index}
+                setDisplayModalBook={setDisplayModalBook}
+                setCurrentBook={setCurrentBook}
+              />
+            ))}
+          </ul>
         )}
 
-        <ul className="books-list-ul">
-          {visibleBooks.map((books, index) => (
-            <li key={books.id} className="books-list-li">
-              <Link
-                to={`/book/${books.id}`}
-                className="animated-book"
-                style={{
-                  animationDelay: `${index * 70}ms`,
-                }}
-                onClick={() => {
-                  setCurrentBook(books);
-                }}
-              >
-                <figure>
-                  <div id="book-img">
-                    <img src={books.image} alt="book-image" />
-                    <button
-                      className="test-btn"
-                      type="button"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setCurrentBook(books);
-                        setDisplayModalBook(true);
-                      }}
-                    >
-                      ...
-                    </button>
-                  </div>
-                  <hgroup>
-                    <figcaption>{books.title}</figcaption>
-                    <h5>{books.author}</h5>
-                  </hgroup>
-                </figure>
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="show-buttons-container">
-          {visibleCount < filteredBooks.length && (
+        <div className="books-list-buttons">
+          {visibleBookCount < filteredBooks.length && (
             <button
               type="button"
-              className="show-more-btn"
-              onClick={handleShowMore}
+              className="button-more"
+              onClick={() => setVisibleBookCount((count) => count + 18)}
             >
               Afficher plus
             </button>
           )}
-          {visibleCount > 18 && (
+          {visibleBookCount > 18 && (
             <button
               type="button"
-              className="show-less-btn"
-              onClick={handleShowLess}
+              className="button-less"
+              onClick={() =>
+                setVisibleBookCount((count) => Math.max(18, count - 18))
+              }
             >
               Afficher moins
             </button>

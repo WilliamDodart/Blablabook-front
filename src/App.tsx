@@ -1,13 +1,9 @@
 import './App.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Route, Routes } from 'react-router';
-import type { IBooks, ILibrary } from './@types/books';
-import type { IUser } from './@types/user';
-import LoginForm from './components/Modals/Authentification/LoginForm';
-import RegisterForm from './components/Modals/Authentification/RegisterForm';
-import ModalBooks from './components/Modals/ModalBooks/ModalBooks';
-import ModalLibrary from './components/Modals/ModalLibrary/ModalLibrary';
-import ReviewModal from './components/Modals/ReviewModal/ReviewModal';
+import type { IBooks } from './@types/books';
+import ModalsManager from './components/Modals/ModalsManager';
+import { useAuth } from './hooks/useAuth';
 import Footer from './layouts/Footer/Footer';
 import Navbar from './layouts/Navbar/Navbar';
 import Admin from './pages/Admin/Admin';
@@ -20,106 +16,45 @@ import Homepage from './pages/Homepage/Homepage';
 import MentionLegale from './pages/MentionLegales/MentionLegale';
 import PersonalLibrary from './pages/PersonalLibrary/PersonalLibrary';
 import User from './pages/User/User';
-import api from './utils/axiosApi';
 
 function App() {
   const [displayRegisterForm, setDisplayRegisterForm] = useState(false);
   const [displayLoginForm, setDisplayLoginForm] = useState(false);
   const [displayModalLibrary, setDisplayModalLibrary] = useState(false);
   const [displayModalBook, setDisplayModalBook] = useState(false);
-  const [displayReviewModal, setDisplayReviewModal] = useState(false);
-  const [user, setUser] = useState<IUser | undefined>();
-  const [isLogged, setIsLogged] = useState(false);
   const [currentBook, setCurrentBook] = useState<IBooks | null>();
-  const [myLibraries, setMyLibraries] = useState<ILibrary[]>([]);
-  const [currentLibraries, setCurrentLibraries] = useState(myLibraries);
   const [reviewed, setReviewed] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    async function getUser() {
-      try {
-        const response = await api.get('/user');
-        setUser(response.data);
-        setMyLibraries(response.data.Libraries);
-      } catch (_error) {
-        localStorage.removeItem('token');
-        setIsLogged(false);
-        setUser(undefined);
-        setMyLibraries([]);
-        setCurrentLibraries([]);
-      }
-    }
-
-    if (token) {
-      getUser();
-      setIsLogged(true);
-    }
-  }, []);
-
-  function closeRegisterForm() {
-    setDisplayRegisterForm(false);
-  }
-
-  function closeLoginForm() {
-    setDisplayLoginForm(false);
-  }
-
-  function closeModalLibrary() {
-    setDisplayModalLibrary(false);
-  }
-
-  function closeModalBook() {
-    setDisplayModalBook(false);
-  }
+  const {
+    user,
+    isLogged,
+    myLibraries,
+    currentLibraries,
+    setUser,
+    setIsLogged,
+    setMyLibraries,
+    setCurrentLibraries,
+  } = useAuth();
 
   return (
     <div className="app">
-      {displayRegisterForm && (
-        <RegisterForm
-          closeRegisterForm={closeRegisterForm}
-          setDisplayLoginForm={setDisplayLoginForm}
-        />
-      )}
-      {displayLoginForm && (
-        <LoginForm
-          closeLoginForm={closeLoginForm}
-          setUser={setUser}
-          setIsLogged={setIsLogged}
-          setDisplayRegisterForm={setDisplayRegisterForm}
-          setMyLibraries={setMyLibraries}
-        />
-      )}
-      {displayModalLibrary && (
-        <ModalLibrary
-          closeModalLibrary={closeModalLibrary}
-          currentBook={currentBook}
-          setMyLibraries={setMyLibraries}
-          myLibraries={myLibraries}
-          setCurrentLibraries={setCurrentLibraries}
-        />
-      )}
-
-      {displayModalBook && (
-        <ModalBooks
-          closeModalBook={closeModalBook}
-          currentBook={currentBook}
-          setMyLibraries={setMyLibraries}
-          myLibraries={myLibraries}
-          displayReviewModal={displayReviewModal}
-          setDisplayReviewModal={setDisplayReviewModal}
-        />
-      )}
-
-      {displayReviewModal && (
-        <ReviewModal
-          setDisplayReviewModal={setDisplayReviewModal}
-          setReviewed={setReviewed}
-          closeModalBook={closeModalBook}
-          currentBook={currentBook}
-        />
-      )}
+      <ModalsManager
+        displayRegisterForm={displayRegisterForm}
+        displayLoginForm={displayLoginForm}
+        displayModalLibrary={displayModalLibrary}
+        displayModalBook={displayModalBook}
+        currentBook={currentBook}
+        myLibraries={myLibraries}
+        setDisplayLoginForm={setDisplayLoginForm}
+        setDisplayRegisterForm={setDisplayRegisterForm}
+        setDisplayModalLibrary={setDisplayModalLibrary}
+        setDisplayModalBook={setDisplayModalBook}
+        setUser={setUser}
+        setIsLogged={setIsLogged}
+        setMyLibraries={setMyLibraries}
+        setCurrentLibraries={setCurrentLibraries}
+        setReviewed={setReviewed}
+      />
 
       <Navbar
         setDisplayRegisterForm={setDisplayRegisterForm}
@@ -129,6 +64,7 @@ function App() {
         setUser={setUser}
         user={user}
       />
+
       <Routes>
         <Route
           path="/"
@@ -143,6 +79,7 @@ function App() {
             />
           }
         />
+
         <Route
           path="/books"
           element={
@@ -152,6 +89,7 @@ function App() {
             />
           }
         />
+
         <Route
           path="/book/:id"
           element={
@@ -163,6 +101,7 @@ function App() {
             />
           }
         />
+
         <Route
           path="/myLibrary"
           element={
@@ -191,7 +130,9 @@ function App() {
         />
 
         {isLogged && user?.admin && <Route path="/admin" element={<Admin />} />}
+
         <Route path="/confidentality" element={<Confidentalite />} />
+
         <Route path="/legal-notice" element={<MentionLegale />} />
 
         <Route path="/contact" element={<Contact />} />

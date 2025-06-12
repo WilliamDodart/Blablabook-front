@@ -1,19 +1,19 @@
 @use '../../styles/variables' as v;
 @use '../../styles/section';
 
-.privacy-title {
-  font-size: 2.8rem;
-  margin-top: 2rem;
 
-}
-
-#privacy-policy-section {
-    padding: 0rem;
-    line-height: 1.6;
-    background-color: v.$base-color;
-    overflow-x: auto;
+.privacy-section {
+  padding: 0rem;
+  line-height: 1.6;
+  background-color: v.$base-color;
+  overflow-x: auto;
   
-  & .privacy-container {
+  &-title {
+    font-size: 2.8rem;
+    margin-top: 4rem;
+  }
+  
+  &-container {
     width: 90%;
     background-color: v.$primary-color;
     margin: auto;
@@ -27,17 +27,17 @@
       font-size: calc(1rem + 0.5vw);
       margin-bottom: 0;
     }
-  }
-
-  & a {
-    color: #457b9d;
-    text-decoration: underline;
+    
+    & a {
+      color: #457b9d;
+      text-decoration: underline;
+    }
   }
 }
 
-@media screen and (max-width:800px){
-  .privacy-title {
-    margin-top: 4rem;
+@media screen and (min-width:800px){
+  .privacy-section-title {
+    margin-top: 2rem;
   }
 }
 

@@ -1,0 +1,52 @@
+.book-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: 700px;
+    
+    &-image {
+        margin: 0 auto;
+        
+        & img {
+            width: 250px;
+        }
+    }
+
+    &-text {
+        text-align: center;
+        margin-top: 2rem;
+
+        &-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &-field {
+                margin-right: 0.5rem;
+            }
+
+            &-star {
+                font-size: 1.5rem;
+                color: #f5c518;
+                margin-left: 0.3rem;
+            }
+        }    
+    }
+}
+
+@media screen and (min-width:800px){
+    .book-detail {
+        flex-direction: row;
+
+        &-text {
+            margin: 0 auto;
+            text-align: start;
+
+            &-note {
+                justify-content: start;
+            }
+        }
+    }
+}

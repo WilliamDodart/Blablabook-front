@@ -1,15 +1,12 @@
 @use '../../styles/variables' as v;
 @use '../../styles/section';
 
-
-
-#contact-page-section {
+.contact-section {
     background-color: v.$primary-color;
     text-align: center;
     display: flex;
   
-  
-  & .contact-container {
+  &-container {
     max-width: 600px;
     margin: auto;
     background: white;
@@ -21,17 +18,17 @@
     & h1 {
       margin-bottom: 4vh;
     }
-  }
-  
-  & a {
-    margin: 1rem 0;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: black;
-  }
-  
-  & a:hover {
-    text-decoration: underline;
+    
+    & a {
+      margin: 1rem 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: black;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
