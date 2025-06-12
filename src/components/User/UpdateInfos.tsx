@@ -74,7 +74,7 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
         required
       />
 
-      <button className="form-button" type="submit">
+      <button className="user-button" type="submit">
         Modifier
       </button>
     </form>

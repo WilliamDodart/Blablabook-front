@@ -73,7 +73,7 @@ function UpdatePassword({ getUser, setConfirmModal }: IUpdatePassword) {
         required
       />
 
-      <button className="form-button" type="submit">
+      <button className="user-button" type="submit">
         Modifier
       </button>
     </form>
