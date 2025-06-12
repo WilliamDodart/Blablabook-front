@@ -128,8 +128,8 @@ function User({
       />
 
       <div className="user-profile-container">
-        <div className="user-data-section">
-          <p className={`user-update-form-title fade ${fadeClass}`}>
+        <div className="user-profile-container-datas">
+          <p className={`user-profile-container-datas-title fade ${fadeClass}`}>
             {displayedSection}
           </p>
 

@@ -1,174 +1,109 @@
 @use '../../styles/variables' as v;
 @use '../../styles/section';
 
-.user-profile {
-    background-color: v.$base-color;
-    padding: 0;
 
-    &-header {
-        background-color: v.$base-color;
-        width: 100%;
-        margin: 0 auto;
-        padding: 2rem 0 0 0;
+//-------------Update Infos --------------------------
+.profile-infos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; 
+    width: 100%;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeInUp 0.6s ease forwards;
 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        &-title {
-            font-size: 2.8rem;
-            margin: 0;
+    @keyframes fadeInUp {
+        to {
+        opacity: 1;
+        transform: translateY(0);
         }
+    }
 
-        &-navlink {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 0 0 0;
-            width: 100%;
-             
-            
-            & .user-profile-header-list-link {
-                padding: 0 0 0.5rem 0;
-                color: v.$marron-color;
-                font-family: "Inter";
-                font-size: 1.3rem;
-                font-weight: 300;
-                text-decoration: none;
-                text-align: center;
-                margin: 0 1rem 1.5rem 1rem;
-                display: flex;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                gap: 2rem;
-            }
+    & label {
+        width: 100%;
+        margin: 5% 0 0 0;
+    }
 
-            & .selected-status {
-                text-decoration: underline;
-                color: #d1bda5;                
-            }
+    & input {
+        width: 100%;
+        margin: 0.3vh 0% 0 0;
+        padding: 8px;
+        border-radius: 4px;
+        border: solid 2px v.$secondary-color;
+        background-color: white; 
+        font-size: 0.9rem;
+    }
 
-            & .user-profile-header-list-link:hover {
-                color: v.$secondary-color;
-            }
+    & .form-button {
+        all: unset;
+        background-color: v.$secondary-color; 
+        text-align: center;
+        color: v.$base-color;
+        margin: 3vh auto 5vh auto;
+        border-radius: 8px;
+        transition: transform 0.3s ease-in-out;
+        padding: 15px 40px; 
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.03);
         }
     }
 }
 
-.user-profile-container {
-    background-color: v.$primary-color;
-    flex:1;
-    display: flex;
-    flex-wrap: wrap;
-    font-family: "Inter";
-    max-width: 1500px;
-    margin: 2rem auto;
-    padding: 5%;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 5vw;
+//----------------------------------------------------
+
+
+.user-profile {
+    background-color: v.$base-color;
+    padding: 0;
     
-
-
-    & .user-data-section {
-        min-width: 250px;
-        max-width: 480px;
-        width: 50vh;
-
+    &-container {
+        background-color: v.$primary-color;
+        flex:1;
         display: flex;
-        flex-direction: column;
-
-
-
-        & .user-update-form-title {
-            font-weight: bold;
-            font-size: calc(1.3rem + 0.5vw);
-            text-align: center;
-            margin-bottom: 4.5vh;
-            color: v.$marron-color
-            
-        }
-
-
+        flex-wrap: wrap;
+        font-family: "Inter";
+        max-width: 1500px;
+        margin: 2rem auto;
+        padding: 5%;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 5vw;
     
-        & form {
+        &-datas {
+            min-width: 250px;
+            max-width: 480px;
+            width: 50vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: flex-start; 
-            width: 100%;
-            opacity: 0;
-            transform: translateY(-20px);
-            animation: fadeInUp 0.6s ease forwards;
-          
-          
-          @keyframes fadeInUp {
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-        }
 
-            & label {
-                width: 100%;
-                margin: 5% 0 0 0;
-
-                & em {
-                    color: v.$red-color;
-                }
-            }
-
-            & input {
-                width: 100%;
-                margin: 0.3vh 0% 0 0;
-                padding: 8px;
-                border-radius: 4px;
-                border: solid 2px v.$secondary-color;
-                background-color: white; 
-                font-size: 0.9rem;
-            }
-
-            & .register-form-error {
-                font-size: 0.9rem;
-            }
-
-            & .user-update-form-button {
+            &-title {
+                font-weight: bold;
+                font-size: calc(1.3rem + 0.5vw);
+                text-align: center;
+                margin-bottom: 4.5vh;
+                color: v.$marron-color
+            }    
+            
+            & .user-delete-button {
                 all: unset;
-                background-color: v.$secondary-color; 
+                background-color: v.$red-color;
+                padding: 15px 40px; 
                 text-align: center;
                 color: v.$base-color;
-                margin: 3vh auto 5vh auto;
                 border-radius: 8px;
-                transition: transform 0.3s ease-in-out;
-                
-                padding: 15px 40px; 
                 cursor: pointer;
+                max-width: 230px;
+                margin: 1vh auto 5vh auto;
+                transition: transform 0.3s ease-in-out;
 
                 &:hover {
                     transform: scale(1.03);
                 }
             }
-
-        }     
-        
-        & .user-delete-button {
-            all: unset;
-            background-color: v.$red-color;
-            padding: 15px 40px; 
-            text-align: center;
-            color: v.$base-color;
-            border-radius: 8px;
-            cursor: pointer;
-            max-width: 230px;
-            margin: 1vh auto 5vh auto;
-            transition: transform 0.3s ease-in-out;
-
-            &:hover {
-                transform: scale(1.03);
-            }
         }
-    }
     
     & #user-libraries-section {  
         display: flex;
@@ -491,7 +426,7 @@
 
         }
     }
-
+}
 }
 
 .fade {
@@ -502,11 +437,3 @@
       opacity: 0;
     }
   }
-
-
-@media screen and (max-width:800px){
-    .user-profile-header-title {
-        margin-top: 3rem;
-    }
-    
-}

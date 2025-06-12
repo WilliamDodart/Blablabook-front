@@ -50,7 +50,7 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
   }
 
   return (
-    <form onSubmit={handleUserDatasUpdate}>
+    <form className="profile-infos" onSubmit={handleUserDatasUpdate}>
       <InputField label="Nom" name="name" defaultValue={user?.name} />
 
       <InputField
@@ -74,7 +74,7 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
         required
       />
 
-      <button className="user-update-form-button" type="submit">
+      <button className="form-button" type="submit">
         Modifier
       </button>
     </form>

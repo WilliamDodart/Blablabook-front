@@ -21,10 +21,7 @@ function ReviewModal({
   const [hoverRating, setHoverRating] = useState<number | null>(null);
 
   const handleReviewSubmit = async () => {
-    console.log('testing');
-    console.log(currentBook);
     if (!currentBook) return;
-    console.log('testing2');
     try {
       console.log(currentBook);
       await api.post(`/book/${currentBook.id}/review`, {
