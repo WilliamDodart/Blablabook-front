@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import type { IUser } from '../../@types/user';
 import api from '../../utils/axiosApi';
+import './Reviews.scss'
 
 interface IReviewsProps {
   user?: IUser;
@@ -19,25 +20,25 @@ function Reviews({ user, setReviewed }: IReviewsProps) {
   };
 
   return (
-    <div className="user-reviews-section">
-      <p className="user-reviews-section-title">
+    <div className="profile-reviews">
+      <p className="profile-reviews-title">
         Mes avis ({user?.Reviews.length})
       </p>
       {user?.Reviews && user.Reviews.length > 0 && (
-        <div className="user-reviews-section-reviews-container">
+        <div className="profile-reviews-container">
           <ul>
             {user.Reviews.map((review) => (
-              <div
+              <li
                 key={review.id}
-                className="user-reviews-section-reviews-container-review-container"
+                className="one-review"
               >
                 <Link to={`/book/${review.Book.id}`}>
-                  <div className="user-reviews-section-reviews-container-review-container-book-img">
-                    <img src={review.Book.image} alt="book-image" />
+                  <div className="one-review-cover">
+                    <img src={review.Book.image} alt="Couverture du livre contenant le commentaire" />
                   </div>
                 </Link>
 
-                <li className="user-reviews-section-reviews-container-review-container-text-container">
+                <div className="one-review-text-container">
                   <p>
                     <strong>{review.Book.title}</strong>
                   </p>
@@ -57,11 +58,11 @@ function Reviews({ user, setReviewed }: IReviewsProps) {
                   >
                     <img
                       src="../Pictures/tabler--trash.svg"
-                      alt="Review Trash Icon"
+                      alt="Icone de suppression en forme de poubelle"
                     />
                   </button>
-                </li>
-              </div>
+                </div>
+              </li>
             ))}
           </ul>
         </div>

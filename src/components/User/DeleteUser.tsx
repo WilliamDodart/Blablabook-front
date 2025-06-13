@@ -6,7 +6,7 @@ function DeleteUser({ setDisplayDeleteUserModal }: IDeleteUserProps) {
   return (
     <button
       type="button"
-      className="user-delete-button"
+      className="user-button delete-button"
       onClick={() => setDisplayDeleteUserModal(true)}
     >
       Supprimer mon compte

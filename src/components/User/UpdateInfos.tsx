@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { IUser, IUserDatasUpdateError } from '../../@types/user';
 import api from '../../utils/axiosApi';
 import InputField from '../Fields/InputField';
+import './Update.scss';
 
 interface IUpdateInfosProps {
   user?: IUser;
@@ -50,7 +51,7 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
   }
 
   return (
-    <form onSubmit={handleUserDatasUpdate}>
+    <form className="profile-infos" onSubmit={handleUserDatasUpdate}>
       <InputField label="Nom" name="name" defaultValue={user?.name} />
 
       <InputField
@@ -74,7 +75,7 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
         required
       />
 
-      <button className="user-update-form-button" type="submit">
+      <button className="user-button" type="submit">
         Modifier
       </button>
     </form>

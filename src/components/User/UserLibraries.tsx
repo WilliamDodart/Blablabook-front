@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import type { IUser } from '../../@types/user';
 import api from '../../utils/axiosApi';
+import './UserLibraries.scss'
 
 interface IUserLibrariesProps {
   user?: IUser;
@@ -44,37 +45,38 @@ function UserLibraries({
   }
 
   return (
-    <div id="user-libraries-section">
-      <p id="user-libraries-section-title">Mes bibliothèques</p>
+    <div className="profile-libraries">
+      <p className="profile-libraries-title">Mes bibliothèques</p>
 
-      <ul id="libraries-list">
+      <ul className="profile-libraries-list">
         {user?.Libraries?.map((library, index) => {
           return (
             <li
               key={library.id}
-              className="animated-library"
+              className="profile-library"
               style={{
                 animationDelay: `${index * 70}ms`,
               }}
             >
-              <Link to={'/myLibrary'}>
+              <Link to={'/myLibrary'} className="profile-library-link ">
                 <figure>
-                  <div className="book-img">
+                  <div className="profile-library-cover">
                     {library.Books[0]?.image ? (
-                      <img src={library.Books[0].image} alt="book-image" />
+                      <img src={library.Books[0].image} alt="Couverture d'un livre de la bibliothèque" />
                     ) : (
-                      <div className="no-book-img">
+                      <div className="profile-library-cover-empty">
                         <p>
                           Il n'y a pas encore de livre dans cette bibliothèque.
                           Ajoutez en un !
                         </p>
-                        <p className="addbook-box-btn">
+                        <p className="add-button">
                           <em>+</em> Ajouter
                         </p>
                       </div>
                     )}
                   </div>
-                  <figcaption className="library-name">
+                  
+                  <figcaption className="profile-library-name">
                     {library.name}
                   </figcaption>
                 </figure>
@@ -91,17 +93,17 @@ function UserLibraries({
                     name="library-rename-input"
                     placeholder={library.name}
                     value={newLibraryName}
-                    className="library-rename-input"
+                    className="profile-library-rename"
                     onChange={(e) => setNewLibraryName(e.target.value)}
                     required
                   />
-                  <button className="library-rename" type="submit">
+                  <button className="validate-button" type="submit">
                     Valider
                   </button>
                 </form>
               ) : (
                 <button
-                  className="library-update"
+                  className="update-button"
                   type="button"
                   onClick={() => {
                     setEditingLibraryId(library.id);
@@ -114,7 +116,7 @@ function UserLibraries({
 
               <button
                 type="button"
-                className="library-delete"
+                className="delete-button"
                 onClick={() => {
                   openDeleteLibraryModal(library.id);
                 }}

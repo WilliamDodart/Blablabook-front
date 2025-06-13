@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { IUserPasswordUpdateError } from '../../@types/user';
 import api from '../../utils/axiosApi';
 import InputField from '../Fields/InputField';
+import './Update.scss';
 
 interface IUpdatePassword {
   getUser: () => Promise<void>;
@@ -48,7 +49,7 @@ function UpdatePassword({ getUser, setConfirmModal }: IUpdatePassword) {
   }
 
   return (
-    <form onSubmit={handleUserPasswordUpdate}>
+    <form className="profile-password" onSubmit={handleUserPasswordUpdate}>
       <InputField
         label="Mot de passe actuel"
         type="password"
@@ -73,7 +74,7 @@ function UpdatePassword({ getUser, setConfirmModal }: IUpdatePassword) {
         required
       />
 
-      <button className="user-update-form-button" type="submit">
+      <button className="user-button" type="submit">
         Modifier
       </button>
     </form>
