@@ -1,7 +1,6 @@
 @use '../../styles/variables' as v;
 
 .navbar {
-    
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -143,8 +142,6 @@ nav ul {
   font-weight: 100;
   color: whitesmoke;
 }
-
-
 
 .search-container {
   position: relative;
