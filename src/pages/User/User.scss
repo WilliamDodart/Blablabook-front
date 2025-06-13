@@ -67,7 +67,168 @@
 }
 
 //----------------------------------------------------
+//-------------------Profile Libraries---------------------------------
 
+.profile-libraries {  
+        display: flex;
+        flex-direction: column; 
+        justify-content: center; 
+        max-width: 800px;
+
+        &-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: calc(1.3rem + 0.5vw);
+            margin-bottom: 4.5vh;
+            color: v.$marron-color;
+        }
+
+        &-list {
+            display: flex;
+            margin: 0 auto;
+            gap: calc(3vh + 1vw);
+            flex-wrap: wrap;
+            padding-left: 0px;
+            justify-content: center;
+
+        //Each library css
+        & .profile-library {
+            width: 150px; 
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeInUp 0.4s ease forwards;
+            
+            &-link {
+                text-decoration: none;
+            }
+
+            &-cover {
+                width: 150px;
+                height: 220px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                
+                & img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit:fill;
+                    display: block;
+                }
+
+                &-empty {
+                    background-color: v.$base-color;
+                    border-radius: 8px;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0.5rem;
+                    
+                    & p {
+                        text-align: center;
+                        text-decoration: none;
+                        background-color: v.$primary-color;
+                        color: v.$secondary-color;
+                        border-radius: 8px;
+                        padding: 1.5rem 0rem;
+                        margin: 0;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                        
+                        &.add-button {
+                            font-weight: 300;
+                            margin: 0.5rem 0 0 0;
+                            padding: 0.5rem 1.5rem;
+                            width: 100%;
+                            
+                            em {
+                                font-style: normal;
+                                font-size: 1.2rem;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Name for each library
+             &-name {
+                    margin-top: 1rem;
+                    height: 50px;
+                    font-size: 1.3rem;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    line-clamp: 1.2rem;
+                    max-height: calc(1.2rem * 2 + 0.1rem); 
+                    color: v.$police-color;
+                    text-align: center;
+                }
+
+            &-rename {
+                font-size: 0.9rem;
+                border-radius: 5px;
+                margin-top: 1rem;
+                padding: 1rem;
+                width: 100%;
+                height: 1.5rem;                    
+                border: solid 1px v.$primary-color;
+                box-shadow: 0 5px 5px rgba(0, 0, 0, 0.04);
+                opacity: 0;
+                transform: translateY(-5px);
+                animation: fadeInUp 0.6s ease forwards;   
+            }
+            
+            //All buttons
+            & button {
+                all: unset;
+                width: 100%;
+                text-align: center;
+                color: v.$base-color;
+                padding: 8px 0;
+                border-radius: 8px;
+                cursor: pointer;
+                
+                &.update-button {
+                    background-color: v.$secondary-color; 
+                    margin: 2vh 0 1.5vh 0; 
+                    transition: transform 0.3s ease-in-out;
+                    
+                    &:hover {
+                        background-color: v.$marronlight-color; 
+                    }
+                }
+                        
+                &.delete-button {
+                    background-color: v.$red-color;
+                    transition: transform 0.3s ease-in-out;
+                    
+                    &:hover {
+                        background-color: v.$darkred-color;
+                        }
+                }
+    
+                &.validate-button {
+                    background-color: #4abb53; 
+                    margin: 1vh 0 1.5vh 0; 
+                    transition: transform 0.3s ease-in-out;
+                    
+                    &:hover {
+                        background-color: #2b8332; 
+                    }
+                }
+            }
+        }           
+    }        
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 
+//----------------------------------------------------
 
 .user-profile {
     background-color: v.$base-color;
@@ -108,209 +269,7 @@
 
  // ---------------------------- WIP -------------------------------           
             
-            
     
-    & #user-libraries-section {  
-        display: flex;
-        flex-direction: column; 
-        justify-content: center; 
-        max-width: 800px;
-
-        & #user-libraries-section-title {
-            text-align: center;
-            font-weight: bold;
-            font-size: calc(1.3rem + 0.5vw);
-            margin-bottom: 4.5vh;
-            color: v.$marron-color
-        }
-
-        & #libraries-list {
-
-            display: flex;
-            margin: 0 auto;
-            gap: calc(3vh + 1vw);
-            flex-wrap: wrap;
-            padding-left: 0px;
-            justify-content: center;
-
-        & .animated-library {
-            opacity: 0;
-            transform: translateX(-20px);
-            animation: fadeInUp 0.4s ease forwards;
-        }
-          
-          @keyframes fadeInUp {
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-        }
-            
-
-            & li{
-                width: 150px;
-
-                & .library-name {
-                    margin-top: 12%;
-                    height: 50px;
-                    font-size: 1.3rem;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    line-height: 1.2rem;
-                    line-clamp: 1.2rem;
-                    max-height: calc(1.2rem * 2 + 0.1rem); 
-                }
-
-                & .library-rename-input {
-                    font-size: 0.9rem;
-                    border-radius: 5px;
-                    margin-top: 1rem;
-                    padding: 1rem;
-                    width: 100%;
-                    height: 1.5rem;                    
-                    border: solid 1px v.$primary-color;
-                    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.04);
-                    opacity: 0;
-                    transform: translateY(-5px);
-                    animation: fadeInUp 0.6s ease forwards;
-                  
-                  
-                  @keyframes fadeInUp {
-                        to {
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-                }
-                
-
-
-                & .library-update {
-                    all: unset;
-                    width: 100%;
-                    background-color: v.$secondary-color; 
-                    text-align: center;
-                    color: v.$base-color;
-                    margin: 2vh 0 1.5vh 0; 
-                    padding: 8px 0; 
-                    border-radius: 8px;
-                    transition: transform 0.3s ease-in-out;
-                    cursor: pointer;
-
-                    &:hover {
-                        transform: scale(1.03);
-                    }
-                }
-
-                & .library-rename {
-                    all: unset;
-                    width: 100%;
-                    background-color: #4abb53; 
-                    text-align: center;
-                    color: v.$base-color;
-                    margin: 1vh 0 1.5vh 0; 
-                    padding: 8px 0;
-                    border-radius: 8px;
-                    transition: transform 0.3s ease-in-out;
-                    cursor: pointer;
-
-                        &:hover {
-                            transform: scale(1.03);
-                        }
-                }
-    
-                & .library-delete {
-                    all: unset;
-                    width: 100%;
-                    background-color: v.$red-color;
-                    padding: 8px 0; 
-                    text-align: center;
-                    color: v.$base-color;
-                    border-radius: 8px;
-                    transition: transform 0.3s ease-in-out;
-                    cursor: pointer;
-
-                        &:hover {
-                            transform: scale(1.03);
-                        }
-                }
-            }
-
-            & a {
-                text-decoration: none;
-            }
-
-            & figure {
- 
-
-                & .book-img {
-
-                    width: 150px;
-                    height: 220px;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                    
-                    & img {
-                        position: relative;
-                        width: 100%;
-                        height: 100%;
-                        object-fit:fill;
-                        display: block;
-                    }
-                }
-
-                & .no-book-img {
-                    display: flex;
-                    flex-direction: column;
-                    background-color: v.$base-color;
-                    border-radius: 8px;
-                    height: 100%;
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 5%;
-
-                    & .addbook-box-btn {
-                        font-size: 1rem;
-                        color: v.$secondary-color;
-                        background-color:v.$primary-color;
-                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-                        font-weight: 300;
-                        margin: 0.5rem 0 0 0;
-                        padding: 0.5rem 1.5rem;
-                        border-radius: 8px;
-                        width: 100%;
-                    }
-            
-                    em {
-                        font-style: normal;
-                        font-size: 1.2rem;
-                    }
-
-                    & p {
-                        text-align: center;
-                        font-size: 1rem;
-                        text-decoration: none;
-                        background-color: v.$primary-color;
-                        color: v.$secondary-color;
-                        border-radius: 8px;
-                        padding: 1.5rem 0rem;
-                        margin: 0;
-                    }
-                }
-                
-                & figcaption {
-                    font-size: calc(1rem + 0.5vw);
-                    color: v.$police-color;
-                    font-family: "Inter";
-                    text-align: center;
-                }
-            }            
-        }        
-    }
     
     & .user-reviews-section {
 
