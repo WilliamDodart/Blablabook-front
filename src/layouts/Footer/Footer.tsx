@@ -5,13 +5,13 @@ function Footer() {
   return (
     <div className="footer">
       <div className="footer-top">
-        <Link to="legal-notice">Mentions Légales</Link>
-        <Link to="/confidentality"> Confidentialité </Link>
-        <Link to="/contact">Contact</Link>
+        <Link className="footer-top-link" to="legal-notice">Mentions Légales</Link>
+        <Link className="footer-top-link" to="/confidentality"> Confidentialité </Link>
+        <Link className="footer-top-link" to="/contact">Contact</Link>
       </div>
 
       <div className="footer-bottom">
-        <p>©2025 Blabla Book - Tous droits réservés</p>
+        <p className="footer-bottom-paragraph" >©2025 Blabla Book - Tous droits réservés</p>
       </div>
     </div>
   );
