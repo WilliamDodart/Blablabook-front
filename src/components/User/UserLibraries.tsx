@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import type { IUser } from '../../@types/user';
 import api from '../../utils/axiosApi';
+import './UserLibraries.scss'
 
 interface IUserLibrariesProps {
   user?: IUser;

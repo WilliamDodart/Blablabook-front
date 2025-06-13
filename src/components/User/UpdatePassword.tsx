@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { IUserPasswordUpdateError } from '../../@types/user';
 import api from '../../utils/axiosApi';
 import InputField from '../Fields/InputField';
+import './Update.scss';
 
 interface IUpdatePassword {
   getUser: () => Promise<void>;
