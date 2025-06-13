@@ -30,38 +30,42 @@ function UserMenu({
     <>
       {isLogged ? (
         <>
-          <li>
+          <li className="user-menu">
             <NavLink
               to="/user"
-              className={({ isActive }) => (isActive ? 'active' : '')}
+              className={({ isActive }) =>
+                isActive ? 'active user-menu-link' : 'user-menu-link'
+              }
               onClick={() => setMenuBurger(false)}
             >
               Profil
             </NavLink>
           </li>
           {user?.admin && (
-            <li>
+            <li className="user-menu">
               <NavLink
                 to="/admin"
-                className={({ isActive }) => (isActive ? 'active' : '')}
+                className={({ isActive }) =>
+                  isActive ? 'active user-menu-link' : 'user-menu-link'
+                }
                 onClick={() => setMenuBurger(false)}
               >
                 Admin
               </NavLink>
             </li>
           )}
-          <li>
-            <Link to="/" className="button-connect" onClick={handleLogOut}>
+          <li className="user-menu">
+            <Link to="/" className="user-menu-link" onClick={handleLogOut}>
               Déconnexion
             </Link>
           </li>
         </>
       ) : (
         <>
-          <li>
+          <li className="user-menu">
             <Link
               to="#"
-              className="button-connect"
+              className="user-menu-link"
               onClick={() => {
                 setDisplayLoginForm(true);
                 setMenuBurger(false);
@@ -70,10 +74,10 @@ function UserMenu({
               Se connecter
             </Link>
           </li>
-          <li>
+          <li className="user-menu">
             <Link
               to="#"
-              className="create-account"
+              className="user-menu-link"
               onClick={() => {
                 setDisplayRegisterForm(true);
                 setMenuBurger(false);

@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import type { IBooks } from '../../@types/books';
+import './SearchBar.scss';
 
 interface ISearchBarProps {
   searchResults: IBooks[];
@@ -15,22 +16,22 @@ function SearchBar({
   setSearchResults,
 }: ISearchBarProps) {
   return (
-    <div className="search-container">
+    <div className="search-bar">
       <input
         type="text"
-        id="search"
+        className="search-bar-input"
         name="search"
         placeholder="Recherche par titre, auteur, ISBN ..."
         value={searchTerm}
         onChange={(event) => setSearchTerm(event.target.value)}
       />
       {searchTerm.length > 0 && searchResults.length > 0 && (
-        <ul className="search-result">
+        <ul className="search-bar-list">
           {searchResults.map((book) => (
-            <li key={book.id}>
+            <li className="search-bar-list-result" key={book.id}>
               <Link
                 to={`/book/${book.id}`}
-                className="book-result"
+                className="search-bar-list-result-link"
                 onClick={() => {
                   setSearchTerm('');
                   setSearchResults([]);

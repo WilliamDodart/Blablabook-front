@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router';
+import './Menu.scss';
 
 interface IGuestMenuProps {
   isLogged: boolean;
@@ -20,30 +21,36 @@ function GuestMenu({
   }
   return (
     <>
-      <li>
+      <li className="guest-menu">
         <NavLink
           to="/"
-          className={({ isActive }) => (isActive && isLogged ? 'active' : '')}
+          className={({ isActive }) =>
+            isActive && isLogged ? 'active guest-menu-link' : 'guest-menu-link'
+          }
           onClick={() => setMenuBurger(false)}
         >
           Accueil
         </NavLink>
       </li>
 
-      <li>
+      <li className="guest-menu">
         <NavLink
           to={isLogged ? '/books' : ''}
-          className={({ isActive }) => (isActive && isLogged ? 'active' : '')}
+          className={({ isActive }) =>
+            isActive && isLogged ? 'active guest-menu-link' : 'guest-menu-link'
+          }
           onClick={(event) => handleLoggedClick(event)}
         >
           Livres
         </NavLink>
       </li>
 
-      <li>
+      <li className="guest-menu">
         <NavLink
           to={isLogged ? '/myLibrary' : ''}
-          className={({ isActive }) => (isActive && isLogged ? 'active' : '')}
+          className={({ isActive }) =>
+            isActive && isLogged ? 'active guest-menu-link' : 'guest-menu-link'
+          }
           onClick={(event) => handleLoggedClick(event)}
         >
           Bibliothèque
