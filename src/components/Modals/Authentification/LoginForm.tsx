@@ -5,6 +5,7 @@ import { useState } from 'react';
 import type { ILibrary } from '../../../@types/books';
 import type { IUser, IUserError } from '../../../@types/user';
 import api from '../../../utils/axiosApi';
+import InputField from '../../Fields/InputField';
 
 interface iRegisterFormProps {
   setUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
@@ -69,37 +70,29 @@ function LoginForm({
         >
           <img src="../Pictures/gridicons--cross.svg" alt="Fermer la fenêtre" />
         </button>
+
         <form
           className="auth-modal-form"
           method="post"
           onSubmit={handleSubmitLogin}
         >
           <p className="auth-modal-form-title">Connexion</p>
-          <label className="auth-modal-form-label" htmlFor="email">
-            Adresse mail
-          </label>
-          <input
-            className="auth-modal-form-input"
-            type="email"
-            id="email"
-            name="email"
-          />
-          {errors.email && (
-            <p className="register-form-error">{errors.email}</p>
-          )}
 
-          <label className="auth-modal-form-label" htmlFor="password">
-            Mot de passe
-          </label>
-          <input
-            className="auth-modal-form-input"
-            type="password"
-            id="password"
-            name="password"
+          <InputField
+            label="Adresse mail"
+            type="email"
+            name="email"
+            error={errors.email}
+            required
           />
-          {errors.password && (
-            <p className="register-form-error">{errors.password}</p>
-          )}
+
+          <InputField
+            label="Mot de passe"
+            type="password"
+            name="password"
+            error={errors.password}
+            required
+          />
 
           <button className="auth-modal-form-button" type="submit">
             Se connecter
