@@ -3,14 +3,14 @@
 .guest-menu,
 .user-menu {
     padding: 16px;
-
+    
     &-link {
-    color: v.$police-color;
-    font-size: 4vw;
-    text-decoration: none; 
+        color: v.$police-color;
+        font-size: 1.3em;
+        text-decoration: none; 
 
-    font-family: "Inter";
-    font-weight: bold;
+        font-family: "Inter";
+        font-weight: bold;
 
         &:hover {
             text-decoration: underline;
@@ -28,6 +28,10 @@
         
         & a {
             color: white;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            max-width: 100%;
         }
     }
 }
