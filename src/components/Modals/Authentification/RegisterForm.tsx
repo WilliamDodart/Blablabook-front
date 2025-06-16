@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import type { IRegisterError } from '../../../@types/user';
 import api from '../../../utils/axiosApi';
+import InputField from '../../Fields/InputField';
 
 interface IRegisterFormProps {
   setDisplayLoginForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -45,7 +46,7 @@ function RegisterForm({
   }
 
   return (
-    <div className="hidden-background" /* onClick={closeRegisterForm} */>
+    <div className="hidden-background">
       <div
         className="auth-modal"
         onClick={(event) => event.stopPropagation()}
@@ -64,57 +65,31 @@ function RegisterForm({
           onSubmit={handleSubmitRegister}
         >
           <p className="auth-modal-form-title">Rejoindre BlaBla Book</p>
-          <label className="auth-modal-form-label" htmlFor="email">
-            Adresse mail
-          </label>
-          <input
-            className="auth-modal-form-input"
+
+          <InputField
+            label="Adresse mail"
             type="email"
-            id="email"
             name="email"
+            error={errors.email}
+            required
           />
-          {errors.email && (
-            <p className="auth-modal-form-error">{errors.email}</p>
-          )}
 
-          <label className="auth-modal-form-label" htmlFor="firstname">
-            Prénom
-          </label>
-          <input
-            className="auth-modal-form-input"
-            type="text"
-            id="firstname"
+          <InputField
+            label="Prénom"
             name="firstname"
+            error={errors.firstname}
+            required
           />
-          {errors.firstname && (
-            <p className="auth-modal-form-error">{errors.firstname}</p>
-          )}
 
-          <label className="auth-modal-form-label" htmlFor="name">
-            Nom
-          </label>
-          <input
-            className="auth-modal-form-input"
-            type="text"
-            id="name"
-            name="name"
-          />
-          {errors.name && (
-            <p className="auth-modal-form-error">{errors.name}</p>
-          )}
+          <InputField label="Nom" name="name" error={errors.name} required />
 
-          <label className="auth-modal-form-label" htmlFor="password">
-            Mot de passe
-          </label>
-          <input
-            className="auth-modal-form-input"
+          <InputField
+            label="Mot de passe"
             type="password"
-            id="password"
             name="password"
+            error={errors.password}
+            required
           />
-          {errors.password && (
-            <p className="auth-modal-form-error">{errors.password}</p>
-          )}
 
           <div className="auth-modal-form-cg">
             <input

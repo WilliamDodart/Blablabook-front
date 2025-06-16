@@ -30,7 +30,7 @@ function Navbar({
   const [searchResults, setSearchResults] = useState<IBooks[]>([]);
 
   useEffect(() => {
-    const fetchResults = async () => {
+    async function fetchResults() {
       if (searchTerm.trim().length < 1) {
         setSearchResults([]);
         return;
@@ -49,18 +49,20 @@ function Navbar({
       } catch (error) {
         console.error(error);
       }
-    };
+    }
 
     fetchResults();
   }, [searchTerm]);
 
   return (
     <nav className="navbar">
-      <div id="logo">
-        <Link to="">
-          <img src="../Pictures/Logo2.png" alt="" className="header-logo" />
-        </Link>
-      </div>
+      <Link to="/" className="navbar-logo">
+        <img
+          src="../Pictures/modifLogo.png"
+          alt="Logo du site Blabla Book"
+          className="navbar-logo-img"
+        />
+      </Link>
 
       {isLogged ? (
         <SearchBar
@@ -70,11 +72,11 @@ function Navbar({
           setSearchResults={setSearchResults}
         />
       ) : (
-        <h1 className="title-blablabook">BlaBla Book</h1>
+        <h1 className="navbar-title">BlaBla Book</h1>
       )}
 
-      <div id="menu">
-        <ul className={menuBurger ? '' : 'hidden'}>
+      <div>
+        <ul className={menuBurger ? 'navbar-menu' : 'navbar-menu hidden'}>
           <GuestMenu
             isLogged={isLogged}
             setDisplayLoginForm={setDisplayLoginForm}
@@ -95,14 +97,24 @@ function Navbar({
 
       <Link
         to=""
-        className="burger-menu"
+        className="navbar-burger-menu"
         onClick={(e) => {
           e.preventDefault();
           setMenuBurger(!menuBurger);
         }}
       >
-        {!menuBurger && <img src="../Pictures/burgerMenu.svg" alt="Menu" />}
-        {menuBurger && <img src="../Pictures/burgerCross.svg" alt="Menu" />}
+        {!menuBurger && (
+          <img
+            src="../Pictures/burgerMenu.svg"
+            alt="Bouton cliquable pour afficher le menu déroulant"
+          />
+        )}
+        {menuBurger && (
+          <img
+            src="../Pictures/burgerCross.svg"
+            alt="Bouton cliquable pour cacher le menu déroulant"
+          />
+        )}
       </Link>
     </nav>
   );

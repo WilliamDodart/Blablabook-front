@@ -1,0 +1,51 @@
+@use '../../styles/variables' as v;
+
+.guest-menu,
+.user-menu {
+    padding: 16px;
+    
+    &-link {
+        color: v.$police-color;
+        font-size: 1.3em;
+        text-decoration: none; 
+
+        font-family: "Inter";
+        font-weight: bold;
+
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        &.active {
+            text-decoration: underline;
+        }
+    }
+    
+    &:last-child {
+        display: block;
+        background-color: v.$secondary-color;
+        
+        & a {
+            color: white;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            max-width: 100%;
+        }
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .guest-menu,
+    .user-menu {
+        padding: 0;
+
+        &-link {
+            color: white;
+            font-size: 1rem;
+        } 
+    }
+}
+
+
