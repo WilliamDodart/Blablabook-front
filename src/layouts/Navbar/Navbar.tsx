@@ -56,15 +56,13 @@ function Navbar({
 
   return (
     <nav className="navbar">
-      <div className="navbar-logo">
-        <Link to="/">
-          <img
-            src="../Pictures/Logo2.png"
-            alt="Logo du site Blabla Book"
-            className="navbar-logo-img"
-          />
-        </Link>
-      </div>
+      <Link to="/" className="navbar-logo">
+        <img
+          src="../Pictures/modifLogo.png"
+          alt="Logo du site Blabla Book"
+          className="navbar-logo-img"
+        />
+      </Link>
 
       {isLogged ? (
         <SearchBar
@@ -105,8 +103,18 @@ function Navbar({
           setMenuBurger(!menuBurger);
         }}
       >
-        {!menuBurger && <img src="../Pictures/burgerMenu.svg" alt="Menu" />}
-        {menuBurger && <img src="../Pictures/burgerCross.svg" alt="Menu" />}
+        {!menuBurger && (
+          <img
+            src="../Pictures/burgerMenu.svg"
+            alt="Bouton cliquable pour afficher le menu déroulant"
+          />
+        )}
+        {menuBurger && (
+          <img
+            src="../Pictures/burgerCross.svg"
+            alt="Bouton cliquable pour cacher le menu déroulant"
+          />
+        )}
       </Link>
     </nav>
   );
