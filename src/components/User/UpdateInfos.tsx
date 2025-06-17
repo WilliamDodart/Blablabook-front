@@ -43,7 +43,7 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
         };
         for (const error of zodErrors) {
           formattedErrors[error.field as keyof IUserDatasUpdateError] =
-            error.error;
+            error.message;
         }
         setErrors(formattedErrors);
       }

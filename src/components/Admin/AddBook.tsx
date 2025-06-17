@@ -48,9 +48,6 @@ function AddBook({
       getAllBooks();
       getAllGenres();
     } catch (error) {
-      //A SUPPRIMER --------------------------------------------------------------
-      console.log(error);
-
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;
         const formattedErrors: IAddBookError = {
@@ -67,6 +64,8 @@ function AddBook({
           formattedErrors[error.field as keyof IAddBookError] = error.message;
         }
         setErrors(formattedErrors);
+      } else {
+        console.error('Erreur lors de la modification du livres', error);
       }
     }
   }
@@ -152,9 +151,7 @@ function AddBook({
             placeholder="Description du livre"
             required
           />
-          {errors?.summary && (
-            <p className="register-form-error">{errors.summary}</p>
-          )}
+          {errors?.summary && <p className="form-error">{errors.summary}</p>}
 
           <button type="submit">Valider</button>
         </div>

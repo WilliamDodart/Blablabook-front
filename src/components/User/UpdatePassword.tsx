@@ -41,7 +41,7 @@ function UpdatePassword({ getUser, setConfirmModal }: IUpdatePassword) {
         };
         for (const error of zodErrors) {
           formattedErrors[error.field as keyof IUserPasswordUpdateError] =
-            error.error;
+            error.message;
         }
         setErrors(formattedErrors);
       }

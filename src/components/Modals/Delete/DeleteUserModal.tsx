@@ -47,7 +47,7 @@ function DeleteUserModal({
         };
         for (const error of zodErrors) {
           formattedErrors[error.field as keyof IUserPasswordUpdateError] =
-            error.error;
+            error.message;
         }
         setDeleteUserErrors(formattedErrors);
       }

@@ -40,7 +40,8 @@ function DeleteBookModal({
           password: '',
         };
         for (const error of zodErrors) {
-          formattedErrors[error.field as keyof IDeleteBookError] = error.error;
+          formattedErrors[error.field as keyof IDeleteBookError] =
+            error.message;
         }
         setErrors(formattedErrors);
       }

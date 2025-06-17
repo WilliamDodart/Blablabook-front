@@ -34,7 +34,7 @@ function InputField({
         defaultValue={defaultValue}
         required={required}
       />
-      {error && <p className="register-form-error">{error}</p>}
+      {error && <p className="form-error">{error}</p>}
     </>
   );
 }

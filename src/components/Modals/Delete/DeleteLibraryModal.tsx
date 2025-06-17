@@ -46,7 +46,7 @@ function DeleteLibraryModal({
         };
         for (const error of zodErrors) {
           formattedErrors[error.field as keyof IDeleteLibraryError] =
-            error.error;
+            error.message;
         }
         setDeleteLibraryErrors(formattedErrors);
       }

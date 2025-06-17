@@ -3,6 +3,8 @@ import type { IBooks, IGenre } from '../../@types/books';
 import api from '../../utils/axiosApi';
 import GenreField from '../Fields/GenreField';
 import InputField from '../Fields/InputField';
+import type { IAddBookError } from '../../@types/admin';
+import axios from 'axios';
 
 interface IUpdateBookProps {
   allBooks: IBooks[];
@@ -36,6 +38,7 @@ function UpdateBook({
   getAllGenres,
   getAllBooks,
 }: IUpdateBookProps) {
+  const [errors, setErrors] = useState<IAddBookError>({} as IAddBookError);
   const [updateBookState, setUpdateBookState] = useState(defaultBookState);
 
   //API Call
@@ -59,7 +62,25 @@ function UpdateBook({
       getAllBooks();
       getAllGenres();
     } catch (error) {
-      console.error('Erreur lors de la modification du livres', error);
+      if (axios.isAxiosError(error) && error.response?.data.errors) {
+        const zodErrors = error.response.data.errors;
+        const formattedErrors: IAddBookError = {
+          title: '',
+          image: '',
+          author: '',
+          publication_year: '',
+          editor: '',
+          isbn: '',
+          pages: '',
+          summary: '',
+        };
+        for (const error of zodErrors) {
+          formattedErrors[error.field as keyof IAddBookError] = error.message;
+        }
+        setErrors(formattedErrors);
+      } else {
+        console.error('Erreur lors de la modification du livres', error);
+      }
     }
   }
 
@@ -116,6 +137,7 @@ function UpdateBook({
             name="title"
             placeholder="Don Quichotte"
             value={updateBookState.title}
+            error={errors.title}
             onChange={(e) =>
               setUpdateBookState((prev) => ({
                 ...prev,
@@ -142,6 +164,7 @@ function UpdateBook({
             name="author"
             placeholder="Prénom Nom"
             value={updateBookState.author}
+            error={errors.author}
             onChange={(e) =>
               setUpdateBookState((prev) => ({
                 ...prev,
@@ -155,6 +178,7 @@ function UpdateBook({
             name="publication_year"
             placeholder="1964"
             value={String(updateBookState.publication_year)}
+            error={errors.publication_year}
             onChange={(e) =>
               setUpdateBookState((prev) => ({
                 ...prev,
@@ -168,6 +192,7 @@ function UpdateBook({
             name="editor"
             placeholder="Gallimard..."
             value={updateBookState.editor}
+            error={errors.editor}
             onChange={(e) =>
               setUpdateBookState((prev) => ({
                 ...prev,
@@ -181,6 +206,7 @@ function UpdateBook({
             name="isbn"
             placeholder="10 à 13 chiffres"
             value={String(updateBookState.isbn)}
+            error={errors.isbn}
             onChange={(e) =>
               setUpdateBookState((prev) => ({
                 ...prev,
@@ -194,6 +220,7 @@ function UpdateBook({
             name="pages"
             placeholder="361"
             value={String(updateBookState.pages)}
+            error={errors.pages}
             onChange={(e) =>
               setUpdateBookState((prev) => ({
                 ...prev,
@@ -207,6 +234,7 @@ function UpdateBook({
             label="1er genre:"
             option="Choisir le genre princial"
             allGenres={allGenres}
+            //error={errors.title}
           />
 
           <GenreField
@@ -215,6 +243,7 @@ function UpdateBook({
             option="Choisir le genre secondaire"
             allGenres={allGenres}
             primary={false}
+            //error={errors.title}
           />
 
           <label htmlFor="summary">Résumé:</label>
@@ -231,6 +260,7 @@ function UpdateBook({
             }
             required
           />
+          {errors.summary && <p className="form-error">{errors.summary}</p>}
 
           <button type="submit">Valider</button>
         </div>

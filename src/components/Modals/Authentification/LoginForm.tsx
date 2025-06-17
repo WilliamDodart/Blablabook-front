@@ -51,7 +51,7 @@ function LoginForm({
           password: '',
         };
         for (const error of zodErrors) {
-          formattedErrors[error.field as keyof IUserError] = error.error;
+          formattedErrors[error.field as keyof IUserError] = error.message;
         }
         setErrors(formattedErrors);
       }
