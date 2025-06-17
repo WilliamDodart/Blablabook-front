@@ -8,11 +8,18 @@ import InputField from '../Fields/InputField';
 import './AdminCrud.scss';
 
 interface IAddBookProps {
-  setConfirmModal: React.Dispatch<React.SetStateAction<string>>;
   allGenres: IGenre[];
+  setConfirmModal: React.Dispatch<React.SetStateAction<string>>;
+  getAllGenres: () => Promise<void>;
+  getAllBooks: () => Promise<void>;
 }
 
-function AddBook({ setConfirmModal, allGenres }: IAddBookProps) {
+function AddBook({
+  setConfirmModal,
+  allGenres,
+  getAllGenres,
+  getAllBooks,
+}: IAddBookProps) {
   const [errors, setErrors] = useState<IAddBookError>({} as IAddBookError);
   const [imageUrl, setImageUrl] = useState(
     'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/old-books-cover-design-template-528851dfc1b6ed275212cd110a105122_screen.jpg',
@@ -38,6 +45,8 @@ function AddBook({ setConfirmModal, allGenres }: IAddBookProps) {
         summary: formData.get('summary'),
       });
       setConfirmModal('add');
+      getAllBooks();
+      getAllGenres();
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;
@@ -55,6 +64,8 @@ function AddBook({ setConfirmModal, allGenres }: IAddBookProps) {
           formattedErrors[error.field as keyof IAddBookError] = error.message;
         }
         setErrors(formattedErrors);
+      } else {
+        console.error('Erreur lors de la modification du livres', error);
       }
     }
   }
@@ -140,9 +151,7 @@ function AddBook({ setConfirmModal, allGenres }: IAddBookProps) {
             placeholder="Description du livre"
             required
           />
-          {errors?.summary && (
-            <p className="register-form-error">{errors.summary}</p>
-          )}
+          {errors?.summary && <p className="form-error">{errors.summary}</p>}
 
           <button type="submit">Valider</button>
         </div>

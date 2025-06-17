@@ -5,21 +5,22 @@ import './ModalLibrary.scss';
 
 type IModalLibraryProps = {
   currentBook: IBooks | null | undefined;
-  setMyLibraries: React.Dispatch<React.SetStateAction<ILibrary[]>>;
   myLibraries: ILibrary[];
+  setMyLibraries: React.Dispatch<React.SetStateAction<ILibrary[]>>;
   setCurrentLibraries: React.Dispatch<React.SetStateAction<ILibrary[]>>;
   setDisplayModalLibrary: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function ModalLibrary({
-  setDisplayModalLibrary,
   currentBook,
-  setMyLibraries,
   myLibraries,
+  setMyLibraries,
   setCurrentLibraries,
+  setDisplayModalLibrary,
 }: IModalLibraryProps) {
   const [menuDeroulant, setMenuDeroulant] = useState(false);
 
+  //Change status of book
   async function editBookStatus() {
     const response = await api.patch(
       `/library/${currentBook?.LibraryBook.library_id}/book/${currentBook?.id}`,
@@ -29,8 +30,7 @@ function ModalLibrary({
     setDisplayModalLibrary(false);
   }
 
-  // ------------ FONCTION DE SUPPRESSION D'UN LIVRE D'UNE BIBLIOTHEQUE -----------------
-
+  //Delete book from Library
   async function deleteBookFromLibrary() {
     try {
       const response = await api.delete(
@@ -44,8 +44,7 @@ function ModalLibrary({
     }
   }
 
-  // ------------ FONCTION DE CHANGEMENT DE BIBLIOTHEQUE ------------------
-
+  // Change book of library
   async function changeLibrary(newLibraryId: number) {
     try {
       const response = await api.patch(
@@ -60,7 +59,7 @@ function ModalLibrary({
   }
 
   return (
-    <div className="hidden-background" /* onClick={closeModalLibrary} */>
+    <div className="hidden-background">
       <div className="library">
         <button
           type="button"
@@ -158,11 +157,11 @@ function ModalLibrary({
               <button
                 type="button"
                 className="library-change"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(event) => event.stopPropagation()}
               >
                 <select
-                  onChange={(e) => {
-                    const newLibraryId = Number.parseInt(e.target.value);
+                  onChange={(event) => {
+                    const newLibraryId = Number.parseInt(event.target.value);
                     changeLibrary(newLibraryId);
                   }}
                 >

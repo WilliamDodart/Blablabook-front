@@ -7,7 +7,7 @@ import type { IUser, IUserError } from '../../../@types/user';
 import api from '../../../utils/axiosApi';
 import InputField from '../../Fields/InputField';
 
-interface iRegisterFormProps {
+interface ILoginFormProps {
   setUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
   setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplayRegisterForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,14 +21,18 @@ function LoginForm({
   setDisplayRegisterForm,
   setMyLibraries,
   setDisplayLoginForm,
-}: iRegisterFormProps) {
+}: ILoginFormProps) {
   const [errors, setErrors] = useState<IUserError>({} as IUserError);
 
   async function handleSubmitLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formDatas = new FormData(event.currentTarget);
+    const form = new FormData(event.currentTarget);
+    const formData = {
+      email: form.get('email'),
+      password: form.get('password'),
+    };
     try {
-      const httpResponse = await api.post('/login', formDatas, {
+      const httpResponse = await api.post('/login', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -40,8 +44,6 @@ function LoginForm({
       setMyLibraries(response.data);
       setDisplayLoginForm(false);
     } catch (error) {
-      console.log(error);
-
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;
         const formattedErrors: IUserError = {
@@ -49,7 +51,7 @@ function LoginForm({
           password: '',
         };
         for (const error of zodErrors) {
-          formattedErrors[error.field as keyof IUserError] = error.error;
+          formattedErrors[error.field as keyof IUserError] = error.message;
         }
         setErrors(formattedErrors);
       }
@@ -57,7 +59,7 @@ function LoginForm({
   }
 
   return (
-    <div className="hidden-background" /* onClick={closeLoginForm} */>
+    <div className="hidden-background">
       <div
         className="auth-modal"
         onClick={(event) => event.stopPropagation()}

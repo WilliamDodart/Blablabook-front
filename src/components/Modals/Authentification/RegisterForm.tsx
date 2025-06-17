@@ -19,9 +19,16 @@ function RegisterForm({
 
   async function handleSubmitRegister(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formDatas = new FormData(event.currentTarget);
+    const form = new FormData(event.currentTarget);
+    const formData = {
+      email: form.get('email'),
+      password: form.get('password'),
+      firstname: form.get('firstname'),
+      name: form.get('name'),
+      cgv: form.get('cgv'),
+    };
     try {
-      await api.post('/register', formDatas, {
+      await api.post('/register', formData, {
         headers: {
           'Content-Type': 'application/json',
         },

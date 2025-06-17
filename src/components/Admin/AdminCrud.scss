@@ -99,8 +99,8 @@
 }
 
 //Error handler
-.register-form-error {
-    margin: 0;
+.form-error {
+    margin: 0.5rem 0 0 0;
     font-size: 0.9rem;
     font-weight: 500;
     color: v.$red-color;

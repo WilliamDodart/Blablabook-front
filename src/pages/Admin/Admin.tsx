@@ -82,10 +82,18 @@ function Admin() {
         />
       )}
 
+      {confirmModal === 'delete' && (
+        <ConfirmModal
+          setConfirmModal={setConfirmModal}
+          message="Ce livre a bien été supprimé de la base de données."
+        />
+      )}
+
       {displayDeleteBookModal && (
         <DeleteBookModal
           getAllBooks={getAllBooks}
           setDisplayDeleteBookModal={setDisplayDeleteBookModal}
+          setConfirmModal={setConfirmModal}
           currentBookIDtoUpdate={currentBookIDtoUpdate}
         />
       )}
@@ -107,13 +115,20 @@ function Admin() {
         </p>
 
         {adminChoice === 'Ajouter un livre' && (
-          <AddBook setConfirmModal={setConfirmModal} allGenres={allGenres} />
+          <AddBook
+            setConfirmModal={setConfirmModal}
+            allGenres={allGenres}
+            getAllBooks={getAllBooks}
+            getAllGenres={getAllGenres}
+          />
         )}
 
         {adminChoice === 'Modifier un livre' && (
           <UpdateBook
             allBooks={allBooks}
             allGenres={allGenres}
+            getAllBooks={getAllBooks}
+            getAllGenres={getAllGenres}
             setConfirmModal={setConfirmModal}
             currentBookIDtoUpdate={currentBookIDtoUpdate}
             setCurrentBookIDtoUpdate={setCurrentBookIDtoUpdate}
