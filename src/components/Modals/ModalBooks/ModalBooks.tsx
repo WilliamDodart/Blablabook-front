@@ -5,17 +5,15 @@ import api from '../../../utils/axiosApi';
 
 type IModalBooksProps = {
   currentBook: IBooks | null | undefined;
-  setMyLibraries: React.Dispatch<React.SetStateAction<ILibrary[]>>;
   myLibraries: ILibrary[];
-  displayReviewModal: boolean;
   setDisplayReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplayModalBook: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function ModalBooks({
-  setDisplayModalBook,
   currentBook,
   myLibraries,
+  setDisplayModalBook,
   setDisplayReviewModal,
 }: IModalBooksProps) {
   const [menuDeroulant, setMenuDeroulant] = useState<string | null>(null);
@@ -28,8 +26,7 @@ function ModalBooks({
     event: React.ChangeEvent<HTMLSelectElement>,
     type: 'read' | 'toRead',
   ) => {
-    const selectedLibraryId = Number.parseInt(event.target.value);
-
+    const selectedLibraryId = Number(event.target.value);
     if (!selectedLibraryId || !currentBook) return;
 
     const selectedLibrary = myLibraries.find(
@@ -48,7 +45,6 @@ function ModalBooks({
       await api.post(`/library/${selectedLibraryId}/book/${currentBook.id}`, {
         read: type === 'read',
       });
-
       setDisplayModalBook(false);
     } catch (error) {
       console.error(
@@ -58,12 +54,17 @@ function ModalBooks({
     }
   };
 
+  function handleReviewModal() {
+    setDisplayModalBook(false);
+    setDisplayReviewModal(true);
+  }
+
   return (
-    <div className="hidden-background" /* onClick={closeModalBook} */>
+    <div className="hidden-background">
       <div
         className="library"
-        onClick={(e) => e.stopPropagation()}
-        onKeyDown={(e) => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
+        onKeyDown={(event) => event.stopPropagation()}
       >
         <button
           type="button"
@@ -87,9 +88,9 @@ function ModalBooks({
             {menuDeroulant === 'read' && (
               <select
                 className="library-select"
-                onClick={(e) => e.stopPropagation()}
-                onChange={(e) => handleSelectLibrary(e, 'read')}
-                onKeyDown={(e) => e.stopPropagation()}
+                onClick={(event) => event.stopPropagation()}
+                onChange={(event) => handleSelectLibrary(event, 'read')}
+                onKeyDown={(event) => event.stopPropagation()}
               >
                 <option value="">Choisir une bibliothèque</option>
                 {myLibraries.map((library) => (
@@ -115,9 +116,9 @@ function ModalBooks({
             {menuDeroulant === 'toRead' && (
               <select
                 className="library-select"
-                onClick={(e) => e.stopPropagation()}
-                onChange={(e) => handleSelectLibrary(e, 'toRead')}
-                onKeyDown={(e) => e.stopPropagation()}
+                onClick={(event) => event.stopPropagation()}
+                onChange={(event) => handleSelectLibrary(event, 'toRead')}
+                onKeyDown={(event) => event.stopPropagation()}
               >
                 <option value="">Choisir une bibliothèque</option>
                 {myLibraries.map((library) => (
@@ -132,7 +133,7 @@ function ModalBooks({
           <button
             type="button"
             className="library-menu-li"
-            onClick={() => setDisplayReviewModal(true)}
+            onClick={handleReviewModal}
           >
             <img
               className="library-menu-li-img"
@@ -145,7 +146,7 @@ function ModalBooks({
           <button
             type="button"
             className="library-menu-li"
-            onClick={() => setDisplayReviewModal(true)}
+            onClick={handleReviewModal}
           >
             <img
               className="library-menu-li-img"

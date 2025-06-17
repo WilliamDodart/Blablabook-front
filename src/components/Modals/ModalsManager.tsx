@@ -77,9 +77,7 @@ function ModalsManager({
         <ModalBooks
           setDisplayModalBook={setDisplayModalBook}
           currentBook={currentBook}
-          setMyLibraries={setMyLibraries}
           myLibraries={myLibraries}
-          displayReviewModal={displayReviewModal}
           setDisplayReviewModal={setDisplayReviewModal}
         />
       )}

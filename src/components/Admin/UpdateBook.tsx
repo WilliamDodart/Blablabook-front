@@ -8,6 +8,8 @@ interface IUpdateBookProps {
   allBooks: IBooks[];
   allGenres: IGenre[];
   currentBookIDtoUpdate: number | undefined;
+  getAllGenres: () => Promise<void>;
+  getAllBooks: () => Promise<void>;
   setConfirmModal: React.Dispatch<React.SetStateAction<string>>;
   setCurrentBookIDtoUpdate: React.Dispatch<
     React.SetStateAction<number | undefined>
@@ -31,6 +33,8 @@ function UpdateBook({
   currentBookIDtoUpdate,
   setConfirmModal,
   setCurrentBookIDtoUpdate,
+  getAllGenres,
+  getAllBooks,
 }: IUpdateBookProps) {
   const [updateBookState, setUpdateBookState] = useState(defaultBookState);
 
@@ -52,6 +56,8 @@ function UpdateBook({
         summary: formData.get('summary'),
       });
       setConfirmModal('update');
+      getAllBooks();
+      getAllGenres();
     } catch (error) {
       console.error('Erreur lors de la modification du livres', error);
     }

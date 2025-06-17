@@ -8,11 +8,18 @@ import InputField from '../Fields/InputField';
 import './AdminCrud.scss';
 
 interface IAddBookProps {
-  setConfirmModal: React.Dispatch<React.SetStateAction<string>>;
   allGenres: IGenre[];
+  setConfirmModal: React.Dispatch<React.SetStateAction<string>>;
+  getAllGenres: () => Promise<void>;
+  getAllBooks: () => Promise<void>;
 }
 
-function AddBook({ setConfirmModal, allGenres }: IAddBookProps) {
+function AddBook({
+  setConfirmModal,
+  allGenres,
+  getAllGenres,
+  getAllBooks,
+}: IAddBookProps) {
   const [errors, setErrors] = useState<IAddBookError>({} as IAddBookError);
   const [imageUrl, setImageUrl] = useState(
     'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/old-books-cover-design-template-528851dfc1b6ed275212cd110a105122_screen.jpg',
@@ -38,7 +45,12 @@ function AddBook({ setConfirmModal, allGenres }: IAddBookProps) {
         summary: formData.get('summary'),
       });
       setConfirmModal('add');
+      getAllBooks();
+      getAllGenres();
     } catch (error) {
+      //A SUPPRIMER --------------------------------------------------------------
+      console.log(error);
+
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;
         const formattedErrors: IAddBookError = {

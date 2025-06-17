@@ -39,7 +39,7 @@ function ReviewModal({
   };
 
   return (
-    <div className="review-hidden-background" /* onClick={closeModalBook} */>
+    <div className="hidden-background">
       <div
         className="library"
         onClick={(e) => e.stopPropagation()}

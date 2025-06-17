@@ -3,16 +3,19 @@ import api from '../../../utils/axiosApi';
 import './Delete.scss';
 import axios from 'axios';
 import type { IDeleteBookError } from '../../../@types/admin';
+import InputField from '../../Fields/InputField';
 
 interface IDeleteProps {
   getAllBooks: () => Promise<void>;
   setDisplayDeleteBookModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setConfirmModal: React.Dispatch<React.SetStateAction<string>>;
   currentBookIDtoUpdate: number | undefined;
 }
 
 function DeleteBookModal({
   getAllBooks,
   setDisplayDeleteBookModal,
+  setConfirmModal,
   currentBookIDtoUpdate,
 }: IDeleteProps) {
   const [errors, setErrors] = useState<IDeleteBookError>({ password: '' });
@@ -29,6 +32,7 @@ function DeleteBookModal({
       });
       await getAllBooks();
       setDisplayDeleteBookModal(false);
+      setConfirmModal('delete');
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;
@@ -67,15 +71,14 @@ function DeleteBookModal({
           mot de passe administrateur pour confirmer la suppression.
         </p>
         <form className="confirmation-modal-form" onSubmit={handleSubmit}>
-          <label htmlFor="current-password">Mot de passe administrateur</label>
-          <input
+          <InputField
+            label="Mot de passe administrateur"
             type="password"
             name="current-password"
-            id="current-password"
+            error={errors.password}
+            required
           />
-          {errors.password && (
-            <p className="confirmation-modal-form-error">{errors.password}</p>
-          )}
+
           <button className="confirmation-modal-form-button" type="submit">
             Supprimer le livre
           </button>
