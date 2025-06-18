@@ -40,6 +40,7 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
         const zodErrors = error.response.data.errors;
         const formattedErrors: IUserDatasUpdateError = {
           password: '',
+          email: '',
         };
         for (const error of zodErrors) {
           formattedErrors[error.field as keyof IUserDatasUpdateError] =
@@ -53,20 +54,17 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
   return (
     <form className="profile-infos" onSubmit={handleUserDatasUpdate}>
       <InputField label="Nom" name="name" defaultValue={user?.name} />
-
       <InputField
         label="Prénom"
         name="firstname"
         defaultValue={user?.firstname}
       />
-
       <InputField
         label="Email"
         name="email"
         defaultValue={user?.email}
-        //error={errors.email}
+        error={errors.email}
       />
-
       <InputField
         label="Mot de passe actuel"
         type="password"
@@ -74,7 +72,6 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
         error={errors.password}
         required
       />
-
       <button className="user-button" type="submit">
         Modifier
       </button>

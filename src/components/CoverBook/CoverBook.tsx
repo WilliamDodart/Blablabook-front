@@ -18,7 +18,13 @@ function CoverBook({
   return (
     <>
       <li key={book.id} className="library-book">
-        <Link to={`/book/${book.id}`} className="library-book-link">
+        <Link
+          to={`/book/${book.id}`}
+          className="library-book-link"
+          onClick={() => {
+            setCurrentBook(book);
+          }}
+        >
           <figure>
             <div className="library-book-container">
               <button

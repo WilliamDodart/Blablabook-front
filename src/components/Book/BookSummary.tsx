@@ -5,9 +5,20 @@ import './BookSummary.scss';
 interface IBookSummaryProps {
   book: IBooks;
   setDisplayModalBook: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentBook: React.Dispatch<
+    React.SetStateAction<IBooks | null | undefined>
+  >;
 }
 
-function BookSummary({ book, setDisplayModalBook }: IBookSummaryProps) {
+function BookSummary({
+  book,
+  setDisplayModalBook,
+  setCurrentBook,
+}: IBookSummaryProps) {
+  function handleClick() {
+    setCurrentBook(book);
+    setDisplayModalBook(true);
+  }
   return (
     <div className="book-summary">
       <hr className="book-section-separator" />
@@ -17,7 +28,7 @@ function BookSummary({ book, setDisplayModalBook }: IBookSummaryProps) {
       <button
         type="button"
         className="book-summary-button"
-        onClick={() => setDisplayModalBook(true)}
+        onClick={handleClick}
       >
         <Link to="" className="book-summary-button-link">
           <img

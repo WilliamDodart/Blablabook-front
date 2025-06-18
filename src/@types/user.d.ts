@@ -33,4 +33,5 @@ export type IUserPasswordUpdateError = {
 
 export type IUserDatasUpdateError = {
   password: string;
+  email: string;
 };
