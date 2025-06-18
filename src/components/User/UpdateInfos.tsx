@@ -40,6 +40,7 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
         const zodErrors = error.response.data.errors;
         const formattedErrors: IUserDatasUpdateError = {
           password: '',
+          email: '',
         };
         for (const error of zodErrors) {
           formattedErrors[error.field as keyof IUserDatasUpdateError] =
@@ -64,7 +65,7 @@ function UpdateInfos({ user, getUser, setConfirmModal }: IUpdateInfosProps) {
         label="Email"
         name="email"
         defaultValue={user?.email}
-        //error={errors.email}
+        error={errors.email}
       />
 
       <InputField
