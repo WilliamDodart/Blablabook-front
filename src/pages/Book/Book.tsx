@@ -14,10 +14,20 @@ interface BookProps {
   setReviewed: React.Dispatch<React.SetStateAction<boolean>>;
   reviewed: boolean;
   user: IUser | undefined;
+  setCurrentBook: React.Dispatch<
+    React.SetStateAction<IBooks | null | undefined>
+  >;
 }
 
-function Book({ setDisplayModalBook, setReviewed, reviewed, user }: BookProps) {
+function Book({
+  setDisplayModalBook,
+  setReviewed,
+  reviewed,
+  user,
+  setCurrentBook,
+}: BookProps) {
   const { id } = useParams();
+
   const [book, setBook] = useState<IBooks | null>(null);
 
   //API Call
@@ -51,7 +61,11 @@ function Book({ setDisplayModalBook, setReviewed, reviewed, user }: BookProps) {
 
         <BookDetail book={book} />
 
-        <BookSummary book={book} setDisplayModalBook={setDisplayModalBook} />
+        <BookSummary
+          book={book}
+          setDisplayModalBook={setDisplayModalBook}
+          setCurrentBook={setCurrentBook}
+        />
 
         <BookReview book={book} user={user} setReviewed={setReviewed} />
       </div>

@@ -21,10 +21,8 @@ function ReviewModal({
   const [hoverRating, setHoverRating] = useState<number | null>(null);
 
   const handleReviewSubmit = async () => {
-    if (!currentBook) return;
     try {
-      console.log(currentBook);
-      await api.post(`/book/${currentBook.id}/review`, {
+      await api.post(`/book/${currentBook?.id}/review`, {
         content: reviewText,
         rating,
       });
@@ -42,8 +40,8 @@ function ReviewModal({
     <div className="hidden-background">
       <div
         className="library"
-        onClick={(e) => e.stopPropagation()}
-        onKeyDown={(e) => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
+        onKeyDown={(event) => event.stopPropagation()}
       >
         <button
           type="button"

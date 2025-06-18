@@ -98,6 +98,7 @@ function App() {
               setReviewed={setReviewed}
               reviewed={reviewed}
               user={user}
+              setCurrentBook={setCurrentBook}
             />
           }
         />
