@@ -46,7 +46,6 @@ function FilterSection({
         ...previousLibraries,
         { ...newLibrary, Books: [] },
       ]);
-
       form.reset();
     } catch (error) {
       console.error("Erreur lors de l'envoi du formulaire", error);
@@ -74,7 +73,6 @@ function FilterSection({
         };
       });
     }
-
     setCurrentLibraries(filteredLibraries);
   }, [myLibraries, filter, setCurrentLibraries]);
 

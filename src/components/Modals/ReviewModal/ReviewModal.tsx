@@ -1,24 +1,26 @@
 import { useState } from 'react';
-import type { IBooks } from '../../../@types/books';
+import type { IBooks, IReviewError } from '../../../@types/books';
 import './ReviewModal.scss';
 import api from '../../../utils/axiosApi';
+import axios from 'axios';
 
 type IReviewModalProps = {
-  setDisplayReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   currentBook: IBooks | null | undefined;
+  setDisplayReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   setReviewed: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplayModalBook: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function ReviewModal({
-  setDisplayReviewModal,
   currentBook,
+  setDisplayReviewModal,
   setReviewed,
   setDisplayModalBook,
 }: IReviewModalProps) {
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState<number>(0);
   const [hoverRating, setHoverRating] = useState<number | null>(null);
+  const [errors, setErrors] = useState({ review: '' });
 
   const handleReviewSubmit = async () => {
     try {
@@ -26,13 +28,21 @@ function ReviewModal({
         content: reviewText,
         rating,
       });
+
       setDisplayReviewModal(false);
       setReviewText('');
       setRating(0);
       setReviewed((prev) => !prev);
       setDisplayModalBook(false);
     } catch (error) {
-      console.error("Erreur lors de l'envoi de l'avis :", error);
+      if (axios.isAxiosError(error) && error.response?.data.errors) {
+        const zodErrors = error.response.data.errors;
+        const formattedErrors: IReviewError = { review: '' };
+        for (const error of zodErrors) {
+          formattedErrors[error.field as keyof IReviewError] = error.message;
+        }
+        setErrors(formattedErrors);
+      }
     }
   };
 
@@ -75,6 +85,9 @@ function ReviewModal({
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
           />
+          {errors.review && (
+            <p className="review-form-error">{errors.review}</p>
+          )}
           <button type="button" onClick={handleReviewSubmit}>
             Envoyer
           </button>

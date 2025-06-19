@@ -64,4 +64,9 @@
             transform: scale(1.05);
         }
     }
+
+    &-error {
+        color: v.$red-color;
+        margin-top: 0.5rem;
+    }
 }
