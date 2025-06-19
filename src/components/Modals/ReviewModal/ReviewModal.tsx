@@ -3,6 +3,7 @@ import type { IBooks, IReviewError } from '../../../@types/books';
 import './ReviewModal.scss';
 import api from '../../../utils/axiosApi';
 import axios from 'axios';
+import { successToast } from '../../../utils/toast';
 
 type IReviewModalProps = {
   currentBook: IBooks | null | undefined;
@@ -34,6 +35,7 @@ function ReviewModal({
       setRating(0);
       setReviewed((prev) => !prev);
       setDisplayModalBook(false);
+      successToast('Note et commentaire ajoutés !');
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;

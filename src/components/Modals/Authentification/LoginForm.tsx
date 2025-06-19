@@ -6,6 +6,7 @@ import type { ILibrary } from '../../../@types/books';
 import type { IUser, IUserError } from '../../../@types/user';
 import api from '../../../utils/axiosApi';
 import InputField from '../../Fields/InputField';
+import { successToast } from '../../../utils/toast';
 
 interface ILoginFormProps {
   setUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
@@ -43,6 +44,9 @@ function LoginForm({
       const response = await api.get('/libraries/books');
       setMyLibraries(response.data);
       setDisplayLoginForm(false);
+      successToast(
+        `Connexion réussie, bienvenue ${httpResponse.data.currentUser.firstname}`,
+      );
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;

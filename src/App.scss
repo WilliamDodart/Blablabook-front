@@ -1,4 +1,5 @@
 @use './styles/_reset';
+@use './styles/variables' as v;
 
 .app{
     width: 100%;
@@ -7,3 +8,14 @@
     flex-direction: column;
 }
 
+.Toastify {
+    padding: 0;
+}
+
+.Toastify__toast--success .Toastify__toast-icon svg {
+  fill: rgb(91, 175, 91)
+}
+
+.Toastify__toast--success .Toastify__progress-bar {
+  background: rgb(91, 175, 91)
+}
