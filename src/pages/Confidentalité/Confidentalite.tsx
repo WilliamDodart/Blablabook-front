@@ -1,10 +1,8 @@
 import './Confidentalite.scss';
-import ScrollTop from '../../utils/ScrollTop';
 
 function Confidentalite() {
   return (
     <>
-      <ScrollTop />
       <section className="privacy-section">
         <h1 className="privacy-section-title">Politique de Confidentialité</h1>
         <div className="privacy-section-container">

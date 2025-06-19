@@ -16,6 +16,8 @@ import Homepage from './pages/Homepage/Homepage';
 import MentionLegale from './pages/MentionLegales/MentionLegale';
 import PersonalLibrary from './pages/PersonalLibrary/PersonalLibrary';
 import User from './pages/User/User';
+import ScrollToTop from './utils/ScrollToTop';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const [displayRegisterForm, setDisplayRegisterForm] = useState(false);
@@ -63,6 +65,14 @@ function App() {
         setIsLogged={setIsLogged}
         setUser={setUser}
         user={user}
+      />
+
+      <ScrollToTop />
+
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        className="toast-section"
       />
 
       <Routes>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { IBooks, ILibrary } from '../../../@types/books';
 import './ModalBooks.scss';
 import api from '../../../utils/axiosApi';
+import { errorToast, successToast } from '../../../utils/toast';
 
 type IModalBooksProps = {
   currentBook: IBooks | null | undefined;
@@ -37,7 +38,7 @@ function ModalBooks({
     );
 
     if (bookExists) {
-      alert('Ce livre est déjà présent dans cette bibliothèque.');
+      errorToast('Ce livre est déjà présent dans cette bibliothèque.');
       return;
     }
 
@@ -46,6 +47,7 @@ function ModalBooks({
         read: type === 'read',
       });
       setDisplayModalBook(false);
+      successToast('Livre ajouté !');
     } catch (error) {
       console.error(
         "Erreur lors de l'ajout du livre à la bibliothèque :",

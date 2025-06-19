@@ -5,6 +5,7 @@ import { useState } from 'react';
 import type { IRegisterError } from '../../../@types/user';
 import api from '../../../utils/axiosApi';
 import InputField from '../../Fields/InputField';
+import { successToast } from '../../../utils/toast';
 
 interface IRegisterFormProps {
   setDisplayLoginForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,6 +36,7 @@ function RegisterForm({
       });
 
       setDisplayRegisterForm(false);
+      successToast('Inscription réussie !');
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data.errors) {
         const zodErrors = error.response.data.errors;

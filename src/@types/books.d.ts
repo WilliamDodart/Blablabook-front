@@ -31,3 +31,7 @@ export type ILibraryBook = {
   library_id: number;
   book_id: number;
 };
+
+export type IReviewError = {
+  review: string;
+};

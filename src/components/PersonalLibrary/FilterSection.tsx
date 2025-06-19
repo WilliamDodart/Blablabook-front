@@ -3,6 +3,7 @@ import type { IGenre, ILibrary } from '../../@types/books';
 import type { FilterState } from '../../@types/libraries';
 import api from '../../utils/axiosApi';
 import './FilterSection.scss';
+import { successToast } from '../../utils/toast';
 
 interface IFilterSectionProps {
   myLibraries: ILibrary[];
@@ -46,8 +47,8 @@ function FilterSection({
         ...previousLibraries,
         { ...newLibrary, Books: [] },
       ]);
-
       form.reset();
+      successToast(`Bibliothèque '${newLibraryName}' ajoutée`);
     } catch (error) {
       console.error("Erreur lors de l'envoi du formulaire", error);
     }
@@ -74,7 +75,6 @@ function FilterSection({
         };
       });
     }
-
     setCurrentLibraries(filteredLibraries);
   }, [myLibraries, filter, setCurrentLibraries]);
 
