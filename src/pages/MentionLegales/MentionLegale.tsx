@@ -1,11 +1,9 @@
 import { Link } from 'react-router';
 import './MentionLegale.scss';
-import ScrollTop from '../../utils/ScrollTop';
 
 function MentionLegale() {
   return (
     <>
-      <ScrollTop />
       <section className="legal-section">
         <h1 className="legal-section-title">Mentions légales</h1>
         <div className="legal-section-container">

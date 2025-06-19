@@ -16,6 +16,7 @@ import Homepage from './pages/Homepage/Homepage';
 import MentionLegale from './pages/MentionLegales/MentionLegale';
 import PersonalLibrary from './pages/PersonalLibrary/PersonalLibrary';
 import User from './pages/User/User';
+import ScrollToTop from './utils/ScrollToTop';
 
 function App() {
   const [displayRegisterForm, setDisplayRegisterForm] = useState(false);
@@ -64,6 +65,8 @@ function App() {
         setUser={setUser}
         user={user}
       />
+
+      <ScrollToTop />
 
       <Routes>
         <Route
