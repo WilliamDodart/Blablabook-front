@@ -1,22 +1,23 @@
 import { useState } from 'react';
-import type { IBooks, ILibrary } from '../../../@types/books';
+import type { IBooks } from '../../../@types/books';
 import './ModalBooks.scss';
 import api from '../../../utils/axiosApi';
 import { errorToast, successToast } from '../../../utils/toast';
+import { useAuth } from '../../../hooks/useAuth';
 
 type IModalBooksProps = {
   currentBook: IBooks | null | undefined;
-  myLibraries: ILibrary[];
   setDisplayReviewModal: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplayModalBook: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function ModalBooks({
   currentBook,
-  myLibraries,
   setDisplayModalBook,
   setDisplayReviewModal,
 }: IModalBooksProps) {
+  const { myLibraries } = useAuth();
+
   const [menuDeroulant, setMenuDeroulant] = useState<string | null>(null);
 
   const handleClick = (type: 'read' | 'toRead') => {

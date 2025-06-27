@@ -14,6 +14,7 @@ import Reviews from '../../components/User/Reviews';
 import UpdateInfos from '../../components/User/UpdateInfos';
 import UpdatePassword from '../../components/User/UpdatePassword';
 import UserLibraries from '../../components/User/UserLibraries';
+import { useAuth } from '../../hooks/useAuth';
 
 interface IUserProps {
   user?: IUser;
@@ -30,6 +31,8 @@ function User({
   reviewed,
   setReviewed,
 }: IUserProps) {
+  const { setMyLibraries } = useAuth();
+
   const navigate = useNavigate();
   const [confirmModal, setConfirmModal] = useState('');
   const [libraryId, setLibraryId] = useState<number>();
@@ -47,11 +50,12 @@ function User({
       setIsLoading(true);
       const response = await api.get('/user');
       setUser(response.data);
+      setMyLibraries(response.data.Libraries);
       setIsLoading(false);
     } catch (error) {
       console.error("Erreur lors de la récupération de l'utilisateur", error);
     }
-  }, [setUser]);
+  }, [setUser, setMyLibraries]);
 
   useEffect(() => {
     if (reviewed !== undefined) {
