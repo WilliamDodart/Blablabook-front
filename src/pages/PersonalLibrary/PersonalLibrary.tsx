@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../Books/Books.scss';
 import './PersonalLibrary.scss';
 import type { IBooks, ILibrary } from '../../@types/books';
@@ -21,12 +21,12 @@ interface PersonalLibraryProps {
 }
 
 function PersonalLibrary({
-  setDisplayModalLibrary,
-  setCurrentBook,
   myLibraries,
-  setMyLibraries,
   currentLibraries,
+  setCurrentBook,
+  setMyLibraries,
   setCurrentLibraries,
+  setDisplayModalLibrary,
 }: PersonalLibraryProps) {
   const [librariesStatus, setLibrariesStatus] = useState('all');
   const [displayFilter, setDisplayFilter] = useState(false);
@@ -35,25 +35,28 @@ function PersonalLibrary({
   const [error, setError] = useState<string | null>(null);
 
   //Call API
-  const fetchLibraries = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const response = await api.get('/libraries/books');
-      setMyLibraries(response.data);
-      setCurrentLibraries(response.data);
-      const uniqueGenres = extractUniqueGenres(response.data);
-      setCurrentGenres(uniqueGenres);
-    } catch (error) {
-      console.error('Erreur lors de la récupération des bibliothèques', error);
-      setError('Erreur lors de la récupération des bibliothèques');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [setMyLibraries, setCurrentLibraries]);
-
   useEffect(() => {
+    const fetchLibraries = async () => {
+      try {
+        setIsLoading(true);
+        const response = await api.get('/libraries/books');
+        setMyLibraries(response.data);
+        setCurrentLibraries(response.data);
+        const uniqueGenres = extractUniqueGenres(response.data);
+        setCurrentGenres(uniqueGenres);
+      } catch (error) {
+        console.error(
+          'Erreur lors de la récupération des bibliothèques',
+          error,
+        );
+        setError('Erreur lors de la récupération des bibliothèques');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchLibraries();
-  }, [fetchLibraries]);
+  }, [setCurrentLibraries, setMyLibraries]);
 
   if (isLoading) {
     return <Loader />;

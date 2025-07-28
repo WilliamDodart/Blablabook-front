@@ -3,7 +3,7 @@ import type { IGenre, ILibrary } from '../../@types/books';
 import type { FilterState } from '../../@types/libraries';
 import api from '../../utils/axiosApi';
 import './FilterSection.scss';
-import { successToast } from '../../utils/toast';
+import { errorToast, successToast } from '../../utils/toast';
 
 interface IFilterSectionProps {
   myLibraries: ILibrary[];
@@ -30,15 +30,20 @@ function FilterSection({
     event: React.FormEvent<HTMLFormElement>,
   ) {
     event.preventDefault();
+
+    //Récupération des données du formulaire
     const form = event.currentTarget;
     const formData = new FormData(form);
     const newLibraryName = formData.get('newLibraryName') as string;
+
+    //Appel API
     try {
       const response = await api.post('/library', {
         name: newLibraryName,
       });
       const newLibrary = response.data;
 
+      //Mise à jour des bibliothèques de l'utilisateur
       setMyLibraries((previousLibraries) => [
         ...previousLibraries,
         { ...newLibrary, Books: [] },
@@ -47,23 +52,28 @@ function FilterSection({
         ...previousLibraries,
         { ...newLibrary, Books: [] },
       ]);
+
       form.reset();
       successToast(`Bibliothèque '${newLibraryName}' ajoutée`);
     } catch (error) {
       console.error("Erreur lors de l'envoi du formulaire", error);
+      errorToast('Échec de la création de la bibliothèque.');
     }
   }
 
   // Filter function
   const applyFilters = useCallback(() => {
+    //Création d'un tableau indépendant grâce au spread operator
     let filteredLibraries = [...myLibraries];
 
+    //Vérification de la valeur du useState pour le premier filtre
     if (filter.libraryId !== 'all') {
       filteredLibraries = filteredLibraries.filter(
         (library) => library.id === Number(filter.libraryId),
       );
     }
 
+    //Vérification de la valeur du useState pour le second filtre
     if (filter.genre !== 'all') {
       filteredLibraries = filteredLibraries.map((library) => {
         const filteredBooks = library.Books.filter((book) =>
@@ -75,6 +85,8 @@ function FilterSection({
         };
       });
     }
+
+    //Mise à jour de la valeur utilisé pour l'affichage des bibliothèques et des livres
     setCurrentLibraries(filteredLibraries);
   }, [myLibraries, filter, setCurrentLibraries]);
 
@@ -131,7 +143,7 @@ function FilterSection({
           <input
             className="filter-section-form-input"
             type="text"
-            id="newLibraryName"
+            aria-label="Nom de la nouvelle bibliothèque"
             name="newLibraryName"
             placeholder="Créer une bibliothèque"
             required

@@ -11,10 +11,10 @@ import PersonalSection from '../../components/Homepage/PersonalSection';
 import api from '../../utils/axiosApi';
 
 interface HomepageProps {
-  setDisplayRegisterForm: React.Dispatch<React.SetStateAction<boolean>>;
   isLogged: boolean;
-  setDisplayLoginForm: React.Dispatch<React.SetStateAction<boolean>>;
   user: IUser | undefined;
+  setDisplayRegisterForm: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisplayLoginForm: React.Dispatch<React.SetStateAction<boolean>>;
   setDisplayModalBook: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentBook: React.Dispatch<
     React.SetStateAction<IBooks | null | undefined>
