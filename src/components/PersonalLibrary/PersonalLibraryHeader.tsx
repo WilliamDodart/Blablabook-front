@@ -37,11 +37,12 @@ function PersonalLibraryHeader({
       <ul className="personal-library-header-list">
         <NavLink
           className="personal-library-header-list-navlink"
-          to=""
+          to="#"
           onClick={handleStatusClick('all')}
         >
           <li className={getNavLinkClass('all')}>Tous</li>
         </NavLink>
+
         <NavLink
           className="personal-library-header-list-navlink"
           to=""
@@ -49,6 +50,7 @@ function PersonalLibraryHeader({
         >
           <li className={getNavLinkClass('read')}>Lus</li>
         </NavLink>
+
         <NavLink
           className="personal-library-header-list-navlink"
           to=""
@@ -56,6 +58,7 @@ function PersonalLibraryHeader({
         >
           <li className={getNavLinkClass('toRead')}>À lire</li>
         </NavLink>
+
         <button
           className={
             displayFilter

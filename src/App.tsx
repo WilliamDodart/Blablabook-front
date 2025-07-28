@@ -66,7 +66,6 @@ function App() {
         setUser={setUser}
         user={user}
       />
-
       <ScrollToTop />
 
       <ToastContainer
