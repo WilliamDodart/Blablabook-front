@@ -1,0 +1,38 @@
+@use '../../styles/variables' as v;
+
+.footer {
+    background-color: v.$secondary-color ;
+    text-align: center;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    bottom: 0;
+    width: 100%;
+    font-family: "Inter";
+    
+    &-top {
+        display: flex;
+        justify-content: center;
+        flex-wrap:wrap;
+        column-gap: 1.5rem;
+        padding-bottom: 0.8rem;
+        margin-top: 1rem;
+        
+        &-link{
+          color: white;
+          text-decoration: none; 
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+      
+      &-bottom {
+        margin-bottom: 1rem;
+        
+        &-paragraph {
+          color: white;
+        }
+    }
+}
+

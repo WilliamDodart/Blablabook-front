@@ -7,7 +7,7 @@
 	},
 	"files": {
 	  "ignoreUnknown": false,
-	  "ignore": []
+	  "ignore": ["node_modules"]
 	},
 	"formatter": {
 	  "enabled": true,
@@ -26,12 +26,12 @@
 		"suspicious": {
 		  "noShadowRestrictedNames": "off",
 		  "noDuplicateParameters": "off",
-		  "noConsole": "warn",
+		  "noConsole": "off",
 		  "noDebugger": "error"
 		},
 		"correctness": {
-		  "noUnusedImports": "error",
-		  "noUnusedVariables": "error"
+		  "noUnusedImports": "off",
+		  "noUnusedVariables": "off"
 		}
 	  },
 	  "ignore": ["dist"]

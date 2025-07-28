@@ -1,0 +1,47 @@
+@use '../../../styles/variables' as v;
+@use '../../../styles/hiddenBackground';
+
+.confirm-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #C6AD8E;
+    position: relative;
+    width: 25%;
+    min-width: 500px;
+    padding: 3rem 5rem;
+    border-radius: 8px;
+    font-family: 'Inter';
+
+    //croix de fermeture
+    &-closeBtn {
+        width: 40px;
+        position: absolute;
+        top: 2%;
+        right: 2%;
+        background-color: v.$secondary-color;
+        border: none;
+        
+        &:hover {
+            cursor: pointer;
+        }
+        
+        &-img {
+            box-shadow: none;
+        }
+    }
+
+    //logo warning
+    &-caution-icon {
+        box-shadow: none;
+        width: 20%;
+        min-width: 55px;
+        margin-bottom: 7%;
+    }
+
+    //texte de la modale
+    &-message {
+        text-align: center;
+        width: 80%;
+    }
+}

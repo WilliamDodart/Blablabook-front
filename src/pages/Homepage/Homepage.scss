@@ -1,0 +1,267 @@
+@use '../../styles/variables' as v;
+@use '../../styles/section';
+
+
+.homepage {
+    overflow-x: auto;
+}
+
+//----------------------------- HERO SECTION -------------------------
+
+.hero-section {
+    display: flex;
+    background-color: v.$base-color;
+    gap: 8vw;
+    flex-wrap: wrap;
+
+    &-presentation {
+        max-width: 470px;
+
+        &-title {
+            text-align: start;
+        }
+        
+        &-subtitle {
+            margin-top: 1.5rem;
+        }
+        
+    }
+
+    &-img {
+        max-width: 450px;
+
+        & img {
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (min-width:800px){
+    .hero-section-presentation-subtitle {
+        margin-top: 0rem;
+    }
+}
+
+//------------------------- PERSONNAL LIBRARY SECTION ----------------------
+
+.personal-section {
+    background-color: v.$primary-color;
+    text-align: center;
+    
+    &-container {
+        max-width: 780px;
+        margin: 0 auto;
+         
+        &-separator {
+            max-width: 220px;
+            border-top: solid 2px v.$secondary-color;
+        }
+    
+        &-title {
+            overflow-x: auto;
+        }
+    }
+}
+
+
+// --------------------- RANDOMBOOKS SECTION -----------------------
+
+.inspiration-section {
+    background-color: v.$base-color;
+
+    &-title {
+        text-align: center;
+        padding-bottom: 20px;
+        font-family: "Inter";
+        overflow-x: auto;
+
+        & h3 {
+            font-size: 1.8rem;
+            font-weight: 400;
+        }
+
+        & p {
+            font-weight: 200;
+        }
+    }
+
+    &-list {
+        max-width: 1200px;
+        display: flex;
+        margin: 0 auto;
+        gap: calc(1vh + 2vw);
+        flex-wrap: wrap;
+        text-align: center;
+        justify-content: center;
+        padding: 0;
+
+        &-img {
+            position: relative;
+            width: 150px;
+            height: 220px;
+            margin: 0 auto;
+        }
+
+        & img {
+            width: 100%;
+            height: 100%
+        }
+
+        & a {
+            color: v.$police-color;
+            text-decoration: none;
+        }
+
+        & figure {
+            display: inline-block;
+            font-family: "Inter";
+            width: 180px;
+
+            & hgroup {
+                margin: 10px 0;
+                max-width: 180px;
+
+                & figcaption {
+                    font-size: 1rem;
+                }
+
+                & h5 {
+                    font-weight: 200;
+                    font-size: 0.85rem;
+                }
+            }
+        }
+
+        & button {
+            position: absolute;
+            background-color: v.$secondary-color;
+            border: none;
+            color: white;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: normal;
+            right: 3px;
+            bottom: 8px;
+            cursor: cell;
+        }
+    }
+}
+
+
+//--------------- Paragraphe section --------------------
+
+.paragraphs-section {
+    padding: 2rem;
+    background-color: v.$primary-color;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    & .left-paragraph,
+    & .right-paragraph {
+        max-width: 700px;
+        text-align: center;
+        padding: 3vh;
+
+        & h3 {
+            text-align: center;
+        }
+    }
+
+    & .center-paragraph {
+        width: 60vw;
+        
+        &-divider {
+            height: 2px;
+            margin: 1.5rem auto;
+            background-color: v.$secondary-color;
+        }
+    }
+}
+
+@media (min-width: 800px) {
+    .paragraphs-section {
+        flex-direction: row;
+        align-items: stretch;
+
+        & .left-paragraph,
+        & .right-paragraph {
+            max-width: 650px;
+        }
+
+        & .center-paragraph {
+            width: 2px;
+            
+            &-divider {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                background-color: v.$secondary-color;
+            }
+        }
+    }
+}
+
+
+//--------------- info-section ------------------------------
+
+.info-section {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: v.$base-color ;
+    gap: 8vw;
+
+    &-img {
+        max-width: 450px;
+
+        & img {
+            width: 100%;
+        }
+    }
+
+    &-text {
+        max-width: 470px;
+    }
+}
+
+
+// ------------- Call to action section -------------------
+
+.call-to-action-section {
+    background: url('../Pictures/img-footer.png') center/cover fixed;
+    display: flex;
+    flex-direction: column;
+
+    & h2 {
+        text-align: center;
+    }
+}
+
+
+// ------------- Buttons -------------------
+
+.hero-section-presentation-button,
+.call-to-action-section-button {
+    background-color: v.$secondary-color;
+    margin: 1rem 0;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: "Inter";
+    font-size: small;
+    border-radius: 6px;
+
+    &:hover {
+        background-color: v.$marronlight-color;
+      }
+}
+
+.link-correction {
+    display: block;
+    width: 250px;
+    text-align: center;
+}

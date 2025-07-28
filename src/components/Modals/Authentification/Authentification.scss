@@ -1,0 +1,93 @@
+@use '../../../styles/hiddenBackground';
+@use '../../../styles/variables' as v;
+
+.auth-modal{
+    background-color: v.$secondary-color;
+    width: 80%;
+    min-width: 250px;
+    max-width: 500px;
+    padding: 3rem 2rem;
+    max-height: 90%;
+    position: relative;
+    border-radius: 8px;
+    font-family: 'Inter';
+
+    //croix de fermeture
+    &-closeBtn {
+        width: 40px;
+        position: absolute;
+        top: 2%;
+        right: 2%;
+        background-color: v.$secondary-color;
+        border: none;
+        
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    //Formulaire de la modale
+    &-form {
+        height: 100%;
+        max-width: 340px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+
+        &-title {
+            font-size: 1.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        & label {
+            padding-bottom: 0.5rem;
+            margin-top: 1.2rem;
+        }
+
+        & input {
+            border: none;
+            padding: 0.5rem;
+        }
+
+        &-cg {
+            margin-top: 2rem;
+        }
+
+        &-redirection {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: v.$base-color;
+            text-decoration: none;
+        }
+        
+        &-error {
+            margin-top: 0.4rem;
+            color: v.$red-color;
+        }
+
+        &-button {
+            margin: 1rem 0;
+            padding: 0.5rem 0;
+            background-color: white;
+            border: none;
+            border-radius: 8px;
+            color: v.$police-color;
+            font-size: 1rem;
+            width: 60%;
+
+            &:hover {
+                background-color: v.$base-color;
+                cursor: pointer;
+            }
+        }
+    }
+
+}
+
+@media screen and (min-width:700px) {
+    .auth-modal {
+        width: 25%;
+        min-width: 500px;
+        padding: 3rem 5rem;
+    }
+}

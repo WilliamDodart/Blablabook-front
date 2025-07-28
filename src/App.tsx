@@ -1,47 +1,62 @@
 import './App.scss';
 import { useState } from 'react';
 import { Route, Routes } from 'react-router';
-import type { IUser } from './@types/user';
-import Book from './Book/Book';
-import Books from './Books/Books';
-import Footer from './Footer/Footer';
-import Homepage from './Homepage/Homepage';
-import PersonalLibrary from './PersonalLibrary/PersonalLibrary';
-import LoginForm from './LoginForm/LoginForm';
-import Navbar from './Navbar/Navbar';
-import RegisterForm from './RegisterForm/RegisterForm';
-
+import type { IBooks } from './@types/books';
+import ModalsManager from './components/Modals/ModalsManager';
+import { useAuth } from './hooks/useAuth';
+import Footer from './layouts/Footer/Footer';
+import Navbar from './layouts/Navbar/Navbar';
+import Admin from './pages/Admin/Admin';
+import Book from './pages/Book/Book';
+import Books from './pages/Books/Books';
+import Confidentalite from './pages/Confidentalité/Confidentalite';
+import Contact from './pages/Contact/Contact';
+import Error from './pages/Error404/Error404';
+import Homepage from './pages/Homepage/Homepage';
+import MentionLegale from './pages/MentionLegales/MentionLegale';
+import PersonalLibrary from './pages/PersonalLibrary/PersonalLibrary';
+import User from './pages/User/User';
+import ScrollToTop from './utils/ScrollToTop';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const [displayRegisterForm, setDisplayRegisterForm] = useState(false);
   const [displayLoginForm, setDisplayLoginForm] = useState(false);
-  const [user, setUser] = useState<IUser | undefined>();
-  const [isLogged, setIsLogged] = useState(false);
+  const [displayModalLibrary, setDisplayModalLibrary] = useState(false);
+  const [displayModalBook, setDisplayModalBook] = useState(false);
+  const [currentBook, setCurrentBook] = useState<IBooks | null>();
+  const [reviewed, setReviewed] = useState(false);
 
-  function closeRegisterForm() {
-    setDisplayRegisterForm(false);
-  }
-
-  function closeLoginForm() {
-    setDisplayLoginForm(false);
-  }
+  const {
+    user,
+    isLogged,
+    myLibraries,
+    currentLibraries,
+    setUser,
+    setIsLogged,
+    setMyLibraries,
+    setCurrentLibraries,
+  } = useAuth();
 
   return (
     <div className="app">
-      {displayRegisterForm && (
-        <RegisterForm
-          closeRegisterForm={closeRegisterForm}
-          setDisplayLoginForm={setDisplayLoginForm}
-        />
-      )}
-      {displayLoginForm && (
-        <LoginForm
-          closeLoginForm={closeLoginForm}
-          setUser={setUser}
-          setIsLogged={setIsLogged}
-          setDisplayRegisterForm={setDisplayRegisterForm}
-        />
-      )}
+      <ModalsManager
+        displayRegisterForm={displayRegisterForm}
+        displayLoginForm={displayLoginForm}
+        displayModalLibrary={displayModalLibrary}
+        displayModalBook={displayModalBook}
+        currentBook={currentBook}
+        myLibraries={myLibraries}
+        setDisplayLoginForm={setDisplayLoginForm}
+        setDisplayRegisterForm={setDisplayRegisterForm}
+        setDisplayModalLibrary={setDisplayModalLibrary}
+        setDisplayModalBook={setDisplayModalBook}
+        setUser={setUser}
+        setIsLogged={setIsLogged}
+        setMyLibraries={setMyLibraries}
+        setCurrentLibraries={setCurrentLibraries}
+        setReviewed={setReviewed}
+      />
 
       <Navbar
         setDisplayRegisterForm={setDisplayRegisterForm}
@@ -49,22 +64,90 @@ function App() {
         isLogged={isLogged}
         setIsLogged={setIsLogged}
         setUser={setUser}
+        user={user}
       />
-      <Routes>
+      <ScrollToTop />
 
-        <Route path="/" element={
-          <Homepage setDisplayRegisterForm={setDisplayRegisterForm} />
-        } />
-        <Route path="/books" element={
-          <Books />
-        } />
-        <Route path="/book/:id" element={
-          <Book />
-        } />
-        <Route path="/myLibrary" element={
-          <PersonalLibrary />
-        } />
-        
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        className="toast-section"
+      />
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Homepage
+              setDisplayRegisterForm={setDisplayRegisterForm}
+              isLogged={isLogged}
+              setDisplayLoginForm={setDisplayLoginForm}
+              user={user}
+              setDisplayModalBook={setDisplayModalBook}
+              setCurrentBook={setCurrentBook}
+            />
+          }
+        />
+
+        <Route
+          path="/books"
+          element={
+            <Books
+              setDisplayModalBook={setDisplayModalBook}
+              setCurrentBook={setCurrentBook}
+            />
+          }
+        />
+
+        <Route
+          path="/book/:id"
+          element={
+            <Book
+              setDisplayModalBook={setDisplayModalBook}
+              setReviewed={setReviewed}
+              reviewed={reviewed}
+              user={user}
+              setCurrentBook={setCurrentBook}
+            />
+          }
+        />
+
+        <Route
+          path="/myLibrary"
+          element={
+            <PersonalLibrary
+              setDisplayModalLibrary={setDisplayModalLibrary}
+              setCurrentBook={setCurrentBook}
+              myLibraries={myLibraries}
+              setMyLibraries={setMyLibraries}
+              currentLibraries={currentLibraries}
+              setCurrentLibraries={setCurrentLibraries}
+            />
+          }
+        />
+
+        <Route
+          path="/user"
+          element={
+            <User
+              user={user}
+              setUser={setUser}
+              setIsLogged={setIsLogged}
+              reviewed={reviewed}
+              setReviewed={setReviewed}
+            />
+          }
+        />
+
+        {isLogged && user?.admin && <Route path="/admin" element={<Admin />} />}
+
+        <Route path="/confidentality" element={<Confidentalite />} />
+
+        <Route path="/legal-notice" element={<MentionLegale />} />
+
+        <Route path="/contact" element={<Contact />} />
+
+        <Route path="*" element={<Error />} />
       </Routes>
       <Footer />
     </div>

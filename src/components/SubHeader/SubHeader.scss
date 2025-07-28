@@ -1,0 +1,52 @@
+@use '../../styles/variables' as v;
+
+.sub-header {
+    background-color: v.$base-color;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-title {
+        font-size: 2.8rem;
+        margin: 3rem 0 0 0;
+        max-width: 100%;
+    }
+
+    &-list {
+        font-family: "Inter";
+        padding: 2rem 0 0 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+
+        &-link {
+            font-family: "Inter";
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: v.$marron-color;
+            text-decoration: none;
+            padding: 1.2rem 0;
+        }
+        
+        & .selected-status {
+            text-decoration: underline;
+            color: #d1bda5
+        }
+
+        &-link:hover {
+            color: v.$secondary-color;
+            font-weight: 300;
+        }
+    }
+}
+
+@media screen and (min-width:800px){
+    .sub-header-title {
+        margin: 0;
+    }
+}

@@ -1,7 +1,22 @@
 @use './styles/_reset';
+@use './styles/variables' as v;
 
 .app{
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
+.Toastify {
+    flex:0;
+    padding: 0;
+}
+
+.Toastify__toast--success .Toastify__toast-icon svg {
+  fill: rgb(91, 175, 91)
+}
+
+.Toastify__toast--success .Toastify__progress-bar {
+  background: rgb(91, 175, 91)
 }

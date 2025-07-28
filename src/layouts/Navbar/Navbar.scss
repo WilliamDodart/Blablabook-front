@@ -1,0 +1,93 @@
+@use '../../styles/variables' as v;
+.navbar {
+  background-color: v.$secondary-color;
+  position: sticky;
+  top: -1px;
+  z-index: 3;
+  height: 5rem;
+  width: 100%;
+  min-width: 145px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 0;
+  padding-top: 0;
+  
+  &-logo {
+    width: 5rem;
+    min-width: 5rem;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    margin-left: 1rem;
+  }
+
+  &-title {
+    display: none;
+  }
+
+  &-menu {
+    background-color: v.$base-color;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    position: fixed;
+    top: 4.9rem;
+    left: 0;
+    padding: 2rem 10%;
+    display: flex;
+    gap: 1rem;
+  }
+
+  & .hidden {
+    display: none;
+  }
+
+  &-burger-menu {
+    min-width: 50px;
+    margin-right: 1rem;
+
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+
+    &-logo {
+      margin: 0 1rem;
+    }
+
+     & .hidden {
+        display: inline-flex;
+    }
+
+    &-title {
+      display: block;
+      font-size: calc(1rem + 0.9vw);
+      margin: 1rem 0;
+      text-shadow: -1px 6px 9px rgba(0, 0, 0, 0.10);
+      font-family: "Satisfy";
+      font-weight: 100;
+      color: whitesmoke;
+    }
+
+    &-menu {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      position: static;
+      height: auto;
+      width: auto;
+      background-color: transparent;
+      padding: 20px;
+    }
+
+    &-burger-menu {
+      display: none;
+    }
+  }
+}

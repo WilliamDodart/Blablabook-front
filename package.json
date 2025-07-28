@@ -3,9 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://Cedric-Duval.github.io/blabla-book-front",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "preview": "vite preview",
     "format": "npx @biomejs/biome format ./",
     "format:fix": "npx @biomejs/biome format --write ./",
@@ -18,13 +21,16 @@
     "axios": "^1.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.5.2"
+    "react-router": "^7.5.2",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.15.18",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "gh-pages": "^6.3.0",
     "globals": "^16.0.0",
     "sass-embedded": "^1.87.0",
     "typescript": "~5.7.2",

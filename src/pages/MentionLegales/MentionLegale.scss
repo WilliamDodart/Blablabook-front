@@ -1,0 +1,40 @@
+@use '../../styles/variables' as v;
+@use '../../styles/section';
+
+
+.legal-section {
+  padding: 0rem;
+  line-height: 1.6;
+  background-color: v.$base-color;
+  
+  &-title {
+    font-size: 2.8rem;
+    margin-top: 4rem;
+  }
+  
+  &-container {
+    width: 90%;
+    margin: 0 auto 3rem auto;
+    background-color: v.$primary-color;
+    border-radius: 8px;
+    padding: 3rem;
+    overflow-x: auto;
+  }
+
+  & h2 {
+    font-family: "Inter";
+    font-weight: bold;
+    font-size: calc(1rem + 0.5vw);
+    margin-bottom: 0;
+  }
+  
+  & a {
+    color: #457b9d;
+  }
+}
+
+@media screen and (min-width:800px){
+  .legal-section-title {
+    margin-top: 2rem;
+  }
+}

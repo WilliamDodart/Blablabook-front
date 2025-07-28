@@ -8,7 +8,8 @@
 }
 
 section{
-    padding: 10vh 2vh;
+    flex:1;
+    padding: 6vh 2vh;
     align-items: center;
     justify-content: center;
 
@@ -23,6 +24,7 @@ section{
     text-shadow: -1px 6px 9px rgba(0, 0, 0, 0.10);
     font-family: "Satisfy";
     font-weight: 100;
+    text-align: center;
     }
     
     & h2 {

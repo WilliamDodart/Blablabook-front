@@ -1,0 +1,38 @@
+@use '../../styles/variables' as v;
+@use '../../styles/section';
+
+
+.admin-section {
+    background-color: v.$base-color;
+    padding: 0;
+    font-family: "Inter";
+        
+        &-body {
+            background-color: v.$primary-color;
+            border-radius: 8px;
+            margin: 2rem auto;
+            width: 90%;
+            min-height: 300px;
+            height: 100%;
+            padding-top: 1rem;
+    
+            &-subtitle {
+                font-weight: bold;
+                font-size: 2rem;
+                margin: 2rem 0;
+                padding: 0;
+                text-align: center;
+                color: v.$marron-color;
+            }
+        }  
+}
+
+//Subtitle animation
+.fade {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+  
+    &.fade-out {
+      opacity: 0;
+    }
+}

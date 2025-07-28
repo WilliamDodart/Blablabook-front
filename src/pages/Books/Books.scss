@@ -1,0 +1,122 @@
+@use '../../styles/variables' as v;
+@use '../../styles/section';
+
+
+
+//----------- HEADER SECTION  ---------------
+.books {
+    padding: 0;
+    background-color: v.$base-color;
+    overflow-x: auto;
+
+    &-header {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: center;
+        width: 90%;
+        margin: 4.4rem auto 1rem auto;
+        position: relative;
+        align-items: center;
+
+    
+        &-title {
+            font-size: 2.8rem;
+            margin:0 0 1rem 0;
+            white-space: nowrap;
+        }
+    
+        &-search {
+            font-size: 0.9rem;
+            border-radius: 5px;
+            padding: 1rem;
+            width: 15rem;
+            height: 2rem;
+            top: 0;
+            right: 0;
+            position: relative;
+            border: solid 1px v.$primary-color;
+            box-shadow: 0 5px 5px rgba(0, 0, 0, 0.04);
+        }
+    } 
+}
+
+
+//----------- LIST SECTION ------------
+
+.books-list {
+    background-color: v.$primary-color;
+    border-radius: 8px;
+    width: 90%;
+    margin: 0 auto 4rem auto;
+    padding: 4rem 0 2rem 0;
+
+    &-no-results {
+        text-align: center;
+        font-family: "Inter";
+        font-weight: 200;
+        font-size: 1.5rem;
+    }
+
+    &-ul {
+        padding-left: 0px;
+        display: grid;
+        grid-template-columns: 1fr; // 1 colonne sur mobile
+        gap: 15px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    &-buttons {
+        text-align: center;
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .button-more,
+    .button-less {
+        background-color: v.$secondary-color;
+        border: none;
+        padding: 0.8rem 1.2rem;
+        cursor: pointer;
+        border-radius: 6px;
+        color: white;
+
+        &:hover {
+            background-color: v.$marronlight-color;
+        }
+    }
+}
+
+// ------------ RESPONSIVE -----------
+@media (min-width: 480px) {
+    .books-list-ul {
+        grid-template-columns: repeat(2, 1fr); // 2 colonnes sur tablette
+    }
+}
+
+@media (min-width: 800px) {
+    .books-list-ul {
+        grid-template-columns: repeat(3, 1fr); // 3 colonnes sur écran moyen
+    }
+
+    .books {
+        &-header {
+            flex-direction: row;
+            margin-top: 2rem;
+            
+            &-search {
+                position: absolute;
+            }
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    .books-list-ul {
+        grid-template-columns: repeat(6, 1fr); // 6 colonne sur écran complet
+    }
+}
